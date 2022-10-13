@@ -9,8 +9,9 @@ namespace M3D_ISICG
 	// Identification de program
 	GLuint programId;
 	// Vertex Objects
-	GLuint vbo, vao;
+	GLuint vbo, vao, ebo;
 	GLint  compiled;
+	std::vector<Vec2f> vertices;
 
 	LabWork2::~LabWork2()
 	{
@@ -28,11 +29,18 @@ namespace M3D_ISICG
 		glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );
 
 		// Vector de vecteurs
-		std::vector<Vec2f> vertices;
 		vertices.push_back( Vec2f( -0.5, 0.5 ) );
 		vertices.push_back( Vec2f( 0.5, 0.5 ) );
 		vertices.push_back( Vec2f( 0.5, -0.5 ) );
+		vertices.push_back( Vec2f( -0.5, -0.5 ) );
 
+
+		glCreateBuffers( 1, &ebo );
+		glNamedBufferData( GL_ARRAY_BUFFER, sizeof( Vec2f ) * 4, 0, GL_STATIC_DRAW );
+		//glVertexArrayElementBuffer(vaobj, buffer object)
+		glVertexArrayElementBuffer( ebo, vao );
+		//vbo, vao et ebo
+		//glCreateBuffers(number of buffer objects to create, array to store buffer)
 		glCreateBuffers( 1, &vbo );
 		// glCreateVertexArrays(number of vertex arrays objects to create, array)
 		glCreateVertexArrays( 1, &vao );
@@ -110,7 +118,11 @@ namespace M3D_ISICG
 		glClear( GL_COLOR_BUFFER_BIT );
 		glUseProgram( programId );
 		glBindVertexArray( vao );
-		glDrawArrays( GL_TRIANGLES, 0, 3 );
+		//parameters : GL_POINTS, GL_LINE_STRIP, GL_LINE_LOOP, GL_LINES, GL_LINE_STRIP_ADJACENCY, GL_LINES_ADJACENCY, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_TRIANGLES, GL_TRIANGLE_STRIP_ADJACENCY, GL_TRIANGLES_ADJACENCY 
+		//glDrawElements(mode, count, type, *offset_start_index)
+		glDrawElements( GL_LINES, 4, GL_UNSIGNED_INT, 0);
+		// glDrawArrays(mode, start index, count)
+		//glDrawArrays( GL_TRIANGLES, 0, 3 );
 		glBindVertexArray( 0 );
 	}
 
