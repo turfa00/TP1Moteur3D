@@ -13,6 +13,7 @@ namespace M3D_ISICG
 	  public:
 		LabWork1() : BaseLabWork() {}
 		~LabWork1();
+		
 
 		bool init() override;
 		void animate( const float p_deltaTime ) override;

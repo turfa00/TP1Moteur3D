@@ -6,7 +6,7 @@
 namespace M3D_ISICG
 {
 	const std::string LabWork2::_shaderFolder = "src/lab_works/lab_work_2/shaders/";
-
+	
 	LabWork2::~LabWork2()
 	{
 		glDisableVertexArrayAttrib( vao, 0 );
@@ -31,7 +31,7 @@ namespace M3D_ISICG
 
 		glCreateBuffers( 1, &ebo );
 		glNamedBufferData( GL_ARRAY_BUFFER, sizeof( Vec2f ) * 4, 0, GL_STATIC_DRAW );
-		//glVertexArrayElementBuffer(vaobj, buffer object)
+		//glVertexArrayElementBuffer( , buffer object)
 		glVertexArrayElementBuffer( ebo, vao );
 		//vbo, vao et ebo
 		//glCreateBuffers(number of buffer objects to create, array to store buffer)
@@ -52,8 +52,8 @@ namespace M3D_ISICG
 		glNamedBufferData( vbo, vertices.size() * sizeof( Vec2f ), vertices.data(), GL_STATIC_DRAW );
 
 		// Fonction de read_file
-		const std::string vertexShaderStr	= readFile( _shaderFolder + "lw1.vert" );
-		const std::string fragmentShaderStr = readFile( _shaderFolder + "lw1.frag" );
+		const std::string vertexShaderStr	= readFile( _shaderFolder + "lw2.vert" );
+		const std::string fragmentShaderStr = readFile( _shaderFolder + "lw2.frag" );
 
 		// Creation de Shaders
 		GLuint vertexShader	  = glCreateShader( GL_VERTEX_SHADER );
@@ -124,7 +124,7 @@ namespace M3D_ISICG
 
 	void LabWork2::displayUI()
 	{
-		ImGui::Begin( "Settings lab work 1" );
+		ImGui::Begin( "Settings lab work 2" );
 		ImGui::Text( "No setting available!" );
 		ImGui::End();
 	}

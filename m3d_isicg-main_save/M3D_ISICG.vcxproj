@@ -62,8 +62,8 @@
   <ItemGroup>
     <None Include="src\lab_works\lab_work_1\shaders\lw1.frag" />
     <None Include="src\lab_works\lab_work_1\shaders\lw1.vert" />
-    <None Include="src\lab_works\lab_work_2\shaders\lw1.frag" />
-    <None Include="src\lab_works\lab_work_2\shaders\lw1.vert" />
+    <None Include="src\lab_works\lab_work_2\shaders\lw2.frag" />
+    <None Include="src\lab_works\lab_work_2\shaders\lw2.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

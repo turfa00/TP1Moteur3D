@@ -171,7 +171,7 @@
     <None Include="src\lab_works\lab_work_1\shaders\lw1.vert">
       <Filter>Source Files\lab_works\lab_work_1\shaders</Filter>
     </None>
-    <None Include="src\lab_works\lab_work_2\shaders\lw1.vert" />
-    <None Include="src\lab_works\lab_work_2\shaders\lw1.frag" />
+    <None Include="src\lab_works\lab_work_2\shaders\lw2.vert" />
+    <None Include="src\lab_works\lab_work_2\shaders\lw2.frag" />
   </ItemGroup>
 </Project>

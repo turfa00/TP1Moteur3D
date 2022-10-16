@@ -6,7 +6,7 @@
 namespace M3D_ISICG
 {
 	const std::string LabWork1::_shaderFolder = "src/lab_works/lab_work_1/shaders/";
-
+	
 	LabWork1::~LabWork1() 
 	{
 		glDisableVertexArrayAttrib(vao, 0);
@@ -18,6 +18,7 @@ namespace M3D_ISICG
 
 	bool LabWork1::init()
 	{
+		
 		std::cout << "Initializing lab work 1..." << std::endl;
 		// Set the color used by glClear to clear the color buffer (in render()).
 		glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );

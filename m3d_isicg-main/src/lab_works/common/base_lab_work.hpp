@@ -11,6 +11,11 @@ namespace M3D_ISICG
 	  public:
 		BaseLabWork()		   = default;
 		virtual ~BaseLabWork() = default;
+		// Identification de program
+		GLuint programId = 0;
+		// Vertex Objects
+		GLuint vbo = 0, vao = 0;
+		GLint  compiled = 0;
 
 		// Initialization.
 		virtual bool init() = 0;

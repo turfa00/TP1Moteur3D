@@ -16,8 +16,10 @@ namespace M3D_ISICG
 		// Identification de program
 		GLuint programId;
 		// Vertex Objects
-		GLuint vbo, vao;
-		GLint  compiled;
+		GLuint			   vbo, vao, ebo;
+		GLint			   compiled;
+		std::vector<Vec2f> vertices;
+		
 
 		bool init() override;
 		void animate( const float p_deltaTime ) override;
