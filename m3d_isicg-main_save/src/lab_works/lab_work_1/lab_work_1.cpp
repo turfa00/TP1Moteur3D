@@ -6,11 +6,6 @@
 namespace M3D_ISICG
 {
 	const std::string LabWork1::_shaderFolder = "src/lab_works/lab_work_1/shaders/";
-	// Identification de program
-	GLuint programId;
-	// Vertex Objects
-	GLuint vbo, vao;
-	GLint compiled;
 
 	LabWork1::~LabWork1() 
 	{

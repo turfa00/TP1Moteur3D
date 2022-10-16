@@ -13,6 +13,11 @@ namespace M3D_ISICG
 	  public:
 		LabWork1() : BaseLabWork() {}
 		~LabWork1();
+		// Identification de program
+		GLuint programId;
+		// Vertex Objects
+		GLuint vbo, vao;
+		GLint  compiled;
 
 		bool init() override;
 		void animate( const float p_deltaTime ) override;
