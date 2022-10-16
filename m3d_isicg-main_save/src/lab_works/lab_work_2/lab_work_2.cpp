@@ -18,7 +18,7 @@ namespace M3D_ISICG
 
 	bool LabWork2::init()
 	{
-		std::cout << "Initializing lab work 1..." << std::endl;
+		std::cout << "Initializing lab work 2..." << std::endl;
 		// Set the color used by glClear to clear the color buffer (in render()).
 		glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );
 
@@ -30,14 +30,16 @@ namespace M3D_ISICG
 
 
 		glCreateBuffers( 1, &ebo );
-		glNamedBufferData( GL_ARRAY_BUFFER, sizeof( Vec2f ) * 4, 0, GL_STATIC_DRAW );
-		//glVertexArrayElementBuffer( , buffer object)
-		glVertexArrayElementBuffer( ebo, vao );
+		
 		//vbo, vao et ebo
 		//glCreateBuffers(number of buffer objects to create, array to store buffer)
 		glCreateBuffers( 1, &vbo );
+
 		// glCreateVertexArrays(number of vertex arrays objects to create, array)
+		//std::cerr << "here" << std::endl;
 		glCreateVertexArrays( 1, &vao );
+
+		glVertexArrayElementBuffer( vao, ebo );
 		// glEnableVertexArrayAttrib(vao object, index)
 		glEnableVertexArrayAttrib( vao, 0 );
 		// glVertexArrayAttribFormat(vao object, GLattribindex, size, type, normalised, offset)
@@ -50,7 +52,7 @@ namespace M3D_ISICG
 		glVertexArrayAttribBinding( vao, 0, 0 );
 
 		glNamedBufferData( vbo, vertices.size() * sizeof( Vec2f ), vertices.data(), GL_STATIC_DRAW );
-
+		glNamedBufferData( ebo, vertices.size() * sizeof( Vec2f ), vertices.data(), GL_STATIC_DRAW );
 		// Fonction de read_file
 		const std::string vertexShaderStr	= readFile( _shaderFolder + "lw2.vert" );
 		const std::string fragmentShaderStr = readFile( _shaderFolder + "lw2.frag" );
@@ -59,7 +61,6 @@ namespace M3D_ISICG
 		GLuint vertexShader	  = glCreateShader( GL_VERTEX_SHADER );
 		GLuint fragmentShader = glCreateShader( GL_FRAGMENT_SHADER );
 
-		//
 		const GLchar * vsrc = vertexShaderStr.c_str();
 		const GLchar * fsrc = fragmentShaderStr.c_str();
 		// Association de shaders
@@ -84,7 +85,6 @@ namespace M3D_ISICG
 
 		// Créer Programme
 		programId = glCreateProgram();
-
 		// Attacher les shaders
 		glAttachShader( programId, vertexShader );
 		glAttachShader( programId, fragmentShader );
@@ -114,7 +114,7 @@ namespace M3D_ISICG
 		glBindVertexArray( vao );
 		//parameters : GL_POINTS, GL_LINE_STRIP, GL_LINE_LOOP, GL_LINES, GL_LINE_STRIP_ADJACENCY, GL_LINES_ADJACENCY, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_TRIANGLES, GL_TRIANGLE_STRIP_ADJACENCY, GL_TRIANGLES_ADJACENCY 
 		//glDrawElements(mode, count, type, *offset_start_index)
-		glDrawElements( GL_LINES, 4, GL_UNSIGNED_INT, 0);
+		glDrawElements( GL_TRIANGLES, 8, GL_UNSIGNED_INT, 0);
 		// glDrawArrays(mode, start index, count)
 		//glDrawArrays( GL_TRIANGLES, 0, 3 );
 		glBindVertexArray( 0 );
