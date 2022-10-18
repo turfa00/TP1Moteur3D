@@ -17,8 +17,7 @@ namespace M3D_ISICG
 		GLuint programId;
 		// Vertex Objects
 		GLuint			   vbo, vboc, vao, ebo;
-		GLint			   compiled;
-		GLint			   linked;
+		GLint  compiled, linked, uTranslationX, _time = 0;
 		std::vector<Vec2f>	vertices;
 		std::vector<Vec3f>	couleurs;
 		std:: vector<GLuint> vertexindices;

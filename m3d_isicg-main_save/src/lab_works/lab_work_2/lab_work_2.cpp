@@ -105,6 +105,7 @@ namespace M3D_ISICG
 		glAttachShader( programId, vertexShader );
 		glAttachShader( programId, fragmentShader );
 		glLinkProgram( programId );
+
 		
 		glGetProgramiv( programId, GL_LINK_STATUS, &linked );
 		if ( !linked )
@@ -114,6 +115,9 @@ namespace M3D_ISICG
 			std::cerr << "Error linking program" << log << std::endl;
 			return false;
 		}
+		//Variable Uniforme
+		uTranslationX = glGetUniformLocation( programId, "uTranslationX" );
+		glProgramUniform3f( programId, uTranslationX, 20, 10, 10 );
 		glDeleteShader( vertexShader );
 		glDeleteShader( fragmentShader );
 
@@ -121,7 +125,12 @@ namespace M3D_ISICG
 		return true;
 	}
 
-	void LabWork2::animate( const float p_deltaTime ) {}
+	void LabWork2::animate( const float p_deltaTime ) 
+	{ 
+		uTranslationX += glm::sin( _time );
+		_time += p_deltaTime;
+		//std::cout << p_deltaTime << std::endl;
+	}
 
 	void LabWork2::render()
 	{
@@ -130,8 +139,6 @@ namespace M3D_ISICG
 		glBindVertexArray( vao );
 		//glDrawElements(mode, count, type, *offset_start_index)
 		glDrawElements( GL_TRIANGLES, vertexindices.size(), GL_UNSIGNED_INT, 0 );
-		// glDrawArrays(mode, start index, count)
-		//glDrawArrays( GL_TRIANGLES, 0, 3 );
 		glBindVertexArray( 0 );
 	}
 
