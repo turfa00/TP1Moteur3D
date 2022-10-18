@@ -18,7 +18,9 @@ namespace M3D_ISICG
 		// Vertex Objects
 		GLuint			   vbo, vao, ebo;
 		GLint			   compiled;
+		GLint			   linked;
 		std::vector<Vec2f> vertices;
+		std:: vector<GLuint> vertexindices, couleurs;
 
 		bool init() override;
 		void animate( const float p_deltaTime ) override;

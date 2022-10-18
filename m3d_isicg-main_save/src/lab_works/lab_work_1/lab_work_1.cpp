@@ -83,7 +83,7 @@ namespace M3D_ISICG
 		glAttachShader( programId, vertexShader );
 		glAttachShader( programId, fragmentShader );
 		glLinkProgram( programId );
-		GLint linked;
+		
 		glGetProgramiv( programId, GL_LINK_STATUS, &linked );
 		if (!linked) {
 			GLchar log[ 1024 ];

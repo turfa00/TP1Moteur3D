@@ -18,6 +18,7 @@ namespace M3D_ISICG
 		// Vertex Objects
 		GLuint			   vbo, vao, ebo;
 		GLint			   compiled;
+		GLint			   linked;
 		std::vector<Vec2f> vertices;
 		
 

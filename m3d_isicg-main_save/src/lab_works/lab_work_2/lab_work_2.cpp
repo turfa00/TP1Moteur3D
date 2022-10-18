@@ -27,12 +27,16 @@ namespace M3D_ISICG
 		vertices.push_back( Vec2f( 0.5, 0.5 ) );
 		vertices.push_back( Vec2f( 0.5, -0.5 ) );
 		vertices.push_back( Vec2f( -0.5, -0.5 ) );
-
+		//Ebo
+		vertexindices.push_back( 0 );
+		vertexindices.push_back( 1 );
+		vertexindices.push_back( 2 );
+		vertexindices.push_back( 2 );
+		vertexindices.push_back( 3 );
+		vertexindices.push_back( 0 );
 
 		glCreateBuffers( 1, &ebo );
 		
-		//vbo, vao et ebo
-		//glCreateBuffers(number of buffer objects to create, array to store buffer)
 		glCreateBuffers( 1, &vbo );
 
 		// glCreateVertexArrays(number of vertex arrays objects to create, array)
@@ -52,7 +56,7 @@ namespace M3D_ISICG
 		glVertexArrayAttribBinding( vao, 0, 0 );
 
 		glNamedBufferData( vbo, vertices.size() * sizeof( Vec2f ), vertices.data(), GL_STATIC_DRAW );
-		glNamedBufferData( ebo, vertices.size() * sizeof( Vec2f ), vertices.data(), GL_STATIC_DRAW );
+		glNamedBufferData( ebo, vertexindices.size() * sizeof( GLuint ), vertexindices.data(), GL_STATIC_DRAW );
 		// Fonction de read_file
 		const std::string vertexShaderStr	= readFile( _shaderFolder + "lw2.vert" );
 		const std::string fragmentShaderStr = readFile( _shaderFolder + "lw2.frag" );
@@ -71,7 +75,6 @@ namespace M3D_ISICG
 		glCompileShader( fragmentShader );
 
 		// Vérifier Compilation
-		// GLint compiled;
 		glGetShaderiv( vertexShader, GL_COMPILE_STATUS, &compiled );
 		if ( !compiled )
 		{
@@ -89,7 +92,7 @@ namespace M3D_ISICG
 		glAttachShader( programId, vertexShader );
 		glAttachShader( programId, fragmentShader );
 		glLinkProgram( programId );
-		GLint linked;
+		
 		glGetProgramiv( programId, GL_LINK_STATUS, &linked );
 		if ( !linked )
 		{
@@ -112,9 +115,8 @@ namespace M3D_ISICG
 		glClear( GL_COLOR_BUFFER_BIT );
 		glUseProgram( programId );
 		glBindVertexArray( vao );
-		//parameters : GL_POINTS, GL_LINE_STRIP, GL_LINE_LOOP, GL_LINES, GL_LINE_STRIP_ADJACENCY, GL_LINES_ADJACENCY, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_TRIANGLES, GL_TRIANGLE_STRIP_ADJACENCY, GL_TRIANGLES_ADJACENCY 
 		//glDrawElements(mode, count, type, *offset_start_index)
-		glDrawElements( GL_TRIANGLES, 8, GL_UNSIGNED_INT, 0);
+		glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		// glDrawArrays(mode, start index, count)
 		//glDrawArrays( GL_TRIANGLES, 0, 3 );
 		glBindVertexArray( 0 );
