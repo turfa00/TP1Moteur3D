@@ -4,7 +4,9 @@
 
 layout (location = INDEX) out vec4 frag_color;
 
+in vec3 sortCouleur;
+
 void main() 
 {
-	frag_color = vec4(255.f, 0.f, 0.f, 1.f);
+	frag_color = vec4(sortCouleur, 1.f);
 }
