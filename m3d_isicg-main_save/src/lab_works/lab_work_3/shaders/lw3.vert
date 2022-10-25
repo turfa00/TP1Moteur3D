@@ -3,6 +3,7 @@
 layout (location = 0) in vec3 aVertexPosition;
 layout (location = 1) in vec3 aVertexCouleur;
 uniform float uTranslationX;
+uniform mat4 uTransformMatrix;
 out vec3 sortCouleur;
 
 void main() 

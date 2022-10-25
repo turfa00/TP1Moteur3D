@@ -23,6 +23,7 @@ namespace M3D_ISICG
 		std::vector<Vec2f>	vertices;
 		std::vector<Vec3f>	couleurs;
 		std:: vector<GLuint> vertexindices;
+		Mat4f				 utrans;
 		struct MESH
 		{
 			std::vector<Vec3f> pos_sommets;
@@ -92,6 +93,9 @@ namespace M3D_ISICG
 			_cube.ind_sommets.push_back(6);
 			_cube.ind_sommets.push_back(7);
 			_cube.ind_sommets.push_back(3);
+
+			//To be worked on
+			_cube.trans = glm::translate( _cube.trans, Vec3f(0.8f, 0.8f, 0.8f));
 		}
 		static const std::string _shaderFolder;
 	};
