@@ -1,5 +1,5 @@
-#ifndef __LAB_WORK_2_HPP__
-#define __LAB_WORK_2_HPP__
+#ifndef __LAB_WORK_3_HPP__
+#define __LAB_WORK_3_HPP__
 
 #include "GL/gl3w.h"
 #include "common/base_lab_work.hpp"
@@ -8,11 +8,11 @@
 
 namespace M3D_ISICG
 {
-	class LabWork2 : public BaseLabWork
+	class LabWork3 : public BaseLabWork
 	{
 	  public:
-		LabWork2() : BaseLabWork() {}
-		~LabWork2();
+		LabWork3() : BaseLabWork() {}
+		~LabWork3();
 		// Identification de program
 		GLuint programId;
 		// Vertex Objects

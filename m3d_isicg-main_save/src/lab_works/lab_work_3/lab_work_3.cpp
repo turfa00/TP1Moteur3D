@@ -1,14 +1,14 @@
 #include "imgui.h"
-#include "lab_work_2.hpp"
+#include "lab_work_3.hpp"
 #include "utils/read_file.hpp"
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 
 namespace M3D_ISICG
 {
-	const std::string LabWork2::_shaderFolder = "src/lab_works/lab_work_2/shaders/";
+	const std::string LabWork3::_shaderFolder = "src/lab_works/lab_work_3/shaders/";
 	
-	LabWork2::~LabWork2()
+	LabWork3::~LabWork3()
 	{
 		glDisableVertexArrayAttrib( vao, 0 );
 		glDisableVertexArrayAttrib( vao, 1 );
@@ -19,9 +19,9 @@ namespace M3D_ISICG
 		glDeleteBuffers( 0, &vbo );
 	}
 
-	bool LabWork2::init()
+	bool LabWork3::init()
 	{
-		std::cout << "Initializing lab work 2..." << std::endl;
+		std::cout << "Initializing lab work 3..." << std::endl;
 		// Set the color used by glClear to clear the color buffer (in render()).
 		glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );
 
@@ -72,8 +72,8 @@ namespace M3D_ISICG
 		glNamedBufferData( vboc, vertices.size() * sizeof( Vec3f ), couleurs.data(), GL_STATIC_DRAW );
 		glNamedBufferData( ebo, vertexindices.size() * sizeof( GLuint ), vertexindices.data(), GL_STATIC_DRAW );
 		// Fonction de read_file
-		const std::string vertexShaderStr	= readFile( _shaderFolder + "lw2.vert" );
-		const std::string fragmentShaderStr = readFile( _shaderFolder + "lw2.frag" );
+		const std::string vertexShaderStr	= readFile( _shaderFolder + "lw3.vert" );
+		const std::string fragmentShaderStr = readFile( _shaderFolder + "lw3.frag" );
 
 		// Creation de Shaders
 		GLuint vertexShader	  = glCreateShader( GL_VERTEX_SHADER );
@@ -128,7 +128,7 @@ namespace M3D_ISICG
 		return true;
 	}
 
-	void LabWork2::animate( const float p_deltaTime ) 
+	void LabWork3::animate( const float p_deltaTime ) 
 	{ 
 		//uTranslationX += glm::sin( _time );
 		glProgramUniform1f( programId, uTranslationX, _time );
@@ -145,7 +145,7 @@ namespace M3D_ISICG
 		}
 	}
 
-	void LabWork2::render()
+	void LabWork3::render()
 	{
 		glClear( GL_COLOR_BUFFER_BIT );
 		glUseProgram( programId );
@@ -156,15 +156,15 @@ namespace M3D_ISICG
 		
 	}
 
-	void LabWork2::handleEvents( const SDL_Event & p_event ) {}
+	void LabWork3::handleEvents( const SDL_Event & p_event ) {}
 
-	void LabWork2::displayUI()
+	void LabWork3::displayUI()
 	{
 		modif_lum = ImGui::SliderFloat( "Luminosite", &lum, 0.f, 1.0f, "" );
 		//std::cout << lum << std::endl;
 		modif_col = ImGui::ColorEdit3( "Background", glm::value_ptr(_bgColor) );
 		//std::cout << glm::value_ptr(_bgColor) << std::endl;
-		ImGui::Begin( "Settings lab work 2" );
+		ImGui::Begin( "Settings lab work 3" );
 		ImGui::Text( "No setting available!" );
 		ImGui::End();
 	}
