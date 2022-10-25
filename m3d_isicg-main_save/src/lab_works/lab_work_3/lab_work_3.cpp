@@ -100,6 +100,7 @@ namespace M3D_ISICG
 
 		//luminosite = glGetUniformLocation( programId, "luminosite" );
 		
+		uTransformMatrix = glGetUniformLocation( programId, "uTransformMatrix" );
 		glDeleteShader( vertexShader );
 		glDeleteShader( fragmentShader );
 
@@ -109,17 +110,19 @@ namespace M3D_ISICG
 
 	void LabWork3::animate( const float p_deltaTime ) 
 	{ 
-		glProgramUniform1f( programId, uTranslationX, glm::sin( _time ) );
-		_time += p_deltaTime;
+		//glProgramUniform1f( programId, uTranslationX, glm::sin( _time ) );
+		//_time += p_deltaTime;
+
+		glProgramUniform3ui(programId, uTransformMatrix, 10, 10, 10);
 		/*if ( modif_lum )
 		{
 			glProgramUniform1f( programId, luminosite, lum );
 			luminosite = lum;
 		}*/ 
-		if ( modif_col )
+		/* if ( modif_col )
 		{
 			glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );
-		}
+		}*/
 	}
 
 	void LabWork3::render()

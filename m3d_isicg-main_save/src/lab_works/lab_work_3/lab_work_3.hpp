@@ -18,18 +18,18 @@ namespace M3D_ISICG
 		GLuint programId;
 		// Vertex Objects
 		GLuint			   vbo, vboc, vao, ebo;
-		GLint  compiled, linked, uTranslationX;
+		GLint  compiled, linked, uTranslationX, uTransformMatrix;
 		GLfloat				 _time = 0.f, luminosite = 1.f, lum = 1.f;
 		std::vector<Vec2f>	vertices;
 		std::vector<Vec3f>	couleurs;
 		std:: vector<GLuint> vertexindices;
-		Mat4f				 utrans;
+		//Mat4f				 uTransformMatrix;
 		struct MESH
 		{
 			std::vector<Vec3f> pos_sommets;
 			std::vector<Vec3f> col_sommets;
 			std::vector<GLuint> ind_sommets;
-			Mat4f				trans;
+			Mat4f				trans = glm::mat4(1.0f);
 			GLuint				vbo, vboc, vao, ebo;
 		}mesh;
 
@@ -95,7 +95,8 @@ namespace M3D_ISICG
 			_cube.ind_sommets.push_back(3);
 
 			//To be worked on
-			_cube.trans = glm::translate( _cube.trans, Vec3f(0.8f, 0.8f, 0.8f));
+			//_cube.trans = glm::scale( _cube.trans, Vec3f( 0.8f, 0.8f, 0.8f ) );
+			//_cube.trans = glm::translate( _cube.trans, Vec3f(0.8f, 0.8f, 0.8f));
 		}
 		static const std::string _shaderFolder;
 	};
