@@ -51,16 +51,47 @@ namespace M3D_ISICG
 		Vec4f _bgColor = Vec4f( 0.8f, 0.8f, 0.8f, 1.f ); // Background color
 		// ================
 		void					 _createCube() { 
-			_cube.pos_sommets.push_back( Vec3f(-1.f, 1.f, 0.f ));
-			_cube.pos_sommets.push_back( Vec3f(1.f, 1.f, 0.f ));
-			_cube.pos_sommets.push_back( Vec3f(1.f, -1.f, 0.f ));
-			_cube.pos_sommets.push_back( Vec3f(-1.f, -1.f, 0.f ));
+			_cube.pos_sommets.push_back( Vec3f(-1.f, 1.f, 1.f ));
+			_cube.pos_sommets.push_back( Vec3f(1.f, 1.f, 1.f ));
+			_cube.pos_sommets.push_back( Vec3f(1.f, -1.f, 1.f ));
+			_cube.pos_sommets.push_back( Vec3f(-1.f, -1.f, 1.f ));
 			_cube.pos_sommets.push_back( Vec3f(-1.f, 1.f, -1.f ));
 			_cube.pos_sommets.push_back( Vec3f(1.f, 1.f, -1.f ));
 			_cube.pos_sommets.push_back( Vec3f(1.f, -1.f, -1.f ));
 			_cube.pos_sommets.push_back( Vec3f(-1.f, -1.f, -1.f ));
 			for ( int i = 0; i < 8; i++ )
 				_cube.col_sommets.push_back( M3D_ISICG::getRandomVec3f() );
+			//Indices
+			_cube.ind_sommets.push_back(0);
+			_cube.ind_sommets.push_back(1);
+			_cube.ind_sommets.push_back(2);
+			_cube.ind_sommets.push_back(2);
+			_cube.ind_sommets.push_back(3);
+			_cube.ind_sommets.push_back(0);
+			_cube.ind_sommets.push_back(1);
+			_cube.ind_sommets.push_back(5);
+			_cube.ind_sommets.push_back(6);
+			_cube.ind_sommets.push_back(6);
+			_cube.ind_sommets.push_back(2);
+			_cube.ind_sommets.push_back(1);
+			_cube.ind_sommets.push_back(0);
+			_cube.ind_sommets.push_back(4);
+			_cube.ind_sommets.push_back(7);
+			_cube.ind_sommets.push_back(7);
+			_cube.ind_sommets.push_back(3);
+			_cube.ind_sommets.push_back(2);
+			_cube.ind_sommets.push_back(0);
+			_cube.ind_sommets.push_back(4);
+			_cube.ind_sommets.push_back(5);
+			_cube.ind_sommets.push_back(5);
+			_cube.ind_sommets.push_back(1);
+			_cube.ind_sommets.push_back(0);
+			_cube.ind_sommets.push_back(3);
+			_cube.ind_sommets.push_back(2);
+			_cube.ind_sommets.push_back(6);
+			_cube.ind_sommets.push_back(6);
+			_cube.ind_sommets.push_back(7);
+			_cube.ind_sommets.push_back(3);
 		}
 		static const std::string _shaderFolder;
 	};

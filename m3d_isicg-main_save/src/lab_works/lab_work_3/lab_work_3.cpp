@@ -10,13 +10,13 @@ namespace M3D_ISICG
 	
 	LabWork3::~LabWork3()
 	{
-		glDisableVertexArrayAttrib( vao, 0 );
-		glDisableVertexArrayAttrib( vao, 1 );
+		glDisableVertexArrayAttrib( _cube.vao, 0 );
+		glDisableVertexArrayAttrib( _cube.vao, 1 );
 
-		glDeleteVertexArrays( 0, &vao );
-		glDeleteVertexArrays( 1, &vao );
+		glDeleteVertexArrays( 0, &_cube.vao );
+		glDeleteVertexArrays( 1, &_cube.vao );
 
-		glDeleteBuffers( 0, &vbo );
+		glDeleteBuffers( 0, &_cube.vbo );
 	}
 	void LabWork3::_init_buffers() {
 		glCreateBuffers( 1, &_cube.vao );
@@ -176,6 +176,7 @@ namespace M3D_ISICG
 		glUseProgram( programId );
 		glBindVertexArray( _cube.vao );
 		//glDrawElements(mode, count, type, *offset_start_index)
+		//glDrawArrays(GL_TRIANGLES, 0, 12*3);
 		glDrawElements( GL_TRIANGLES, _cube.ind_sommets.size(), GL_UNSIGNED_INT, 0 );
 		glBindVertexArray( 0 );
 		
