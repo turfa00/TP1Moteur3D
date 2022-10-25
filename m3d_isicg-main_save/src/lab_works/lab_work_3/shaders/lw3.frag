@@ -1,8 +1,6 @@
 #version 450
 
-#define INDEX 0
-
-layout (location = INDEX) out vec4 frag_color;
+layout (location = 0) out vec4 frag_color;
 
 in vec3 sortCouleur;
 uniform float luminosite = 1.f;

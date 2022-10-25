@@ -32,7 +32,7 @@ namespace M3D_ISICG
 		glVertexArrayAttribFormat( _cube.vao, 0, 2, GL_FLOAT, GL_FALSE, 0 );
 		glVertexArrayAttribFormat( _cube.vao, 1, 3, GL_FLOAT, GL_FALSE, 0 );
 
-		glVertexArrayVertexBuffer( _cube.vao, 0, _cube.vbo, 0, sizeof( Vec2f ) );
+		glVertexArrayVertexBuffer( _cube.vao, 0, _cube.vbo, 0, sizeof( Vec3f ) );
 		glVertexArrayVertexBuffer( _cube.vao, 1, _cube.vboc, 0, sizeof( Vec3f ) );
 		// glVertexArrayAttribBinding(attribindex, bindingindex)
 		glVertexArrayAttribBinding( _cube.vao, 0, 0 );
@@ -155,19 +155,17 @@ namespace M3D_ISICG
 
 	void LabWork3::animate( const float p_deltaTime ) 
 	{ 
-		/*//uTranslationX += glm::sin( _time );
-		glProgramUniform1f( programId, uTranslationX, _time );
-		//_time += p_deltaTime;
-		//std::cout << _time << std::endl;
-		if (modif_lum) {
-			//std::cout << lum << std::endl;
+		glProgramUniform1f( programId, uTranslationX, glm::sin( _time ) );
+		_time += p_deltaTime;
+		/*if ( modif_lum )
+		{
 			glProgramUniform1f( programId, luminosite, lum );
 			luminosite = lum;
-		}
+		}*/ 
 		if ( modif_col )
 		{
 			glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );
-		}*/
+		}
 	}
 
 	void LabWork3::render()
@@ -187,7 +185,6 @@ namespace M3D_ISICG
 	void LabWork3::displayUI()
 	{
 		modif_lum = ImGui::SliderFloat( "Luminosite", &lum, 0.f, 1.0f, "" );
-		//std::cout << lum << std::endl;
 		modif_col = ImGui::ColorEdit3( "Background", glm::value_ptr(_bgColor) );
 		//std::cout << glm::value_ptr(_bgColor) << std::endl;
 		ImGui::Begin( "Settings lab work 3" );

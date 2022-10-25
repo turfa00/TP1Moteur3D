@@ -51,14 +51,14 @@ namespace M3D_ISICG
 		Vec4f _bgColor = Vec4f( 0.8f, 0.8f, 0.8f, 1.f ); // Background color
 		// ================
 		void					 _createCube() { 
-			_cube.pos_sommets.push_back( Vec3f(-1.f, 1.f, 1.f ));
-			_cube.pos_sommets.push_back( Vec3f(1.f, 1.f, 1.f ));
-			_cube.pos_sommets.push_back( Vec3f(1.f, -1.f, 1.f ));
-			_cube.pos_sommets.push_back( Vec3f(-1.f, -1.f, 1.f ));
-			_cube.pos_sommets.push_back( Vec3f(-1.f, 1.f, -1.f ));
-			_cube.pos_sommets.push_back( Vec3f(1.f, 1.f, -1.f ));
-			_cube.pos_sommets.push_back( Vec3f(1.f, -1.f, -1.f ));
-			_cube.pos_sommets.push_back( Vec3f(-1.f, -1.f, -1.f ));
+			_cube.pos_sommets.push_back( Vec3f(-0.5f, 0.5f, 0.5f ));
+			_cube.pos_sommets.push_back( Vec3f(0.5f, 0.5f, 0.5f ));
+			_cube.pos_sommets.push_back( Vec3f(0.5f, -0.5f, 0.5f ));
+			_cube.pos_sommets.push_back( Vec3f(-0.5f, -0.5f, 0.5f ));
+			_cube.pos_sommets.push_back( Vec3f(-0.5f, 0.5f, -0.5f ));
+			_cube.pos_sommets.push_back( Vec3f(0.5f, 0.5f, -0.5f ));
+			_cube.pos_sommets.push_back( Vec3f(0.5f, -0.5f, -0.5f ));
+			_cube.pos_sommets.push_back( Vec3f(-0.5f, -0.5f, -0.5f ));
 			for ( int i = 0; i < 8; i++ )
 				_cube.col_sommets.push_back( M3D_ISICG::getRandomVec3f() );
 			//Indices
