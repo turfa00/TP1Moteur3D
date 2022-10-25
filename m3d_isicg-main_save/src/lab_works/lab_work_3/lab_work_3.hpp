@@ -5,6 +5,7 @@
 #include "common/base_lab_work.hpp"
 #include "define.hpp"
 #include <vector>
+#include "utils/random.hpp"
 
 namespace M3D_ISICG
 {
@@ -22,10 +23,20 @@ namespace M3D_ISICG
 		std::vector<Vec2f>	vertices;
 		std::vector<Vec3f>	couleurs;
 		std:: vector<GLuint> vertexindices;
+		struct MESH
+		{
+			std::vector<Vec3f> pos_sommets;
+			std::vector<Vec3f> col_sommets;
+			std::vector<GLuint> ind_sommets;
+			Mat4f				trans;
+			GLuint				vbo, vboc, vao, ebo;
+		}mesh;
+
+		MESH _cube;
 		bool init() override, modif_lum, modif_col;
 		void animate( const float p_deltaTime ) override;
 		void render() override;
-
+		void _init_buffers();
 		void handleEvents( const SDL_Event & p_event ) override;
 		void displayUI() override;
 
@@ -39,7 +50,18 @@ namespace M3D_ISICG
 		// ================ Settings.
 		Vec4f _bgColor = Vec4f( 0.8f, 0.8f, 0.8f, 1.f ); // Background color
 		// ================
-
+		void					 _createCube() { 
+			_cube.pos_sommets.push_back( Vec3f(-1.f, 1.f, 0.f ));
+			_cube.pos_sommets.push_back( Vec3f(1.f, 1.f, 0.f ));
+			_cube.pos_sommets.push_back( Vec3f(1.f, -1.f, 0.f ));
+			_cube.pos_sommets.push_back( Vec3f(-1.f, -1.f, 0.f ));
+			_cube.pos_sommets.push_back( Vec3f(-1.f, 1.f, -1.f ));
+			_cube.pos_sommets.push_back( Vec3f(1.f, 1.f, -1.f ));
+			_cube.pos_sommets.push_back( Vec3f(1.f, -1.f, -1.f ));
+			_cube.pos_sommets.push_back( Vec3f(-1.f, -1.f, -1.f ));
+			for ( int i = 0; i < 8; i++ )
+				_cube.col_sommets.push_back( M3D_ISICG::getRandomVec3f() );
+		}
 		static const std::string _shaderFolder;
 	};
 } // namespace M3D_ISICG

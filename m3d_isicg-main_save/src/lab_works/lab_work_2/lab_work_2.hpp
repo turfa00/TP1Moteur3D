@@ -18,7 +18,8 @@ namespace M3D_ISICG
 		// Vertex Objects
 		GLuint			   vbo, vboc, vao, ebo;
 		GLint  compiled, linked, uTranslationX;
-		GLfloat				 _time = 0.f, luminosite = 1.f, lum = 1.f;
+		double				 _time = 0;
+		GLfloat				 luminosite = 1.f, lum = 1.f;
 		std::vector<Vec2f>	vertices;
 		std::vector<Vec3f>	couleurs;
 		std:: vector<GLuint> vertexindices;

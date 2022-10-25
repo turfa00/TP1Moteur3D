@@ -18,14 +18,39 @@ namespace M3D_ISICG
 
 		glDeleteBuffers( 0, &vbo );
 	}
+	void LabWork3::_init_buffers() {
+		glCreateBuffers( 1, &_cube.vao );
+		glCreateBuffers( 1, &_cube.vbo );
+		glCreateBuffers( 1, &_cube.vboc );
+		glCreateVertexArrays( 1, &_cube.ebo );
 
+		glVertexArrayElementBuffer( _cube.vao, _cube.ebo );
+		// glEnableVertexArrayAttrib(vao object, index)
+		glEnableVertexArrayAttrib( _cube.vao, 0 );
+		glEnableVertexArrayAttrib( _cube.vao, 1 );
+
+		glVertexArrayAttribFormat( _cube.vao, 0, 2, GL_FLOAT, GL_FALSE, 0 );
+		glVertexArrayAttribFormat( _cube.vao, 1, 3, GL_FLOAT, GL_FALSE, 0 );
+
+		glVertexArrayVertexBuffer( _cube.vao, 0, _cube.vbo, 0, sizeof( Vec2f ) );
+		glVertexArrayVertexBuffer( _cube.vao, 1, _cube.vboc, 0, sizeof( Vec3f ) );
+		// glVertexArrayAttribBinding(attribindex, bindingindex)
+		glVertexArrayAttribBinding( _cube.vao, 0, 0 );
+		glVertexArrayAttribBinding( _cube.vao, 1, 1 );
+
+		glNamedBufferData(_cube.vbo, _cube.pos_sommets.size() * sizeof( Vec3f ), _cube.pos_sommets.data(), GL_STATIC_DRAW );
+		glNamedBufferData( _cube.vboc, _cube.col_sommets.size() * sizeof( Vec3f ), _cube.col_sommets.data(), GL_STATIC_DRAW );
+		glNamedBufferData(_cube.ebo, _cube.ind_sommets.size() * sizeof( GLuint ), _cube.ind_sommets.data(), GL_STATIC_DRAW );
+	}
 	bool LabWork3::init()
 	{
 		std::cout << "Initializing lab work 3..." << std::endl;
 		// Set the color used by glClear to clear the color buffer (in render()).
 		glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );
 
-		// Vector de vecteurs
+		LabWork3::_createCube();
+		_init_buffers();
+		/*// Vector de vecteurs
 		vertices.push_back( Vec2f( -0.5, 0.5 ) );
 		vertices.push_back( Vec2f( 0.5, 0.5 ) );
 		vertices.push_back( Vec2f( 0.5, -0.5 ) );
@@ -70,7 +95,7 @@ namespace M3D_ISICG
 
 		glNamedBufferData( vbo, vertices.size() * sizeof( Vec2f ), vertices.data(), GL_STATIC_DRAW );
 		glNamedBufferData( vboc, vertices.size() * sizeof( Vec3f ), couleurs.data(), GL_STATIC_DRAW );
-		glNamedBufferData( ebo, vertexindices.size() * sizeof( GLuint ), vertexindices.data(), GL_STATIC_DRAW );
+		glNamedBufferData( ebo, vertexindices.size() * sizeof( GLuint ), vertexindices.data(), GL_STATIC_DRAW );*/
 		// Fonction de read_file
 		const std::string vertexShaderStr	= readFile( _shaderFolder + "lw3.vert" );
 		const std::string fragmentShaderStr = readFile( _shaderFolder + "lw3.frag" );
@@ -117,9 +142,9 @@ namespace M3D_ISICG
 			return false;
 		}
 		//Variables Uniforme
-		uTranslationX = glGetUniformLocation( programId, "uTranslationX" );
+		//uTranslationX = glGetUniformLocation( programId, "uTranslationX" );
 
-		luminosite = glGetUniformLocation( programId, "luminosite" );
+		//luminosite = glGetUniformLocation( programId, "luminosite" );
 		
 		glDeleteShader( vertexShader );
 		glDeleteShader( fragmentShader );
@@ -130,7 +155,7 @@ namespace M3D_ISICG
 
 	void LabWork3::animate( const float p_deltaTime ) 
 	{ 
-		//uTranslationX += glm::sin( _time );
+		/*//uTranslationX += glm::sin( _time );
 		glProgramUniform1f( programId, uTranslationX, _time );
 		//_time += p_deltaTime;
 		//std::cout << _time << std::endl;
@@ -142,16 +167,16 @@ namespace M3D_ISICG
 		if ( modif_col )
 		{
 			glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );
-		}
+		}*/
 	}
 
 	void LabWork3::render()
 	{
 		glClear( GL_COLOR_BUFFER_BIT );
 		glUseProgram( programId );
-		glBindVertexArray( vao );
+		glBindVertexArray( _cube.vao );
 		//glDrawElements(mode, count, type, *offset_start_index)
-		glDrawElements( GL_TRIANGLES, vertexindices.size(), GL_UNSIGNED_INT, 0 );
+		glDrawElements( GL_TRIANGLES, _cube.ind_sommets.size(), GL_UNSIGNED_INT, 0 );
 		glBindVertexArray( 0 );
 		
 	}

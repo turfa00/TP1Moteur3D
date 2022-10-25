@@ -131,8 +131,8 @@ namespace M3D_ISICG
 	void LabWork2::animate( const float p_deltaTime ) 
 	{ 
 		//uTranslationX += glm::sin( _time );
-		glProgramUniform1f( programId, uTranslationX, _time );
-		//_time += p_deltaTime;
+		glProgramUniform1f( programId, uTranslationX, glm::sin(_time) );
+		_time += p_deltaTime;
 		//std::cout << _time << std::endl;
 		if (modif_lum) {
 			//std::cout << lum << std::endl;
