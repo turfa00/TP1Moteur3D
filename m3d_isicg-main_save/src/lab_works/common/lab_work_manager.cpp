@@ -3,6 +3,7 @@
 #include "lab_work_1/lab_work_1.hpp"
 #include "lab_work_2/lab_work_2.hpp"
 #include "lab_work_3/lab_work_3.hpp"
+#include <iostream>
 
 namespace M3D_ISICG
 {

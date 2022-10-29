@@ -72,10 +72,11 @@ namespace M3D_ISICG
 
 	void Camera::_computeViewMatrix()
 	{ 
+		_viewMatrix = glm::lookAt( _position, _invDirection, _up );
 	}
 
-	void Camera::_computeProjectionMatrix()
-	{
+	void Camera::_computeProjectionMatrix() { 
+		_projectionMatrix = glm::perspective(glm::radians(0.f), 800.f, 0.1f, 100.f);
 	}
 
 	void Camera::_updateVectors()

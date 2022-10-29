@@ -9,6 +9,7 @@
 #include "../lib/glm/glm/glm.hpp"
 #include "../lib/glm/glm/gtc/matrix_transform.hpp"
 #include "../lib/glm/glm/mat4x4.hpp"
+#include "../common/camera.hpp"
 
 namespace M3D_ISICG
 {
@@ -45,6 +46,9 @@ namespace M3D_ISICG
 		void _init_buffers();
 		void handleEvents( const SDL_Event & p_event ) override;
 		void displayUI() override;
+
+		void _updateViewMatrix(Camera camera );
+		void _initCamera();
 
 	  private:
 		// ================ Scene data.
@@ -116,7 +120,7 @@ namespace M3D_ISICG
 			_cube.ind_sommets.push_back(7);
 			_cube.ind_sommets.push_back(4);
 
-			_cube.uTransformationMatrix = glm::scale( _cube.uTransformationMatrix, glm::vec3( 0.8f ) );
+			_cube.uTransformationMatrix = glm::scale( _cube.uTransformationMatrix, glm::vec3( 0.6f ) );
 			//_cube.uTransformationMatrix = glm::rotate( _cube.uTransformationMatrix, glm::radians( 90.0f ), glm::vec3( 0, 1, 1 ) );
 			//_cube.trans = glm::translate( _cube.trans, Vec3f(0.8f, 0.8f, 0.8f));
 		}

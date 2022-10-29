@@ -7,7 +7,6 @@
 namespace M3D_ISICG
 {
 	const std::string LabWork3::_shaderFolder = "src/lab_works/lab_work_3/shaders/";
-	GLuint			  t;
 	LabWork3::~LabWork3()
 	{
 		glDisableVertexArrayAttrib( _cube.vao, 0 );
@@ -101,8 +100,6 @@ namespace M3D_ISICG
 		//luminosite = glGetUniformLocation( programId, "luminosite" );
 		
 		_cube.utrans = glGetUniformLocation( programId, "uTransformationMatrix" );
-		//glProgramUniform1f( programId, t, 0.8f );
-		//uTransformMatrix = glGetUniformLocation( programId, "uTransformMatrix" );
 		glDeleteShader( vertexShader );
 		glDeleteShader( fragmentShader );
 
@@ -111,6 +108,7 @@ namespace M3D_ISICG
 	}
 	void LabWork3::animate( const float p_deltaTime ) 
 	{ 
+		_initCamera();
 		float f = p_deltaTime + 2.f;
 		_cube.uTransformationMatrix = glm::rotate( _cube.uTransformationMatrix, glm::radians( f ), glm::vec3( 0, 1, 1 ) );
 		//glProgramUniform1f( programId, uTranslationX, glm::sin( _time ) );
@@ -148,6 +146,18 @@ namespace M3D_ISICG
 		ImGui::Begin( "Settings lab work 3" );
 		ImGui::Text( "No setting available!" );
 		ImGui::End();
+	}
+
+	void LabWork3::_updateViewMatrix(Camera camera) { 
+		GLuint t;
+		t = glGetUniformLocation( programId, "uviewMatrix" );
+		glProgramUniformMatrix4fv(programId, t, 1, GL_FALSE, glm::value_ptr( camera.getViewMatrix() ) );
+	}
+
+	void LabWork3::_initCamera() { 
+		Camera camera;
+		camera.setPosition( Vec3f(0.f, 1.f, 3.f) );
+		camera.setScreenSize(1280, 720);
 	}
 
 } // namespace M3D_ISICG
