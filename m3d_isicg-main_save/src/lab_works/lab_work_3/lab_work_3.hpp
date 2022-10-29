@@ -7,6 +7,7 @@
 #include <vector>
 #include "utils/random.hpp"
 #include "../lib/glm/glm/glm.hpp"
+#include "../lib/glm/glm/gtc/matrix_transform.hpp"
 
 namespace M3D_ISICG
 {
