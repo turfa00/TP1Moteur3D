@@ -7,7 +7,7 @@
 namespace M3D_ISICG
 {
 	const std::string LabWork3::_shaderFolder = "src/lab_works/lab_work_3/shaders/";
-	
+	GLuint			  t;
 	LabWork3::~LabWork3()
 	{
 		glDisableVertexArrayAttrib( _cube.vao, 0 );
@@ -16,20 +16,20 @@ namespace M3D_ISICG
 		glDeleteVertexArrays( 0, &_cube.vao );
 		glDeleteVertexArrays( 1, &_cube.vao );
 
+		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		glDeleteBuffers( 0, &_cube.vbo );
 	}
 	void LabWork3::_init_buffers() {
-		glCreateBuffers( 1, &_cube.vao );
+		glCreateVertexArrays( 1, &_cube.vao );
 		glCreateBuffers( 1, &_cube.vbo );
 		glCreateBuffers( 1, &_cube.vboc );
-		glCreateVertexArrays( 1, &_cube.ebo );
+		glCreateBuffers( 1, &_cube.ebo );
 
 		glVertexArrayElementBuffer( _cube.vao, _cube.ebo );
-		// glEnableVertexArrayAttrib(vao object, index)
 		glEnableVertexArrayAttrib( _cube.vao, 0 );
 		glEnableVertexArrayAttrib( _cube.vao, 1 );
 
-		glVertexArrayAttribFormat( _cube.vao, 0, 2, GL_FLOAT, GL_FALSE, 0 );
+		glVertexArrayAttribFormat( _cube.vao, 0, 3, GL_FLOAT, GL_FALSE, 0 );
 		glVertexArrayAttribFormat( _cube.vao, 1, 3, GL_FLOAT, GL_FALSE, 0 );
 
 		glVertexArrayVertexBuffer( _cube.vao, 0, _cube.vbo, 0, sizeof( Vec3f ) );
@@ -50,6 +50,8 @@ namespace M3D_ISICG
 
 		LabWork3::_createCube();
 		_init_buffers();
+		glEnable( GL_DEPTH_TEST );
+		glDepthFunc( GL_ALWAYS );
 		// Fonction de read_file
 		const std::string vertexShaderStr	= readFile( _shaderFolder + "lw3.vert" );
 		const std::string fragmentShaderStr = readFile( _shaderFolder + "lw3.frag" );
@@ -60,14 +62,13 @@ namespace M3D_ISICG
 
 		const GLchar * vsrc = vertexShaderStr.c_str();
 		const GLchar * fsrc = fragmentShaderStr.c_str();
-		// Association de shaders
+
 		glShaderSource( vertexShader, 1, &vsrc, NULL );
 		glCompileShader( vertexShader );
 
 		glShaderSource( fragmentShader, 1, &fsrc, NULL );
 		glCompileShader( fragmentShader );
-
-		// Vérifier Compilation
+		
 		glGetShaderiv( vertexShader, GL_COMPILE_STATUS, &compiled );
 		if ( !compiled )
 		{
@@ -78,10 +79,9 @@ namespace M3D_ISICG
 			std::cerr << "Error compiling vertex shader:" << log << std::endl;
 			return false;
 		}
-
+		
 		// Créer Programme
 		programId = glCreateProgram();
-		// Attacher les shaders
 		glAttachShader( programId, vertexShader );
 		glAttachShader( programId, fragmentShader );
 		glLinkProgram( programId );
@@ -95,43 +95,45 @@ namespace M3D_ISICG
 			std::cerr << "Error linking program" << log << std::endl;
 			return false;
 		}
+		
 		//Variables Uniforme
 		//uTranslationX = glGetUniformLocation( programId, "uTranslationX" );
-
 		//luminosite = glGetUniformLocation( programId, "luminosite" );
 		
-		uTransformMatrix = glGetUniformLocation( programId, "uTransformMatrix" );
+		_cube.utrans = glGetUniformLocation( programId, "uTransformationMatrix" );
+		//glProgramUniform1f( programId, t, 0.8f );
+		//uTransformMatrix = glGetUniformLocation( programId, "uTransformMatrix" );
 		glDeleteShader( vertexShader );
 		glDeleteShader( fragmentShader );
 
 		std::cout << "Done!" << std::endl;
 		return true;
 	}
-
 	void LabWork3::animate( const float p_deltaTime ) 
 	{ 
+		float f = p_deltaTime + 2.f;
+		_cube.uTransformationMatrix = glm::rotate( _cube.uTransformationMatrix, glm::radians( f ), glm::vec3( 0, 1, 1 ) );
 		//glProgramUniform1f( programId, uTranslationX, glm::sin( _time ) );
 		//_time += p_deltaTime;
-
-		glProgramUniform3ui(programId, uTransformMatrix, 10, 10, 10);
-		/*if ( modif_lum )
+		//_cube.uTransformationMatrix
+		glProgramUniformMatrix4fv(programId, _cube.utrans, 1, GL_FALSE, glm::value_ptr(_cube.uTransformationMatrix));
+		if ( modif_lum )
 		{
 			glProgramUniform1f( programId, luminosite, lum );
 			luminosite = lum;
-		}*/ 
-		/* if ( modif_col )
+		}
+		if ( modif_col )
 		{
 			glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );
-		}*/
+		}
+		
 	}
 
 	void LabWork3::render()
 	{
-		glClear( GL_COLOR_BUFFER_BIT );
+		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		glUseProgram( programId );
 		glBindVertexArray( _cube.vao );
-		//glDrawElements(mode, count, type, *offset_start_index)
-		//glDrawArrays(GL_TRIANGLES, 0, 12*3);
 		glDrawElements( GL_TRIANGLES, _cube.ind_sommets.size(), GL_UNSIGNED_INT, 0 );
 		glBindVertexArray( 0 );
 		
@@ -143,7 +145,6 @@ namespace M3D_ISICG
 	{
 		modif_lum = ImGui::SliderFloat( "Luminosite", &lum, 0.f, 1.0f, "" );
 		modif_col = ImGui::ColorEdit3( "Background", glm::value_ptr(_bgColor) );
-		//std::cout << glm::value_ptr(_bgColor) << std::endl;
 		ImGui::Begin( "Settings lab work 3" );
 		ImGui::Text( "No setting available!" );
 		ImGui::End();

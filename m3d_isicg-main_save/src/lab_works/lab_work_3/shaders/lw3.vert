@@ -2,12 +2,12 @@
 
 layout (location = 0) in vec3 aVertexPosition;
 layout (location = 1) in vec3 aVertexCouleur;
-uniform float uTranslationX;
-uniform mat4 uTransformMatrix;
+//uniform float uTranslationX;
+uniform mat4 uTransformationMatrix;
 out vec3 sortCouleur;
 
 void main() 
 {
-	gl_Position =  vec4 (aVertexPosition.x,aVertexPosition.y, aVertexPosition.z, 1.f);
+	gl_Position =  uTransformationMatrix * vec4 (aVertexPosition.x,aVertexPosition.y, aVertexPosition.z, 1.f);
 	sortCouleur = aVertexCouleur;
 }
