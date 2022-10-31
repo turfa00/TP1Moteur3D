@@ -28,6 +28,9 @@ namespace M3D_ISICG
 		std::vector<Vec3f>	vertices;
 		std::vector<Vec3f>	couleurs;
 		std:: vector<GLuint> vertexindices;
+
+		Camera				camera;
+		GLint				 ViewM, ProjM;
 		//glm::mat4			 uTransformMatrix = glm::mat4(1.f);
 		struct MESH
 		{
@@ -47,8 +50,9 @@ namespace M3D_ISICG
 		void handleEvents( const SDL_Event & p_event ) override;
 		void displayUI() override;
 
-		void _updateViewMatrix(Camera camera );
-		void _initCamera();
+		void _updateViewMatrix();
+		void   _updateProjectionMatrix();
+		Camera _initCamera();
 
 	  private:
 		// ================ Scene data.

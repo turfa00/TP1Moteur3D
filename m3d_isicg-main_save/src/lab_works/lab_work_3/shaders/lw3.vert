@@ -8,6 +8,6 @@ out vec3 sortCouleur;
 
 void main() 
 {
-	gl_Position =  uTransformationMatrix * vec4 (aVertexPosition.x,aVertexPosition.y, aVertexPosition.z, 1.f);
+	gl_Position =   uViewMatrix * uTransformationMatrix * vec4 (aVertexPosition.x, aVertexPosition.y, aVertexPosition.z, 1.f);
 	sortCouleur = aVertexCouleur;
 }

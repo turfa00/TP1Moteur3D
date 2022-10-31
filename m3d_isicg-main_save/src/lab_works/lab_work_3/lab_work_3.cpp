@@ -49,8 +49,8 @@ namespace M3D_ISICG
 
 		LabWork3::_createCube();
 		_init_buffers();
-		glEnable( GL_DEPTH_TEST );
-		glDepthFunc( GL_ALWAYS );
+		//glEnable( GL_DEPTH_TEST );
+		//glDepthFunc( GL_LESS );
 		// Fonction de read_file
 		const std::string vertexShaderStr	= readFile( _shaderFolder + "lw3.vert" );
 		const std::string fragmentShaderStr = readFile( _shaderFolder + "lw3.frag" );
@@ -100,6 +100,9 @@ namespace M3D_ISICG
 		//luminosite = glGetUniformLocation( programId, "luminosite" );
 		
 		_cube.utrans = glGetUniformLocation( programId, "uTransformationMatrix" );
+		
+		//ViewM = glGetUniformLocation( programId, "uViewMatrix" );
+		camera = _initCamera();
 		glDeleteShader( vertexShader );
 		glDeleteShader( fragmentShader );
 
@@ -108,12 +111,13 @@ namespace M3D_ISICG
 	}
 	void LabWork3::animate( const float p_deltaTime ) 
 	{ 
-		_initCamera();
+		
 		float f = p_deltaTime + 2.f;
 		_cube.uTransformationMatrix = glm::rotate( _cube.uTransformationMatrix, glm::radians( f ), glm::vec3( 0, 1, 1 ) );
+		_updateViewMatrix();
+		_updateProjectionMatrix();
 		//glProgramUniform1f( programId, uTranslationX, glm::sin( _time ) );
 		//_time += p_deltaTime;
-		//_cube.uTransformationMatrix
 		glProgramUniformMatrix4fv(programId, _cube.utrans, 1, GL_FALSE, glm::value_ptr(_cube.uTransformationMatrix));
 		if ( modif_lum )
 		{
@@ -134,7 +138,8 @@ namespace M3D_ISICG
 		glBindVertexArray( _cube.vao );
 		glDrawElements( GL_TRIANGLES, _cube.ind_sommets.size(), GL_UNSIGNED_INT, 0 );
 		glBindVertexArray( 0 );
-		
+		glEnable( GL_DEPTH_TEST );
+		glDepthFunc( GL_LESS );
 	}
 
 	void LabWork3::handleEvents( const SDL_Event & p_event ) {}
@@ -148,16 +153,22 @@ namespace M3D_ISICG
 		ImGui::End();
 	}
 
-	void LabWork3::_updateViewMatrix(Camera camera) { 
-		GLuint t;
-		t = glGetUniformLocation( programId, "uviewMatrix" );
-		glProgramUniformMatrix4fv(programId, t, 1, GL_FALSE, glm::value_ptr( camera.getViewMatrix() ) );
+	void LabWork3::_updateViewMatrix() { 
+		ViewM = glGetUniformLocation( programId, "uViewMatrix" );
+		glProgramUniformMatrix4fv(programId, ViewM, 1, GL_FALSE, glm::value_ptr( camera.getViewMatrix() ) );
 	}
 
-	void LabWork3::_initCamera() { 
+	void LabWork3::_updateProjectionMatrix() { 
+		ProjM = glGetUniformLocation( programId, "uProjectionMatrix" );
+		glProgramUniformMatrix4fv( programId, ProjM, 1, GL_FALSE, glm::value_ptr( camera.getProjectionMatrix() ) );
+
+	}
+	
+	Camera LabWork3::_initCamera() { 
 		Camera camera;
-		camera.setPosition( Vec3f(0.f, 1.f, 3.f) );
+		camera.setPosition( Vec3f(0.f, 0.f, 3.f) );
 		camera.setScreenSize(1280, 720);
+		return camera;
 	}
 
 } // namespace M3D_ISICG
