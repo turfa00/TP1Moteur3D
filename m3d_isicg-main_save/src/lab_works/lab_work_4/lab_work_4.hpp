@@ -9,7 +9,10 @@
 #include "../lib/glm/glm/glm.hpp"
 #include "../lib/glm/glm/gtc/matrix_transform.hpp"
 #include "../lib/glm/glm/mat4x4.hpp"
-#include "../common/camera.hpp"
+#include "../common/camera.hpp"7
+#include "../common/models/triangle_mesh_model.hpp"
+#include "../common/models/base_model.hpp"
+#include "../common/models/triangle_mesh.hpp"
 
 namespace M3D_ISICG
 {
@@ -31,6 +34,9 @@ namespace M3D_ISICG
 		GLint				 ViewM, ProjM;
 		float				_cameraSpeed	   = 0.1f;
 		float				_cameraSensitivity = 0.1f;
+
+		TriangleMeshModel triangleMeshModel;
+		TriangleMesh	  triangleMesh;
 
 		struct MESH
 		{
