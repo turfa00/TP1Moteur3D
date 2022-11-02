@@ -17,6 +17,7 @@ namespace M3D_ISICG
 
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		glDeleteBuffers( 0, &_cube.vbo );
+		//glDeleteBuffers( 0, &_cube.ebo );
 	}
 	void LabWork3::_init_buffers() {
 		glCreateVertexArrays( 1, &_cube.vao );
