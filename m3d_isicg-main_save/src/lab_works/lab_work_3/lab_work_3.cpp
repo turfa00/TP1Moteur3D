@@ -108,10 +108,10 @@ namespace M3D_ISICG
 		
 		float f = p_deltaTime + 2.f;
 		_cube.uTransformationMatrix = glm::rotate( _cube.uTransformationMatrix, glm::radians( f ), glm::vec3( 0, 1, 1 ) );
+		//uMVPMatrix = glm::rotate( uMVPMatrix, glm::radians( f ), glm::vec3( 0, 1, 1 ) );
 		_updateViewMatrix();
 		_updateProjectionMatrix();
-		//glProgramUniform1f( programId, uTranslationX, glm::sin( _time ) );
-		//_time += p_deltaTime;
+		//glProgramUniform1f( programId, uTranslationX, glm::sin( _time ) );	
 		//uMVP	   = glGetUniformLocation( programId, "uMVPMatrix" );
 		//uMVPMatrix = uMVPMatrix * _cube.uTransformationMatrix;
 		//glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix ) );
@@ -135,7 +135,6 @@ namespace M3D_ISICG
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		glUseProgram( programId );
 		glBindVertexArray( _cube.vao );
-		//glBindVertexArray( _cube2.vao );
 		glDrawElements( GL_TRIANGLES, _cube.ind_sommets.size(), GL_UNSIGNED_INT, 0 );
 		glBindVertexArray( 0 );
 		glEnable( GL_DEPTH_TEST );
@@ -156,7 +155,7 @@ namespace M3D_ISICG
 
 	void LabWork3::_updateViewMatrix() { 
 		ViewM = glGetUniformLocation( programId, "uViewMatrix" );
-		 glProgramUniformMatrix4fv(programId, ViewM, 1, GL_FALSE, glm::value_ptr( _camera.getViewMatrix() ) );
+		glProgramUniformMatrix4fv(programId, ViewM, 1, GL_FALSE, glm::value_ptr( _camera.getViewMatrix() ) );
 		//uMVP = glGetUniformLocation( programId, "uMVPMatrix" );
 		//uMVPMatrix = uMVPMatrix * _camera.getViewMatrix(); 
 		//glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr(uMVPMatrix) );
