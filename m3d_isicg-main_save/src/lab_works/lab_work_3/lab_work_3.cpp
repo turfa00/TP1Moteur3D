@@ -135,7 +135,7 @@ namespace M3D_ISICG
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		glUseProgram( programId );
 		glBindVertexArray( _cube.vao );
-		glBindVertexArray( _cube2.vao );
+		//glBindVertexArray( _cube2.vao );
 		glDrawElements( GL_TRIANGLES, _cube.ind_sommets.size(), GL_UNSIGNED_INT, 0 );
 		glBindVertexArray( 0 );
 		glEnable( GL_DEPTH_TEST );
