@@ -18,6 +18,7 @@ namespace M3D_ISICG
 		void setPosition( const Vec3f & p_position );
 		void setLookAt( const Vec3f & p_lookAt );
 		void setFovy( const float p_fovy );
+		const float getFovy();
 
 		void setScreenSize( const int p_width, const int p_height );
 

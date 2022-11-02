@@ -69,6 +69,9 @@ namespace M3D_ISICG
 		_fovy = p_fovy;
 		_computeProjectionMatrix();
 	}
+	const float Camera::getFovy() { 
+		return _fovy;
+	}
 
 	void Camera::_computeViewMatrix()
 	{ 

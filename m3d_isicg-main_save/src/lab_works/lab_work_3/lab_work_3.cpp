@@ -33,7 +33,7 @@ namespace M3D_ISICG
 
 		glVertexArrayVertexBuffer( _cube.vao, 0, _cube.vbo, 0, sizeof( Vec3f ) );
 		glVertexArrayVertexBuffer( _cube.vao, 1, _cube.vboc, 0, sizeof( Vec3f ) );
-		// glVertexArrayAttribBinding(attribindex, bindingindex)
+		
 		glVertexArrayAttribBinding( _cube.vao, 0, 0 );
 		glVertexArrayAttribBinding( _cube.vao, 1, 1 );
 
@@ -44,18 +44,14 @@ namespace M3D_ISICG
 	bool LabWork3::init()
 	{
 		std::cout << "Initializing lab work 3..." << std::endl;
-		// Set the color used by glClear to clear the color buffer (in render()).
+		
 		glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );
-
 		LabWork3::_createCube();
-		_init_buffers();
-		//glEnable( GL_DEPTH_TEST );
-		//glDepthFunc( GL_LESS );
-		// Fonction de read_file
+		_init_buffers();		
+
 		const std::string vertexShaderStr	= readFile( _shaderFolder + "lw3.vert" );
 		const std::string fragmentShaderStr = readFile( _shaderFolder + "lw3.frag" );
 
-		// Creation de Shaders
 		GLuint vertexShader	  = glCreateShader( GL_VERTEX_SHADER );
 		GLuint fragmentShader = glCreateShader( GL_FRAGMENT_SHADER );
 
@@ -79,7 +75,7 @@ namespace M3D_ISICG
 			return false;
 		}
 		
-		// Créer Programme
+		
 		programId = glCreateProgram();
 		glAttachShader( programId, vertexShader );
 		glAttachShader( programId, fragmentShader );
@@ -95,14 +91,12 @@ namespace M3D_ISICG
 			return false;
 		}
 		
-		//Variables Uniforme
 		//uTranslationX = glGetUniformLocation( programId, "uTranslationX" );
-		//luminosite = glGetUniformLocation( programId, "luminosite" );
+		luminosite = glGetUniformLocation( programId, "luminosite" );
 		
 		_cube.utrans = glGetUniformLocation( programId, "uTransformationMatrix" );
-		
-		//ViewM = glGetUniformLocation( programId, "uViewMatrix" );
-		camera = _initCamera();
+		//uMVP		 = glGetUniformLocation( programId, "uMVPMatrix" );
+		_camera = _initCamera();
 		glDeleteShader( vertexShader );
 		glDeleteShader( fragmentShader );
 
@@ -118,6 +112,9 @@ namespace M3D_ISICG
 		_updateProjectionMatrix();
 		//glProgramUniform1f( programId, uTranslationX, glm::sin( _time ) );
 		//_time += p_deltaTime;
+		//uMVP	   = glGetUniformLocation( programId, "uMVPMatrix" );
+		//uMVPMatrix = uMVPMatrix * _cube.uTransformationMatrix;
+		//glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix ) );
 		glProgramUniformMatrix4fv(programId, _cube.utrans, 1, GL_FALSE, glm::value_ptr(_cube.uTransformationMatrix));
 		if ( modif_lum )
 		{
@@ -128,7 +125,9 @@ namespace M3D_ISICG
 		{
 			glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );
 		}
-		
+		if (modif_fov) {
+			_camera.setFovy( fov );
+		}
 	}
 
 	void LabWork3::render()
@@ -136,18 +135,20 @@ namespace M3D_ISICG
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		glUseProgram( programId );
 		glBindVertexArray( _cube.vao );
+		glBindVertexArray( _cube2.vao );
 		glDrawElements( GL_TRIANGLES, _cube.ind_sommets.size(), GL_UNSIGNED_INT, 0 );
 		glBindVertexArray( 0 );
 		glEnable( GL_DEPTH_TEST );
 		glDepthFunc( GL_LESS );
 	}
 
-	void LabWork3::handleEvents( const SDL_Event & p_event ) {}
-
 	void LabWork3::displayUI()
 	{
 		modif_lum = ImGui::SliderFloat( "Luminosite", &lum, 0.f, 1.0f, "" );
 		modif_col = ImGui::ColorEdit3( "Background", glm::value_ptr(_bgColor) );
+		fov = _camera.getFovy();
+		modif_fov = ImGui::SliderFloat( "Fov", &fov, 0.f, 180.f, "" );
+		
 		ImGui::Begin( "Settings lab work 3" );
 		ImGui::Text( "No setting available!" );
 		ImGui::End();
@@ -155,20 +156,70 @@ namespace M3D_ISICG
 
 	void LabWork3::_updateViewMatrix() { 
 		ViewM = glGetUniformLocation( programId, "uViewMatrix" );
-		glProgramUniformMatrix4fv(programId, ViewM, 1, GL_FALSE, glm::value_ptr( camera.getViewMatrix() ) );
+		 glProgramUniformMatrix4fv(programId, ViewM, 1, GL_FALSE, glm::value_ptr( _camera.getViewMatrix() ) );
+		//uMVP = glGetUniformLocation( programId, "uMVPMatrix" );
+		//uMVPMatrix = uMVPMatrix * _camera.getViewMatrix(); 
+		//glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr(uMVPMatrix) );
+		
 	}
 
 	void LabWork3::_updateProjectionMatrix() { 
 		ProjM = glGetUniformLocation( programId, "uProjectionMatrix" );
-		glProgramUniformMatrix4fv( programId, ProjM, 1, GL_FALSE, glm::value_ptr( camera.getProjectionMatrix() ) );
+		glProgramUniformMatrix4fv( programId, ProjM, 1, GL_FALSE, glm::value_ptr( _camera.getProjectionMatrix() ) );
+		//uMVP	   = glGetUniformLocation( programId, "uMVPMatrix" );
+		//uMVPMatrix = uMVPMatrix * _camera.getProjectionMatrix();
+		//glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix ) );
 
 	}
 	
 	Camera LabWork3::_initCamera() { 
-		Camera camera;
-		camera.setPosition( Vec3f(0.f, 0.f, 3.f) );
-		camera.setScreenSize(1280, 720);
-		return camera;
+		Camera _camera;
+		_camera.setPosition( Vec3f(0.f, 1.f, 3.f) );
+		_camera.setScreenSize(1280, 720);
+		return _camera;
+	}
+
+	void LabWork3::handleEvents( const SDL_Event & p_event )
+	{
+		if ( p_event.type == SDL_KEYDOWN )
+		{
+			switch ( p_event.key.keysym.scancode )
+			{
+			case SDL_SCANCODE_W: // Front
+				_camera.moveFront( _cameraSpeed );
+				_updateViewMatrix();
+				break;
+			case SDL_SCANCODE_S: // Back
+				_camera.moveFront( -_cameraSpeed );
+				_updateViewMatrix();
+				break;
+			case SDL_SCANCODE_A: // Left
+				_camera.moveRight( -_cameraSpeed );
+				_updateViewMatrix();
+				break;
+			case SDL_SCANCODE_D: // Right
+				_camera.moveRight( _cameraSpeed );
+				_updateViewMatrix();
+				break;
+			case SDL_SCANCODE_R: // Up
+				_camera.moveUp( _cameraSpeed );
+				_updateViewMatrix();
+				break;
+			case SDL_SCANCODE_F: // Bottom
+				_camera.moveUp( -_cameraSpeed );
+				_updateViewMatrix();
+				break;
+			default: break;
+			}
+		}
+
+		// Rotate when left click + motion (if not on Imgui widget).
+		if ( p_event.type == SDL_MOUSEMOTION && p_event.motion.state & SDL_BUTTON_LMASK
+			 && !ImGui::GetIO().WantCaptureMouse )
+		{
+			_camera.rotate( p_event.motion.xrel * _cameraSensitivity, p_event.motion.yrel * _cameraSensitivity );
+			_updateViewMatrix();
+		}
 	}
 
 } // namespace M3D_ISICG

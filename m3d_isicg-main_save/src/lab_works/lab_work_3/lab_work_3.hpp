@@ -18,20 +18,20 @@ namespace M3D_ISICG
 	  public:
 		LabWork3() : BaseLabWork() {}
 		~LabWork3();
-		// Identification de program
 		GLuint programId;
-		// Vertex Objects
 		GLuint			   vbo, vboc, vao, ebo;
 		GLint  compiled, linked, uTranslationX;
-		GLfloat				 _time = 0.f, luminosite = 1.f, lum = 1.f;
-		//glm::mat4			 uTransformationMatrix = glm::mat4( 1.f );
+		GLfloat				 _time = 0.f, luminosite = 1.f, lum = 1.f, fov, uMVP;
 		std::vector<Vec3f>	vertices;
 		std::vector<Vec3f>	couleurs;
 		std:: vector<GLuint> vertexindices;
+		glm::mat4			 uMVPMatrix = glm::mat4( 1.f );
 
-		Camera				camera;
+		Camera				_camera;
 		GLint				 ViewM, ProjM;
-		//glm::mat4			 uTransformMatrix = glm::mat4(1.f);
+		float				_cameraSpeed	   = 0.1f;
+		float				_cameraSensitivity = 0.1f;
+
 		struct MESH
 		{
 			std::vector<Vec3f> pos_sommets;
@@ -42,8 +42,8 @@ namespace M3D_ISICG
 			GLuint				vbo, vboc, vao, ebo;
 		};
 
-		MESH _cube;
-		bool init() override, modif_lum, modif_col;
+		MESH _cube, _cube2;
+		bool init() override, modif_lum, modif_col, modif_fov;
 		void animate( const float p_deltaTime ) override;
 		void render() override;
 		void _init_buffers();
@@ -132,4 +132,4 @@ namespace M3D_ISICG
 	};
 } // namespace M3D_ISICG
 
-#endif // __LAB_WORK_2_HPP__
+#endif // __LAB_WORK_3_HPP__
