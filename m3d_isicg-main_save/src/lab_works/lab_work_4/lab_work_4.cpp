@@ -43,19 +43,19 @@ namespace M3D_ISICG
 	}
 	bool LabWork4::init()
 	{
-		std::cout << "Initializing lab work 3..." << std::endl;
+		std::cout << "Initializing lab work 4..." << std::endl;
 		
 		glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );
 		//Cube
-		LabWork4::_createCube();
-		_init_buffers();		
+		//LabWork4::_createCube();
+		//_init_buffers();		
 
 		//Models
 		triangleMeshModel.load( "Bunny", "data/models/bunny/bunny.obj" );
-		triangleMesh.cleanGL();
+		//triangleMesh.cleanGL();
 
-		const std::string vertexShaderStr	= readFile( _shaderFolder + "lw4.vert" );
-		const std::string fragmentShaderStr = readFile( _shaderFolder + "lw4.frag" );
+		const std::string vertexShaderStr	= readFile( _shaderFolder + "mesh.vert" );
+		const std::string fragmentShaderStr = readFile( _shaderFolder + "mesh.frag" );
 
 		GLuint vertexShader	  = glCreateShader( GL_VERTEX_SHADER );
 		GLuint fragmentShader = glCreateShader( GL_FRAGMENT_SHADER );

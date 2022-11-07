@@ -37,5 +37,30 @@ namespace M3D_ISICG
 
 	void TriangleMesh::_setupGL()
 	{		
+		glCreateVertexArrays( 1, &_vao );
+		glCreateBuffers( 1, &_vbo );
+		glCreateBuffers( 1, &_ebo );
+
+		glVertexArrayElementBuffer( _vao, _ebo );
+		glEnableVertexArrayAttrib( _vao, 0 );
+		glEnableVertexArrayAttrib( _vao, 1 );
+
+		glVertexArrayAttribFormat( _vao, 0, 3, GL_FLOAT, GL_FALSE, 0 );
+		glVertexArrayAttribFormat( _vao, 1, 3, GL_FLOAT, GL_FALSE, 0 );
+
+		glVertexArrayVertexBuffer( _vao, 0, _vbo, offsetof(Vertex, _position), sizeof( Vec3f ) );
+		glVertexArrayVertexBuffer( _vao, 1, _vbo, offsetof(Vertex, _normal), sizeof( Vec3f ) );
+		glVertexArrayVertexBuffer( _vao, 2, _vbo, offsetof( Vertex, _texCoords), sizeof( Vec3f ) );
+		glVertexArrayVertexBuffer( _vao, 3, _vbo, offsetof( Vertex, _tangent), sizeof( Vec3f ) );
+		glVertexArrayVertexBuffer( _vao, 4, _vbo, offsetof( Vertex, _bitangent), sizeof( Vec3f ) );
+
+		glVertexArrayAttribBinding( _vao, 0, 0 );
+		glVertexArrayAttribBinding( _vao, 1, 1 );
+		glVertexArrayAttribBinding( _vao, 2, 2 );
+		glVertexArrayAttribBinding( _vao, 3, 3 );
+		glVertexArrayAttribBinding( _vao, 4, 4 );
+
+		glNamedBufferData(_vbo, _vertices.size() * sizeof( Vertex ), _vertices.data(), GL_STATIC_DRAW );
+		glNamedBufferData(_ebo, _indices.size() * sizeof( unsigned int ), _indices.data(), GL_STATIC_DRAW );
 	}
 } // namespace M3D_ISICG
