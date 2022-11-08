@@ -183,7 +183,5 @@
     <None Include="src\lab_works\lab_work_2\shaders\lw2.frag" />
     <None Include="src\lab_works\lab_work_3\shaders\lw3.frag" />
     <None Include="src\lab_works\lab_work_3\shaders\lw3.vert" />
-    <None Include="src\lab_works\lab_work_4\shaders\lw4.frag" />
-    <None Include="src\lab_works\lab_work_4\shaders\lw4.vert" />
   </ItemGroup>
 </Project>
