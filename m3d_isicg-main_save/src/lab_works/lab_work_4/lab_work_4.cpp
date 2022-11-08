@@ -9,48 +9,14 @@ namespace M3D_ISICG
 	const std::string LabWork4::_shaderFolder = "src/lab_works/lab_work_4/shaders/";
 	LabWork4::~LabWork4()
 	{
-		glDisableVertexArrayAttrib( _cube.vao, 0 );
-		glDisableVertexArrayAttrib( _cube.vao, 1 );
-
-		glDeleteVertexArrays( 0, &_cube.vao );
-		glDeleteVertexArrays( 1, &_cube.vao );
-
 		triangleMesh.cleanGL();
-		
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-		glDeleteBuffers( 0, &_cube.vbo );
-	}
-	void LabWork4::_init_buffers() {
-		glCreateVertexArrays( 1, &_cube.vao );
-		glCreateBuffers( 1, &_cube.vbo );
-		glCreateBuffers( 1, &_cube.vboc );
-		glCreateBuffers( 1, &_cube.ebo );
-
-		glVertexArrayElementBuffer( _cube.vao, _cube.ebo );
-		glEnableVertexArrayAttrib( _cube.vao, 0 );
-		glEnableVertexArrayAttrib( _cube.vao, 1 );
-
-		glVertexArrayAttribFormat( _cube.vao, 0, 3, GL_FLOAT, GL_FALSE, 0 );
-		glVertexArrayAttribFormat( _cube.vao, 1, 3, GL_FLOAT, GL_FALSE, 0 );
-
-		glVertexArrayVertexBuffer( _cube.vao, 0, _cube.vbo, 0, sizeof( Vec3f ) );
-		glVertexArrayVertexBuffer( _cube.vao, 1, _cube.vboc, 0, sizeof( Vec3f ) );
-		
-		glVertexArrayAttribBinding( _cube.vao, 0, 0 );
-		glVertexArrayAttribBinding( _cube.vao, 1, 1 );
-
-		glNamedBufferData(_cube.vbo, _cube.pos_sommets.size() * sizeof( Vec3f ), _cube.pos_sommets.data(), GL_STATIC_DRAW );
-		glNamedBufferData( _cube.vboc, _cube.col_sommets.size() * sizeof( Vec3f ), _cube.col_sommets.data(), GL_STATIC_DRAW );
-		glNamedBufferData(_cube.ebo, _cube.ind_sommets.size() * sizeof( GLuint ), _cube.ind_sommets.data(), GL_STATIC_DRAW );
 	}
 	bool LabWork4::init()
 	{
 		std::cout << "Initializing lab work 4..." << std::endl;
 		
 		glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );
-		//Cube
-		//LabWork4::_createCube();
-		//_init_buffers();		
 
 		//Models
 		triangleMeshModel.load( "Bunny", "data/models/bunny/bunny.obj" );
@@ -85,8 +51,7 @@ namespace M3D_ISICG
 			std::cerr << "Error compiling vertex shader:" << log << std::endl;
 			return false;
 		}
-		
-		
+
 		programId = glCreateProgram();
 		glAttachShader( programId, vertexShader );
 		glAttachShader( programId, fragmentShader );
@@ -103,11 +68,6 @@ namespace M3D_ISICG
 		}
 		
 		uMVP = glGetUniformLocation( programId, "uMVPMatrix" );
-		//uTranslationX = glGetUniformLocation( programId, "uTranslationX" );
-		//luminosite = glGetUniformLocation( programId, "luminosite" );
-		
-		//_cube.utrans = glGetUniformLocation( programId, "uTransformationMatrix" );
-		//uMVP		 = glGetUniformLocation( programId, "uMVPMatrix" );
 		_camera = _initCamera();
 		glDeleteShader( vertexShader );
 		glDeleteShader( fragmentShader );
@@ -117,23 +77,11 @@ namespace M3D_ISICG
 	}
 	void LabWork4::animate( const float p_deltaTime ) 
 	{ 
-		glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr(uMVPMatrix));
 		float f = p_deltaTime + 2.f;
-		//_cube.uTransformationMatrix = glm::rotate( _cube.uTransformationMatrix, glm::radians( f ), glm::vec3( 0, 1, 1 ) );
+		glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr(uMVPMatrix));
 		
 		_updateViewMatrix();
 		_updateProjectionMatrix();
-		//glProgramUniform1f( programId, uTranslationX, glm::sin( _time ) );	
-		glProgramUniformMatrix4fv(programId, _cube.utrans, 1, GL_FALSE, glm::value_ptr(_cube.uTransformationMatrix));
-		if ( modif_lum )
-		{
-			glProgramUniform1f( programId, luminosite, lum );
-			luminosite = lum;
-		}
-		if ( modif_col )
-		{
-			glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );
-		}
 		if (modif_fov) {
 			_camera.setFovy( fov );
 		}
@@ -165,18 +113,12 @@ namespace M3D_ISICG
 	void LabWork4::_updateViewMatrix() { 
 		ViewM = glGetUniformLocation( programId, "uViewMatrix" );
 		glProgramUniformMatrix4fv(programId, ViewM, 1, GL_FALSE, glm::value_ptr( _camera.getViewMatrix() ) );
-		//uMVP = glGetUniformLocation( programId, "uMVPMatrix" );
-		//uMVPMatrix = uMVPMatrix * _camera.getViewMatrix(); 
-		//glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr(uMVPMatrix) );
 		
 	}
 
 	void LabWork4::_updateProjectionMatrix() { 
 		ProjM = glGetUniformLocation( programId, "uProjectionMatrix" );
 		glProgramUniformMatrix4fv( programId, ProjM, 1, GL_FALSE, glm::value_ptr( _camera.getProjectionMatrix() ) );
-		//uMVP	   = glGetUniformLocation( programId, "uMVPMatrix" );
-		//uMVPMatrix = uMVPMatrix * _camera.getProjectionMatrix();
-		//glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix ) );
 
 	}
 	
