@@ -52,7 +52,10 @@ namespace M3D_ISICG
 
 		//Models
 		triangleMeshModel.load( "Bunny", "data/models/bunny/bunny.obj" );
-		//triangleMesh.cleanGL();
+		triangleMesh = triangleMeshModel._meshes.at(0);
+		//std::cout << "name:" << triangleMesh._name << std::endl;
+		TriangleMesh triangleMesh1(triangleMesh._name, triangleMesh._vertices, triangleMesh._indices, triangleMesh._material );
+		triangleMesh.cleanGL();
 
 		const std::string vertexShaderStr	= readFile( _shaderFolder + "mesh.vert" );
 		const std::string fragmentShaderStr = readFile( _shaderFolder + "mesh.frag" );
@@ -96,10 +99,11 @@ namespace M3D_ISICG
 			return false;
 		}
 		
+		uMVP = glGetUniformLocation( programId, "uMVPMatrix" );
 		//uTranslationX = glGetUniformLocation( programId, "uTranslationX" );
-		luminosite = glGetUniformLocation( programId, "luminosite" );
+		//luminosite = glGetUniformLocation( programId, "luminosite" );
 		
-		_cube.utrans = glGetUniformLocation( programId, "uTransformationMatrix" );
+		//_cube.utrans = glGetUniformLocation( programId, "uTransformationMatrix" );
 		//uMVP		 = glGetUniformLocation( programId, "uMVPMatrix" );
 		_camera = _initCamera();
 		glDeleteShader( vertexShader );
@@ -110,16 +114,13 @@ namespace M3D_ISICG
 	}
 	void LabWork4::animate( const float p_deltaTime ) 
 	{ 
-		
+		glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr(uMVPMatrix));
 		float f = p_deltaTime + 2.f;
-		_cube.uTransformationMatrix = glm::rotate( _cube.uTransformationMatrix, glm::radians( f ), glm::vec3( 0, 1, 1 ) );
-		//uMVPMatrix = glm::rotate( uMVPMatrix, glm::radians( f ), glm::vec3( 0, 1, 1 ) );
+		//_cube.uTransformationMatrix = glm::rotate( _cube.uTransformationMatrix, glm::radians( f ), glm::vec3( 0, 1, 1 ) );
+		
 		_updateViewMatrix();
 		_updateProjectionMatrix();
 		//glProgramUniform1f( programId, uTranslationX, glm::sin( _time ) );	
-		//uMVP	   = glGetUniformLocation( programId, "uMVPMatrix" );
-		//uMVPMatrix = uMVPMatrix * _cube.uTransformationMatrix;
-		//glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix ) );
 		glProgramUniformMatrix4fv(programId, _cube.utrans, 1, GL_FALSE, glm::value_ptr(_cube.uTransformationMatrix));
 		if ( modif_lum )
 		{
@@ -139,7 +140,7 @@ namespace M3D_ISICG
 	{
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		glUseProgram( programId );
-		glBindVertexArray( _cube.vao );
+		glBindVertexArray( triangleMesh._vao );
 		glDrawElements( GL_TRIANGLES, _cube.ind_sommets.size(), GL_UNSIGNED_INT, 0 );
 		glBindVertexArray( 0 );
 		glEnable( GL_DEPTH_TEST );

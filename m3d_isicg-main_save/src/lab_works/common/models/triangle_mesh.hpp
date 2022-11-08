@@ -45,7 +45,8 @@ namespace M3D_ISICG
 	class TriangleMesh
 	{
 	  public:
-		TriangleMesh() = delete;
+		//TriangleMesh() = delete;
+		TriangleMesh();
 		TriangleMesh( const std::string &				p_name,
 					  const std::vector<Vertex> &		p_vertices,
 					  const std::vector<unsigned int> & p_indices,
