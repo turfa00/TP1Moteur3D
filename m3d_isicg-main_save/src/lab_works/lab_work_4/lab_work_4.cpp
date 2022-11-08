@@ -78,8 +78,7 @@ namespace M3D_ISICG
 	void LabWork4::animate( const float p_deltaTime ) 
 	{ 
 		float f = p_deltaTime + 2.f;
-		glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr(uMVPMatrix));
-		
+		glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr(triangleMesh.uMVPMatrix));
 		_updateViewMatrix();
 		_updateProjectionMatrix();
 		if (modif_fov) {

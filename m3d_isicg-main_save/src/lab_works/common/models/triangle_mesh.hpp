@@ -64,6 +64,8 @@ namespace M3D_ISICG
 	  public:
 		std::string _name = "Unknown";
 
+		glm::mat4 uMVPMatrix;
+
 		// ================ Geometric data.
 		std::vector<Vertex>		  _vertices;
 		std::vector<unsigned int> _indices;
