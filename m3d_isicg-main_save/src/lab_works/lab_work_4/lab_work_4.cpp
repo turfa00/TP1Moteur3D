@@ -15,6 +15,8 @@ namespace M3D_ISICG
 		glDeleteVertexArrays( 0, &_cube.vao );
 		glDeleteVertexArrays( 1, &_cube.vao );
 
+		triangleMesh.cleanGL();
+		
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		glDeleteBuffers( 0, &_cube.vbo );
 	}
@@ -53,9 +55,10 @@ namespace M3D_ISICG
 		//Models
 		triangleMeshModel.load( "Bunny", "data/models/bunny/bunny.obj" );
 		triangleMesh = triangleMeshModel._meshes.at(0);
-		//std::cout << "name:" << triangleMesh._name << std::endl;
-		TriangleMesh triangleMesh1(triangleMesh._name, triangleMesh._vertices, triangleMesh._indices, triangleMesh._material );
-		triangleMesh.cleanGL();
+
+		triangleMesh =  TriangleMesh(triangleMesh._name, triangleMesh._vertices, triangleMesh._indices, triangleMesh._material );
+		
+		std::cout << "name:" << triangleMesh._name << std::endl;
 
 		const std::string vertexShaderStr	= readFile( _shaderFolder + "mesh.vert" );
 		const std::string fragmentShaderStr = readFile( _shaderFolder + "mesh.frag" );
@@ -141,7 +144,7 @@ namespace M3D_ISICG
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		glUseProgram( programId );
 		glBindVertexArray( triangleMesh._vao );
-		glDrawElements( GL_TRIANGLES, _cube.ind_sommets.size(), GL_UNSIGNED_INT, 0 );
+		glDrawElements( GL_TRIANGLES, triangleMesh._indices.size(), GL_UNSIGNED_INT, 0 );
 		glBindVertexArray( 0 );
 		glEnable( GL_DEPTH_TEST );
 		glDepthFunc( GL_LESS );
