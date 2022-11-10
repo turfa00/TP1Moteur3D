@@ -47,7 +47,7 @@ namespace M3D_ISICG
 
 		void _updateViewMatrix();
 		void   _updateProjectionMatrix();
-		Camera _initCamera();
+		void _initCamera();
 
 	  private:
 		// ================ Scene data.

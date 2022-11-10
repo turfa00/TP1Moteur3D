@@ -10,6 +10,7 @@ namespace M3D_ISICG
 	LabWork4::~LabWork4()
 	{
 		triangleMesh.cleanGL();
+		triangleMeshModel.cleanGL();
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	}
 	bool LabWork4::init()
@@ -22,16 +23,14 @@ namespace M3D_ISICG
 		triangleMeshModel.load( "Bunny", "data/models/bunny/bunny.obj" );
 		triangleMesh = triangleMeshModel._meshes.at(0);
 
-		triangleMesh =  TriangleMesh(triangleMesh._name, triangleMesh._vertices, triangleMesh._indices, triangleMesh._material );
-		
-		std::cout << "name:" << triangleMesh._name << std::endl;
+		//triangleMesh =  TriangleMesh(triangleMesh._name, triangleMesh._vertices, triangleMesh._indices, triangleMesh._material );
 
 		const std::string vertexShaderStr	= readFile( _shaderFolder + "mesh.vert" );
 		const std::string fragmentShaderStr = readFile( _shaderFolder + "mesh.frag" );
 
 		GLuint vertexShader	  = glCreateShader( GL_VERTEX_SHADER );
 		GLuint fragmentShader = glCreateShader( GL_FRAGMENT_SHADER );
-
+		
 		const GLchar * vsrc = vertexShaderStr.c_str();
 		const GLchar * fsrc = fragmentShaderStr.c_str();
 
@@ -56,7 +55,6 @@ namespace M3D_ISICG
 		glAttachShader( programId, vertexShader );
 		glAttachShader( programId, fragmentShader );
 		glLinkProgram( programId );
-
 		
 		glGetProgramiv( programId, GL_LINK_STATUS, &linked );
 		if ( !linked )
@@ -68,7 +66,7 @@ namespace M3D_ISICG
 		}
 		
 		uMVP = glGetUniformLocation( programId, "uMVPMatrix" );
-		_camera = _initCamera();
+		_initCamera();
 		glDeleteShader( vertexShader );
 		glDeleteShader( fragmentShader );
 
@@ -88,13 +86,7 @@ namespace M3D_ISICG
 
 	void LabWork4::render()
 	{
-		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-		glUseProgram( programId );
-		glBindVertexArray( triangleMesh._vao );
-		glDrawElements( GL_TRIANGLES, triangleMesh._indices.size(), GL_UNSIGNED_INT, 0 );
-		glBindVertexArray( 0 );
-		glEnable( GL_DEPTH_TEST );
-		glDepthFunc( GL_LESS );
+		triangleMesh.render( programId );
 	}
 
 	void LabWork4::displayUI()
@@ -104,7 +96,7 @@ namespace M3D_ISICG
 		fov = _camera.getFovy();
 		modif_fov = ImGui::SliderFloat( "Fov", &fov, 0.f, 180.f, "" );
 		
-		ImGui::Begin( "Settings lab work 3" );
+		ImGui::Begin( "Settings lab work 4" );
 		ImGui::Text( "No setting available!" );
 		ImGui::End();
 	}
@@ -121,11 +113,9 @@ namespace M3D_ISICG
 
 	}
 	
-	Camera LabWork4::_initCamera() { 
-		Camera _camera;
+	void LabWork4::_initCamera() { 
 		_camera.setPosition( Vec3f(0.f, 1.f, 3.f) );
 		_camera.setScreenSize(1280, 720);
-		return _camera;
 	}
 
 	void LabWork4::handleEvents( const SDL_Event & p_event )

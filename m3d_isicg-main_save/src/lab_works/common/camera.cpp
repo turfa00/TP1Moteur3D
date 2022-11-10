@@ -60,7 +60,7 @@ namespace M3D_ISICG
 
 	void Camera::setLookAt( const Vec3f & p_lookAt )
 	{
-		// _invDirection = ?
+		_invDirection = Vec3f( p_lookAt.x, p_lookAt.y, p_lookAt.z*-1 );
 		_computeViewMatrix();
 	}
 
@@ -75,7 +75,7 @@ namespace M3D_ISICG
 
 	void Camera::_computeViewMatrix()
 	{ 
-		_viewMatrix = glm::lookAt( _position, _invDirection, _up );
+		_viewMatrix = glm::lookAt( _position, _position - _invDirection, _up );
 	}
 
 	void Camera::_computeProjectionMatrix() { 

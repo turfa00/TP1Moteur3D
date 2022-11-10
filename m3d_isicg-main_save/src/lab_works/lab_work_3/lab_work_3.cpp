@@ -97,7 +97,7 @@ namespace M3D_ISICG
 		
 		_cube.utrans = glGetUniformLocation( programId, "uTransformationMatrix" );
 		//uMVP		 = glGetUniformLocation( programId, "uMVPMatrix" );
-		_camera = _initCamera();
+		_initCamera();
 		glDeleteShader( vertexShader );
 		glDeleteShader( fragmentShader );
 
@@ -172,11 +172,9 @@ namespace M3D_ISICG
 
 	}
 	
-	Camera LabWork3::_initCamera() { 
-		Camera _camera;
+	void LabWork3::_initCamera() { 
 		_camera.setPosition( Vec3f(0.f, 1.f, 3.f) );
 		_camera.setScreenSize(1280, 720);
-		return _camera;
 	}
 
 	void LabWork3::handleEvents( const SDL_Event & p_event )

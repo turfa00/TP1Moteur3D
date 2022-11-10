@@ -27,6 +27,9 @@ namespace M3D_ISICG
 	void TriangleMesh::render( const GLuint p_glProgram ) const
 	{
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+		glUseProgram( p_glProgram );
+		glBindVertexArray( _vao );
+		glDrawElements( GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0 );
 		glBindVertexArray( 0 );
 		glEnable( GL_DEPTH_TEST );
 		glDepthFunc( GL_LESS );
@@ -53,7 +56,6 @@ namespace M3D_ISICG
 		glVertexArrayElementBuffer( _vao, _ebo );
 
 		glEnableVertexArrayAttrib( _vao, 0 );
-		glEnableVertexArrayAttrib( _vao, 1 );
 
 		glVertexArrayAttribFormat( _vao, 0, 3, GL_FLOAT, GL_FALSE, offsetof( Vertex, _position ) );
 		glVertexArrayAttribFormat( _vao, 1, 3, GL_FLOAT, GL_FALSE, offsetof( Vertex, _normal ) );

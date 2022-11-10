@@ -64,7 +64,7 @@ namespace M3D_ISICG
 	  public:
 		std::string _name = "Unknown";
 
-		glm::mat4 uMVPMatrix;
+		glm::mat4 uMVPMatrix = glm::mat4(1.f);
 
 		// ================ Geometric data.
 		std::vector<Vertex>		  _vertices;
