@@ -35,7 +35,7 @@ namespace M3D_ISICG
 		float				_cameraSensitivity = 0.1f;
 
 		TriangleMeshModel triangleMeshModel;
-		TriangleMesh	  triangleMesh;
+		//TriangleMesh	  triangleMesh;
 
 		
 		bool init() override, modif_lum, modif_col, modif_fov;

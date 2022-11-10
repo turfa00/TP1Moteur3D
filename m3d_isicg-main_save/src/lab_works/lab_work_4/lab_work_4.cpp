@@ -9,7 +9,7 @@ namespace M3D_ISICG
 	const std::string LabWork4::_shaderFolder = "src/lab_works/lab_work_4/shaders/";
 	LabWork4::~LabWork4()
 	{
-		triangleMesh.cleanGL();
+		//triangleMesh.cleanGL();
 		triangleMeshModel.cleanGL();
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	}
@@ -21,7 +21,7 @@ namespace M3D_ISICG
 
 		//Models
 		triangleMeshModel.load( "Bunny", "data/models/bunny/bunny.obj" );
-		triangleMesh = triangleMeshModel._meshes.at(0);
+		//triangleMesh = triangleMeshModel._meshes.at(0);
 
 		//triangleMesh =  TriangleMesh(triangleMesh._name, triangleMesh._vertices, triangleMesh._indices, triangleMesh._material );
 
@@ -76,7 +76,7 @@ namespace M3D_ISICG
 	void LabWork4::animate( const float p_deltaTime ) 
 	{ 
 		float f = p_deltaTime + 2.f;
-		glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr(triangleMesh.uMVPMatrix));
+		glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr(uMVPMatrix));
 		_updateViewMatrix();
 		_updateProjectionMatrix();
 		if (modif_fov) {
@@ -86,7 +86,8 @@ namespace M3D_ISICG
 
 	void LabWork4::render()
 	{
-		triangleMesh.render( programId );
+		triangleMeshModel.render(programId);
+		//triangleMesh.render( programId );
 	}
 
 	void LabWork4::displayUI()

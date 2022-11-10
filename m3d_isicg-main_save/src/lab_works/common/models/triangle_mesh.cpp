@@ -7,10 +7,6 @@
 
 namespace M3D_ISICG
 {
-	TriangleMesh::TriangleMesh() 
-	{ 
-		//this->_setupGL();
-	};
 	TriangleMesh::TriangleMesh( const std::string &				  p_name,
 								const std::vector<Vertex> &		  p_vertices,
 								const std::vector<unsigned int> & p_indices,
@@ -21,7 +17,6 @@ namespace M3D_ISICG
 		_vertices.shrink_to_fit();
 		_indices.shrink_to_fit();
 		_setupGL();
-		uMVPMatrix = glm::mat4( 1.f );
 	}
 
 	void TriangleMesh::render( const GLuint p_glProgram ) const
@@ -56,6 +51,10 @@ namespace M3D_ISICG
 		glVertexArrayElementBuffer( _vao, _ebo );
 
 		glEnableVertexArrayAttrib( _vao, 0 );
+		glEnableVertexArrayAttrib( _vao, 1 );
+		glEnableVertexArrayAttrib( _vao, 2 );
+		glEnableVertexArrayAttrib( _vao, 3 );
+		glEnableVertexArrayAttrib( _vao, 4 );
 
 		glVertexArrayAttribFormat( _vao, 0, 3, GL_FLOAT, GL_FALSE, offsetof( Vertex, _position ) );
 		glVertexArrayAttribFormat( _vao, 1, 3, GL_FLOAT, GL_FALSE, offsetof( Vertex, _normal ) );
@@ -64,6 +63,12 @@ namespace M3D_ISICG
 		glVertexArrayAttribFormat( _vao, 4, 3, GL_FLOAT, GL_FALSE, offsetof( Vertex, _bitangent ) );
 
 		glVertexArrayVertexBuffer( _vao, 0, _vbo, 0, sizeof( Vertex ) );
+		
+		/* glVertexArrayVertexBuffer( _vao, 0, _vbo, offsetof( Vertex, _position ), sizeof( Vertex ) );
+		glVertexArrayVertexBuffer( _vao, 1, _vbo, offsetof( Vertex, _normal ), sizeof( Vertex ) );
+		glVertexArrayVertexBuffer( _vao, 2, _vbo, offsetof( Vertex, _texCoords ), sizeof( Vertex ) );
+		glVertexArrayVertexBuffer( _vao, 3, _vbo, offsetof( Vertex, _tangent ), sizeof( Vertex ) );
+		glVertexArrayVertexBuffer( _vao, 4, _vbo, offsetof( Vertex, _bitangent ), sizeof( Vertex ) );*/
 
 		glVertexArrayAttribBinding( _vao, 0, 0 );
 		glVertexArrayAttribBinding( _vao, 1, 1 );
