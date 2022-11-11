@@ -23,6 +23,14 @@ namespace M3D_ISICG
 	{
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		glUseProgram( p_glProgram );
+		Vec3f ambientColor = this->_material._ambient;
+		Vec3f diffuseColor = this->_material._diffuse;
+		//std::cout << diffuseColor.x << diffuseColor.y << diffuseColor.z << std::endl;
+		GLint vertexColor = glGetUniformLocation( p_glProgram, "ourColor" );
+		glm::mat4 normalMatrix;
+
+
+		glUniform4f( vertexColor, diffuseColor.x, diffuseColor.y, diffuseColor.z, 1.f );
 		glBindVertexArray( _vao );
 		glDrawElements( GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0 );
 		glBindVertexArray( 0 );
@@ -62,13 +70,7 @@ namespace M3D_ISICG
 		glVertexArrayAttribFormat( _vao, 3, 3, GL_FLOAT, GL_FALSE, offsetof( Vertex, _tangent ) );
 		glVertexArrayAttribFormat( _vao, 4, 3, GL_FLOAT, GL_FALSE, offsetof( Vertex, _bitangent ) );
 
-		glVertexArrayVertexBuffer( _vao, 0, _vbo, 0, sizeof( Vertex ) );
-		
-		/* glVertexArrayVertexBuffer( _vao, 0, _vbo, offsetof( Vertex, _position ), sizeof( Vertex ) );
-		glVertexArrayVertexBuffer( _vao, 1, _vbo, offsetof( Vertex, _normal ), sizeof( Vertex ) );
-		glVertexArrayVertexBuffer( _vao, 2, _vbo, offsetof( Vertex, _texCoords ), sizeof( Vertex ) );
-		glVertexArrayVertexBuffer( _vao, 3, _vbo, offsetof( Vertex, _tangent ), sizeof( Vertex ) );
-		glVertexArrayVertexBuffer( _vao, 4, _vbo, offsetof( Vertex, _bitangent ), sizeof( Vertex ) );*/
+		glVertexArrayVertexBuffer( _vao, 0, _vbo, 0, sizeof( Vertex ) );			
 
 		glVertexArrayAttribBinding( _vao, 0, 0 );
 		glVertexArrayAttribBinding( _vao, 1, 1 );

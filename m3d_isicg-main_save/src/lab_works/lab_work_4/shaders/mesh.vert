@@ -6,6 +6,8 @@ layout( location = 2 ) in vec2 aVertexTexCoords;
 layout( location = 3 ) in vec3 aVertexTangent;
 layout( location = 4 ) in vec3 aVertexBitagent;
 
+out vec3 ourColor;
+
 uniform mat4 uMVPMatrix; // Projection * View * Model
 
 void main()
