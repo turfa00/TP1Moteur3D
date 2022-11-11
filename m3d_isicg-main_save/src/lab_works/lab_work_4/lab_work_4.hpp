@@ -23,14 +23,15 @@ namespace M3D_ISICG
 		~LabWork4();
 		GLuint programId;
 		GLint  compiled, linked;
-		GLfloat				 _time = 0.f, luminosite = 1.f, lum = 1.f, fov, uMVP;
+		GLfloat				 _time = 0.f, luminosite = 1.f, lum = 1.f, fov;
 		std::vector<Vec3f>	vertices;
 		std::vector<Vec3f>	couleurs;
-		std:: vector<GLuint> vertexindices;
-		glm::mat4			 uMVPMatrix = glm::mat4( 1.f );
+		std:: vector<GLuint> vertexindices;	
+		glm::mat4			 uMVPMatrix;
+		glm::mat4			 modelMatrix = glm::mat4(1.f);
 
 		Camera				_camera;
-		GLint				 ViewM, ProjM;
+		GLint				uMVP;
 		float				_cameraSpeed	   = 0.1f;
 		float				_cameraSensitivity = 0.1f;
 

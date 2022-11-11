@@ -18,12 +18,8 @@ namespace M3D_ISICG
 		std::cout << "Initializing lab work 4..." << std::endl;
 		
 		glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );
-
-		//Models
-		triangleMeshModel.load( "Bunny", "data/models/bunny/bunny.obj" );
-		//triangleMesh = triangleMeshModel._meshes.at(0);
-
-		//triangleMesh =  TriangleMesh(triangleMesh._name, triangleMesh._vertices, triangleMesh._indices, triangleMesh._material );
+	
+		triangleMeshModel.load( "Bunny", "data/models/bunny/bunny.obj" );	
 
 		const std::string vertexShaderStr	= readFile( _shaderFolder + "mesh.vert" );
 		const std::string fragmentShaderStr = readFile( _shaderFolder + "mesh.frag" );
@@ -66,6 +62,7 @@ namespace M3D_ISICG
 		}
 		
 		uMVP = glGetUniformLocation( programId, "uMVPMatrix" );
+		glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix ) );
 		_initCamera();
 		glDeleteShader( vertexShader );
 		glDeleteShader( fragmentShader );
@@ -76,7 +73,7 @@ namespace M3D_ISICG
 	void LabWork4::animate( const float p_deltaTime ) 
 	{ 
 		float f = p_deltaTime + 2.f;
-		glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr(uMVPMatrix));
+		//glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr(uMVPMatrix));
 		_updateViewMatrix();
 		_updateProjectionMatrix();
 		if (modif_fov) {
@@ -103,15 +100,17 @@ namespace M3D_ISICG
 	}
 
 	void LabWork4::_updateViewMatrix() { 
-		ViewM = glGetUniformLocation( programId, "uViewMatrix" );
-		glProgramUniformMatrix4fv(programId, ViewM, 1, GL_FALSE, glm::value_ptr( _camera.getViewMatrix() ) );
-		
+		uMVP = glGetUniformLocation( programId, "uMVPMatrix" );
+		uMVPMatrix = _camera.getProjectionMatrix() * _camera.getViewMatrix() * modelMatrix;
+		glProgramUniformMatrix4fv(programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix ) );
+		//uMVPMatrix = uMVPMatrix * _camera.getViewMatrix(); 
 	}
 
 	void LabWork4::_updateProjectionMatrix() { 
-		ProjM = glGetUniformLocation( programId, "uProjectionMatrix" );
-		glProgramUniformMatrix4fv( programId, ProjM, 1, GL_FALSE, glm::value_ptr( _camera.getProjectionMatrix() ) );
-
+		uMVP = glGetUniformLocation( programId, "uMVPMatrix" );
+		uMVPMatrix = _camera.getProjectionMatrix() * _camera.getViewMatrix() * modelMatrix;
+		glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix) );
+		//uMVPMatrix = uMVPMatrix * _camera.getProjectionMatrix(); 
 	}
 	
 	void LabWork4::_initCamera() { 

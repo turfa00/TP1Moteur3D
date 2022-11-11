@@ -109,13 +109,15 @@ namespace M3D_ISICG
 		
 		float f = p_deltaTime + 2.f;
 		_cube.uTransformationMatrix = glm::rotate( _cube.uTransformationMatrix, glm::radians( f ), glm::vec3( 0, 1, 1 ) );
+		//uMVPMatrix = _camera.getProjectionMatrix() * _camera.getViewMatrix() * _cube.uTransformationMatrix;
+		//glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix ) );
 		//uMVPMatrix = glm::rotate( uMVPMatrix, glm::radians( f ), glm::vec3( 0, 1, 1 ) );
 		_updateViewMatrix();
 		_updateProjectionMatrix();
 		//glProgramUniform1f( programId, uTranslationX, glm::sin( _time ) );	
 		//uMVP	   = glGetUniformLocation( programId, "uMVPMatrix" );
-		//uMVPMatrix = uMVPMatrix * _cube.uTransformationMatrix;
-		//glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix ) );
+		
+		
 		glProgramUniformMatrix4fv(programId, _cube.utrans, 1, GL_FALSE, glm::value_ptr(_cube.uTransformationMatrix));
 		if ( modif_lum )
 		{
@@ -157,8 +159,9 @@ namespace M3D_ISICG
 	void LabWork3::_updateViewMatrix() { 
 		ViewM = glGetUniformLocation( programId, "uViewMatrix" );
 		glProgramUniformMatrix4fv(programId, ViewM, 1, GL_FALSE, glm::value_ptr( _camera.getViewMatrix() ) );
+		
 		//uMVP = glGetUniformLocation( programId, "uMVPMatrix" );
-		//uMVPMatrix = uMVPMatrix * _camera.getViewMatrix(); 
+		//uMVPMatrix = _camera.getProjectionMatrix() * _camera.getViewMatrix(); 
 		//glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr(uMVPMatrix) );
 		
 	}
@@ -166,8 +169,9 @@ namespace M3D_ISICG
 	void LabWork3::_updateProjectionMatrix() { 
 		ProjM = glGetUniformLocation( programId, "uProjectionMatrix" );
 		glProgramUniformMatrix4fv( programId, ProjM, 1, GL_FALSE, glm::value_ptr( _camera.getProjectionMatrix() ) );
+		
 		//uMVP	   = glGetUniformLocation( programId, "uMVPMatrix" );
-		//uMVPMatrix = uMVPMatrix * _camera.getProjectionMatrix();
+		//uMVPMatrix = _camera.getProjectionMatrix() * _camera.getViewMatrix(); 
 		//glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix ) );
 
 	}
