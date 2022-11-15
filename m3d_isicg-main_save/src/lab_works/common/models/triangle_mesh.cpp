@@ -25,12 +25,19 @@ namespace M3D_ISICG
 		glUseProgram( p_glProgram );
 		Vec3f ambientColor = this->_material._ambient;
 		Vec3f diffuseColor = this->_material._diffuse;
-		//std::cout << diffuseColor.x << diffuseColor.y << diffuseColor.z << std::endl;
-		GLint vertexColor = glGetUniformLocation( p_glProgram, "ourColor" );
+		//Vec3f Normal = this.
+		//Uniform values
+		GLfloat aColor = glGetUniformLocation( p_glProgram, "diffuseColor" );
+		GLfloat	  dColor	   = glGetUniformLocation( p_glProgram, "ambientColor" );
+		GLfloat	  shininess = glGetUniformLocation( p_glProgram, "shininessVal" );
 		glm::mat4 normalMatrix;
+		//std::cout << this->_material._shininess << std::endl;
+		//glm::mat4	  f_lambertian = glm::dot( normalMatrix, normalMatrix );
 
+		glUniform3f( aColor, diffuseColor.x, diffuseColor.y, diffuseColor.z );
+		glUniform3f( dColor, ambientColor.x, ambientColor.y, ambientColor.z );
+		glUniform1f( shininess, this->_material._shininess );
 
-		glUniform4f( vertexColor, diffuseColor.x, diffuseColor.y, diffuseColor.z, 1.f );
 		glBindVertexArray( _vao );
 		glDrawElements( GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0 );
 		glBindVertexArray( 0 );

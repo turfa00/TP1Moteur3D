@@ -27,11 +27,11 @@ namespace M3D_ISICG
 		std::vector<Vec3f>	vertices;
 		std::vector<Vec3f>	couleurs;
 		std:: vector<GLuint> vertexindices;	
-		glm::mat4			 uMVPMatrix;
+		glm::mat4			 uMVPMatrix, viewMatrix;
 		glm::mat4			 modelMatrix = glm::mat4(1.f);
 
 		Camera				_camera;
-		GLint				uMVP;
+		GLint				uMVP, model, view;
 		float				_cameraSpeed	   = 0.1f;
 		float				_cameraSensitivity = 0.1f;
 
