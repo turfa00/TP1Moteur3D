@@ -30,7 +30,6 @@ namespace M3D_ISICG
 		GLfloat aColor = glGetUniformLocation( p_glProgram, "diffuseColor" );
 		GLfloat	  dColor	   = glGetUniformLocation( p_glProgram, "ambientColor" );
 		GLfloat	  shininess = glGetUniformLocation( p_glProgram, "shininessVal" );
-		glm::mat4 normalMatrix;
 		//std::cout << this->_material._shininess << std::endl;
 		//glm::mat4	  f_lambertian = glm::dot( normalMatrix, normalMatrix );
 

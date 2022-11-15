@@ -1,14 +1,13 @@
 #version 450
 
 layout( location = 0 ) out vec4 fragColor;
-uniform mat4 NormalMat;
 varying vec3 vertPos, normalInterp;
 
 uniform float Ka, Kd, Ks, shininessVal;
 uniform vec3 ambientColor, diffuseColor, lightPos;
 
 varying vec4 color;
-in vec3 Normal, FragPos;
+//in vec3 Normal, FragPos;
 
 precision mediump float;
 
@@ -28,7 +27,7 @@ void main()
 		specular = pow(specAngle, shininessVal);
 	}
 
-	fragColor = vec4(ambientColor + lambertian * diffuseColor, 1.0);
+	fragColor = vec4(ambientColor + diffuseColor + specular, 1.0);
 
 
 

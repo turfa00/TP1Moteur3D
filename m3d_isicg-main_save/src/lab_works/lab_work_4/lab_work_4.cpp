@@ -63,6 +63,10 @@ namespace M3D_ISICG
 		
 		uMVP = glGetUniformLocation( programId, "uMVPMatrix" );
 		model = glGetUniformLocation( programId, "ModelMatrix" );
+		view  = glGetUniformLocation( programId, "viewMatrix" );
+		normal = glGetUniformLocation( programId, "NormalMat" );
+		light  = glGetUniformLocation( programId, "lightPos" );
+		v = Vec3f( 1.f, 1.f, -1.f );
 		glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix ) );
 		glProgramUniformMatrix4fv( programId, model, 1, GL_FALSE, glm::value_ptr( modelMatrix ) );
 		_initCamera();
@@ -85,6 +89,12 @@ namespace M3D_ISICG
 
 	void LabWork4::render()
 	{
+		normalMatrix = glm::transpose( glm::inverse(viewMatrix));
+		glProgramUniformMatrix4fv( programId, normal, 1, GL_FALSE, glm::value_ptr( normalMatrix ) );
+		
+		glProgramUniform3fv( programId, light, 1, glm::value_ptr(v));
+
+
 		triangleMeshModel.render(programId);
 		//triangleMesh.render( programId );
 	}
