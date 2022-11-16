@@ -90,6 +90,7 @@ namespace M3D_ISICG
 	void LabWork4::render()
 	{
 		normalMatrix = glm::transpose( glm::inverse(viewMatrix));
+		normal		 = glGetUniformLocation( programId, "NormalMat" );
 		glProgramUniformMatrix4fv( programId, normal, 1, GL_FALSE, glm::value_ptr( normalMatrix ) );
 		
 		glProgramUniform3fv( programId, light, 1, glm::value_ptr(v));

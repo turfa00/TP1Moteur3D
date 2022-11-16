@@ -27,9 +27,8 @@ void main()
 		specular = pow(specAngle, shininessVal);
 	}
 
-	fragColor = vec4(ambientColor + diffuseColor + specular, 1.0);
-
-
+	//fragColor = vec4(diffuseColor * lambertian, 1.0);
+	fragColor = vec4(ambientColor + diffuseColor * lambertian, 1.0);
 
 
 	//vec4 vertPos4 = modelMatrix * vec4( aVertexPosition, 1.0);

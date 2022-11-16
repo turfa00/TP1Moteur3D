@@ -17,8 +17,10 @@ uniform mat4 uMVPMatrix; // Projection * View * Model
 void main()
 {
 	vec4 vertPos4 = modelMatrix * vec4( aVertexPosition, 1.f);
-	vertPos = vec3(vertPos4) / vertPos4.w;
+	//vertPos = vec3(vertPos4) / vertPos4.w;
+	vertPos = aVertexPosition;
 	normalInterp = vec3(NormalMat * vec4(aVertexNormal,0.f));
+	//gl_Position = uMVPMatrix * vertPos4;
 	gl_Position = uMVPMatrix * vec4( aVertexPosition, 1.f );
 	//FragPos = vec3(modelMatrix * vec4(aVertexPosition, 1.0));
 	//NormalMat = aVertexNormal;
