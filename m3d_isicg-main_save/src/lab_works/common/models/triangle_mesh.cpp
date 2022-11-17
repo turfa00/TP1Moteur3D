@@ -25,13 +25,16 @@ namespace M3D_ISICG
 		glUseProgram( p_glProgram );
 		Vec3f ambientColor = this->_material._ambient;
 		Vec3f diffuseColor = this->_material._diffuse;
+		Vec3f specularColor = this->_material._specular;
 		//Uniform values
 		GLfloat aColor = glGetUniformLocation( p_glProgram, "diffuseColor" );
 		GLfloat	  dColor	   = glGetUniformLocation( p_glProgram, "ambientColor" );
+		GLfloat sColor	  = glGetUniformLocation( p_glProgram, "specularColor" );
 		GLfloat	  shininess = glGetUniformLocation( p_glProgram, "shininessVal" );
 
 		glUniform3f( aColor, diffuseColor.x, diffuseColor.y, diffuseColor.z );
 		glUniform3f( dColor, ambientColor.x, ambientColor.y, ambientColor.z );
+		glUniform3f( sColor, specularColor.x, specularColor.y, specularColor.z );
 		glUniform1f( shininess, this->_material._shininess );
 
 		glBindVertexArray( _vao );

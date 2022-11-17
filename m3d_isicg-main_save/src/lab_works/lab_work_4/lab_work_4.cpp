@@ -3,6 +3,7 @@
 #include "utils/read_file.hpp"
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 namespace M3D_ISICG
 {
@@ -63,7 +64,7 @@ namespace M3D_ISICG
 		_initCamera();
 		
 		uMVP = glGetUniformLocation( programId, "uMVPMatrix" );
-		model = glGetUniformLocation( programId, "ModelMatrix" );
+		model = glGetUniformLocation( programId, "modelMatrix" );
 		view  = glGetUniformLocation( programId, "viewMatrix" );
 		normal = glGetUniformLocation( programId, "NormalMat" );
 		light  = glGetUniformLocation( programId, "lightPos" );
@@ -79,7 +80,6 @@ namespace M3D_ISICG
 	void LabWork4::animate( const float p_deltaTime ) 
 	{ 
 		float f = p_deltaTime + 2.f;
-		//glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr(uMVPMatrix));
 		_updateViewMatrix();
 		_updateProjectionMatrix();
 		glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix ) );
@@ -114,7 +114,6 @@ namespace M3D_ISICG
 		uMVP = glGetUniformLocation( programId, "uMVPMatrix" );
 		uMVPMatrix = _camera.getProjectionMatrix() * _camera.getViewMatrix() * modelMatrix;
 		glProgramUniformMatrix4fv(programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix ) );
-		//uMVPMatrix = uMVPMatrix * _camera.getViewMatrix(); 
 
 		view = glGetUniformLocation( programId, "viewMatrix" );
 		viewMatrix = _camera.getViewMatrix();
@@ -125,11 +124,10 @@ namespace M3D_ISICG
 		uMVP = glGetUniformLocation( programId, "uMVPMatrix" );
 		uMVPMatrix = _camera.getProjectionMatrix() * _camera.getViewMatrix() * modelMatrix;
 		glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix) );
-		//uMVPMatrix = uMVPMatrix * _camera.getProjectionMatrix(); 
 	}
 	
 	void LabWork4::_initCamera() { 
-		_camera.setPosition( Vec3f(0.f, 0.f, 0.f) );
+		_camera.setPosition( Vec3f(0.f, 1.f, 3.f) );
 		_camera.setScreenSize(1280, 720);
 	}
 

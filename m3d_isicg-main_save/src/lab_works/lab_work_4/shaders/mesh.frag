@@ -16,14 +16,11 @@ void main()
 	//Lambert Cosine Law
 	float lambertian = max(dot(N, L), 0.0);
 	float specular = 0.0;
-	//if(lambertian > 0.0){
-		//vec3 V = normalize(-vertexPos);
+	if(lambertian > 0.0){
+		vec3 V = normalize(-vertexPos);
 		//specular
-		//float specAngle = max(dot(Lo, V), 0.0);
-		//specular = pow(specAngle, shininessVal);
-	//}
-	fragColor = vec4(ambientColor + diffuseColor * lambertian, 1.0);
-	//fragColor = vec4(ambientColor + diffuseColor * lambertian, 1.0);
-
-	//fragColor = vec4( ambientColor * diffuseColor, 1.f );
+		float specAngle = max(dot(Lo, V), 0.0);
+		specular = pow(specAngle, shininessVal);
+	}
+	fragColor = vec4(ambientColor + diffuseColor * lambertian + specularColor * specular, 1.0);
 }
