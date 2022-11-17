@@ -29,7 +29,7 @@ namespace M3D_ISICG
 		std:: vector<GLuint> vertexindices;	
 		glm::mat4			 uMVPMatrix, viewMatrix, normalMatrix;
 		glm::mat4			 modelMatrix = glm::mat4(1.f);
-		Vec3f v = Vec3f( 1.f, 1.f, -1.f );
+		Vec3f				 v;
 
 		Camera				_camera;
 		GLint				uMVP, model, view, normal, light;

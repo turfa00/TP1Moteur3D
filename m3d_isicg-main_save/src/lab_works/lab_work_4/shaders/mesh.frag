@@ -1,57 +1,29 @@
 #version 450
 
-layout( location = 0 ) out vec4 fragColor;
-varying vec3 vertPos, normalInterp;
-
-uniform float Ka, Kd, Ks, shininessVal;
-uniform vec3 ambientColor, diffuseColor, lightPos;
-
-varying vec4 color;
-//in vec3 Normal, FragPos;
-
 precision mediump float;
+
+layout( location = 0 ) out vec4 fragColor;
+in vec3 normalInterp, vertexPos;
+
+uniform float shininessVal;
+uniform vec3 ambientColor, diffuseColor, specularColor, lightPos;
 
 void main()
 {
 	vec3 N = normalize(normalInterp);
-	vec3 L = normalize(lightPos - vertPos);
-
+	vec3 L = normalize(/*lightPos*/ - vertexPos);
+	vec3 Lo = reflect(-L, N);
 	//Lambert Cosine Law
-	float lambertian = max(dot(N,L),0.0);
+	float lambertian = max(dot(N, L), 0.0);
 	float specular = 0.0;
-	if(lambertian > 0.0){
-		vec3 R = reflect(-L, N);
-		vec3 V = normalize(-vertPos);
-		//specular term
-		float specAngle = max(dot(R, V), 0.0);
-		specular = pow(specAngle, shininessVal);
-	}
-
-	//fragColor = vec4(diffuseColor * lambertian, 1.0);
-	fragColor = vec4(ambientColor + diffuseColor * lambertian, 1.0);
-
-
-	//vec4 vertPos4 = modelMatrix * vec4( aVertexPosition, 1.0);
-	//vertPos = vec3(vertPos4) / vertPos4.w;
-	//normalInterp = vec3(NormalMat * vec4(aVertexNormal,0.0));
-	//vec3 N = normalize(normalInterp);
-	//vec3 L = normalize(lightPos - vertPos);
-
-	//float lambertian = max(dot(N,L), 0.0);
-	//float specular = 0.0;
-
 	//if(lambertian > 0.0){
-		//vec3 R = reflect(-L, N);
-		//vec3 V = normalize(-vertPos);
-
-		//float specAngle = max(dot(R,V), 0.0);
-		//specular = pow(specAngle, shininessVal);	
+		//vec3 V = normalize(-vertexPos);
+		//specular
+		//float specAngle = max(dot(Lo, V), 0.0);
+		//specular = pow(specAngle, shininessVal);
 	//}
-	//color = vec4(Ka * ambientColor + Kd * diffuseColor, 1.0);
-	
-	//color = vec4(ambientColor + diffuseColor, 1.f);
+	fragColor = vec4(ambientColor + diffuseColor * lambertian, 1.0);
+	//fragColor = vec4(ambientColor + diffuseColor * lambertian, 1.0);
 
 	//fragColor = vec4( ambientColor * diffuseColor, 1.f );
-	
-	//fragColor = vec4( color);
 }

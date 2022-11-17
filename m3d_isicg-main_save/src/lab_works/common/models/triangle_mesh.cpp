@@ -25,13 +25,10 @@ namespace M3D_ISICG
 		glUseProgram( p_glProgram );
 		Vec3f ambientColor = this->_material._ambient;
 		Vec3f diffuseColor = this->_material._diffuse;
-		//Vec3f Normal = this.
 		//Uniform values
 		GLfloat aColor = glGetUniformLocation( p_glProgram, "diffuseColor" );
 		GLfloat	  dColor	   = glGetUniformLocation( p_glProgram, "ambientColor" );
 		GLfloat	  shininess = glGetUniformLocation( p_glProgram, "shininessVal" );
-		//std::cout << this->_material._shininess << std::endl;
-		//glm::mat4	  f_lambertian = glm::dot( normalMatrix, normalMatrix );
 
 		glUniform3f( aColor, diffuseColor.x, diffuseColor.y, diffuseColor.z );
 		glUniform3f( dColor, ambientColor.x, ambientColor.y, ambientColor.z );
@@ -79,10 +76,10 @@ namespace M3D_ISICG
 		glVertexArrayVertexBuffer( _vao, 0, _vbo, 0, sizeof( Vertex ) );			
 
 		glVertexArrayAttribBinding( _vao, 0, 0 );
-		glVertexArrayAttribBinding( _vao, 1, 1 );
-		glVertexArrayAttribBinding( _vao, 2, 2 );
-		glVertexArrayAttribBinding( _vao, 3, 3 );
-		glVertexArrayAttribBinding( _vao, 4, 4 );
+		glVertexArrayAttribBinding( _vao, 1, 0 );
+		glVertexArrayAttribBinding( _vao, 2, 0 );
+		glVertexArrayAttribBinding( _vao, 3, 0 );
+		glVertexArrayAttribBinding( _vao, 4, 0 );
 
 		glNamedBufferData( _vbo, _vertices.size() * sizeof( Vertex ), _vertices.data(), GL_STATIC_DRAW );
 		glNamedBufferData( _ebo, _indices.size() * sizeof( unsigned int ), _indices.data(), GL_STATIC_DRAW );

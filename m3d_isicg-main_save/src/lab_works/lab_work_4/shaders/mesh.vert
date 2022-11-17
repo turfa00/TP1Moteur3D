@@ -6,23 +6,17 @@ layout( location = 2 ) in vec2 aVertexTexCoords;
 layout( location = 3 ) in vec3 aVertexTangent;
 layout( location = 4 ) in vec3 aVertexBitagent;
 
-//out vec3 diffuseColor;
-//out vec3 FragPos;
+out vec3 normalInterp, vertexPos;
+
 uniform mat4 NormalMat;
-varying vec3 normalInterp, vertPos;
 uniform mat4 modelMatrix, viewMatrix; //Model
 uniform mat4 uMVPMatrix; // Projection * View * Model
 
 
 void main()
 {
-	vec4 vertPos4 = modelMatrix * vec4( aVertexPosition, 1.f);
-	//vertPos = vec3(vertPos4) / vertPos4.w;
-	vertPos = aVertexPosition;
+	vec4 vertPos4 =  viewMatrix * modelMatrix * vec4( aVertexPosition, 1.f);
+	vertexPos = vertPos4.xyz;
 	normalInterp = vec3(NormalMat * vec4(aVertexNormal,0.f));
-	//gl_Position = uMVPMatrix * vertPos4;
 	gl_Position = uMVPMatrix * vec4( aVertexPosition, 1.f );
-	//FragPos = vec3(modelMatrix * vec4(aVertexPosition, 1.0));
-	//NormalMat = aVertexNormal;
-
 }

@@ -14,7 +14,7 @@ namespace M3D_ISICG
 
 		inline const Mat4f & getViewMatrix() const { return _viewMatrix; }
 		inline const Mat4f & getProjectionMatrix() const { return _projectionMatrix; }
-
+		
 		void setPosition( const Vec3f & p_position );
 		void setLookAt( const Vec3f & p_lookAt );
 		void setFovy( const float p_fovy );
