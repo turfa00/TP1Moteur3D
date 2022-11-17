@@ -40,6 +40,7 @@ namespace M3D_ISICG
 		glBindVertexArray( _vao );
 		glDrawElements( GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0 );
 		glBindVertexArray( 0 );
+		glUseProgram( 0 );
 		glEnable( GL_DEPTH_TEST );
 		glDepthFunc( GL_LESS );
 	}
