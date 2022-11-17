@@ -22,5 +22,6 @@ void main()
 		float specAngle = max(dot(Lo, V), 0.0);
 		specular = pow(specAngle, shininessVal);
 	}
+	//fragColor = vec4(diffuseColor + ambientColor + specularColor, 1.0);
 	fragColor = vec4(ambientColor + diffuseColor * lambertian + specularColor * specular, 1.0);
 }
