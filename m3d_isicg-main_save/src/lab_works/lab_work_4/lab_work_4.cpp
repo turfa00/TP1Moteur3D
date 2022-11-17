@@ -20,8 +20,9 @@ namespace M3D_ISICG
 		
 		glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );
 	
-		triangleMeshModel.load( "Bunny", "data/models/bunny/bunny.obj" );	
-
+		//triangleMeshModel.load( "Bunny", "data/models/bunny/bunny.obj" );	
+		triangleMeshModel.load( "Conference", "data/models/conference/conference.obj" );	
+		triangleMeshModel._transformation	= glm::scale( triangleMeshModel._transformation, glm::vec3(0.003f) );
 		const std::string vertexShaderStr	= readFile( _shaderFolder + "mesh.vert" );
 		const std::string fragmentShaderStr = readFile( _shaderFolder + "mesh.frag" );
 
@@ -67,8 +68,8 @@ namespace M3D_ISICG
 		model = glGetUniformLocation( programId, "modelMatrix" );
 		view  = glGetUniformLocation( programId, "viewMatrix" );
 		normal = glGetUniformLocation( programId, "NormalMat" );
-		light  = glGetUniformLocation( programId, "lightPos" );
-		v = Vec3f( 1.f, 1.f, -1.f );
+		//light  = glGetUniformLocation( programId, "lightPos" );
+		//v = Vec3f( 1.f, 1.f, -1.f );
 		glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix ) );
 		glProgramUniformMatrix4fv( programId, model, 1, GL_FALSE, glm::value_ptr( triangleMeshModel._transformation ) );
 		glDeleteShader( vertexShader );
@@ -86,11 +87,8 @@ namespace M3D_ISICG
 		if (modif_fov) {
 			_camera.setFovy( fov );
 		}
-		Mat4f test	 = _camera.getViewMatrix();
 		normalMatrix = glm::transpose( glm::inverse( _camera.getViewMatrix() * triangleMeshModel._transformation ) );
 		glProgramUniformMatrix4fv( programId, normal, 1, GL_FALSE, glm::value_ptr( normalMatrix ) );
-		v = Vec3f( 0.f, 0.f, 1.f );
-		glProgramUniform3fv( programId, light, 1, glm::value_ptr( v ) );
 	}
 
 	void LabWork4::render()

@@ -16,7 +16,7 @@ uniform mat4 uMVPMatrix; // Projection * View * Model
 void main()
 {
 	vec4 vertPos4 =  viewMatrix * modelMatrix * vec4( aVertexPosition, 1.f);
-	vertexPos = vertPos4.xyz;
+	vertexPos = vec3(vertPos4) / vertPos4.w;
 	normalInterp = vec3(NormalMat * vec4(aVertexNormal,0.f));
 	gl_Position = uMVPMatrix * vec4( aVertexPosition, 1.f );
 }
