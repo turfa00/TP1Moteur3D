@@ -21,7 +21,8 @@ namespace M3D_ISICG
 
 	void TriangleMesh::render( const GLuint p_glProgram ) const
 	{
-		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+		//glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+		glClear( GL_DEPTH_BUFFER_BIT );
 		glUseProgram( p_glProgram );
 		Vec3f ambientColor = this->_material._ambient;
 		Vec3f diffuseColor = this->_material._diffuse;
@@ -43,6 +44,7 @@ namespace M3D_ISICG
 		glUseProgram( 0 );
 		glEnable( GL_DEPTH_TEST );
 		glDepthFunc( GL_LESS );
+		//glDepthFunc( GL_LEQUAL );
 	}
 
 	void TriangleMesh::cleanGL()

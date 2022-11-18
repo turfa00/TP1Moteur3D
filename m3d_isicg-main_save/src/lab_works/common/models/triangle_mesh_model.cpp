@@ -43,7 +43,7 @@ namespace M3D_ISICG
 	void TriangleMeshModel::render( const GLuint p_glProgram ) const
 	{
 		//std::cout << _meshes.size() << std::endl;
-		for ( size_t i = 0; i < 28; i++ )
+		for ( size_t i = 0; i < _meshes.size(); i++ )
 		{
 			_meshes[ i ].render( p_glProgram );
 		}
