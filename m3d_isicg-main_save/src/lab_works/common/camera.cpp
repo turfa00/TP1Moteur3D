@@ -94,4 +94,7 @@ namespace M3D_ISICG
 		_computeViewMatrix();
 	}
 
+	Vec3f Camera::getPosition() { return _position;
+	}
+
 } // namespace M3D_ISICG

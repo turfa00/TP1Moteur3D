@@ -24,6 +24,9 @@ namespace M3D_ISICG
 		//glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		glClear( GL_DEPTH_BUFFER_BIT );
 		glUseProgram( p_glProgram );
+		glEnable( GL_DEPTH_TEST );
+		glDepthFunc( GL_LESS );
+		//glDepthMask( GL_FALSE );
 		Vec3f ambientColor = this->_material._ambient;
 		Vec3f diffuseColor = this->_material._diffuse;
 		Vec3f specularColor = this->_material._specular;
@@ -42,8 +45,8 @@ namespace M3D_ISICG
 		glDrawElements( GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0 );
 		glBindVertexArray( 0 );
 		glUseProgram( 0 );
-		glEnable( GL_DEPTH_TEST );
-		glDepthFunc( GL_LESS );
+		
+		
 		//glDepthFunc( GL_LEQUAL );
 	}
 
