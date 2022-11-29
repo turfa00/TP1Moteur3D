@@ -24,6 +24,9 @@ namespace M3D_ISICG
 		glUseProgram( p_glProgram );
 		Vec3f ambientColor = this->_material._ambient;
 		Vec3f diffuseColor = this->_material._diffuse;
+		if (this->_material._hasDiffuseMap) {
+			//diffuseColor = this->_material._diffuseMap;
+		}
 		Vec3f specularColor = this->_material._specular;
 		//Uniform values
 		GLfloat aColor = glGetUniformLocation( p_glProgram, "diffuseColor" );

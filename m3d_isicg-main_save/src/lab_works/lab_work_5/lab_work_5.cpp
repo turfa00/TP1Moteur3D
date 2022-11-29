@@ -24,6 +24,8 @@ namespace M3D_ISICG
 		//triangleMeshModel.load( "Conference", "data/models/conference/conference.obj" );	
 		triangleMeshModel.load( "Bad_Bunny", "data/models/bunny_2/bunny_2.obj" );
 		triangleMeshModel._transformation	= glm::scale( triangleMeshModel._transformation, glm::vec3(1.f) );
+		//aiString b( "bunny_diffuse.png" );
+		//triangleMeshModel._loadTexture( b, "Diffuse" );
 		const std::string vertexShaderStr	= readFile( _shaderFolder + "mesh_texture.vert" );
 		const std::string fragmentShaderStr = readFile( _shaderFolder + "mesh_texture.frag" );
 

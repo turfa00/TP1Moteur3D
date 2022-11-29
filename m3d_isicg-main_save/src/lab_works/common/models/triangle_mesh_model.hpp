@@ -20,13 +20,13 @@ namespace M3D_ISICG
 		void load( const std::string & p_name, const FilePath & p_filePath );
 
 		void render( const GLuint p_glProgram ) const override;
-
+		Texture _loadTexture( const aiString & p_path, const std::string & p_type );
 		void cleanGL() override;
 
 	  private:
 		void	 _loadMesh( const aiMesh * const p_mesh, const aiScene * const p_scene );
 		Material _loadMaterial( const aiMaterial * const p_mtl );
-		Texture	 _loadTexture( const aiString & p_path, const std::string & p_type );
+		//Texture	 _loadTexture( const aiString & p_path, const std::string & p_type );
 
 	  public:
 		std::vector<TriangleMesh> _meshes;		   // A model can contain several meshes.
