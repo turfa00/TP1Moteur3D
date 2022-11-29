@@ -23,16 +23,20 @@ namespace M3D_ISICG
 	{
 		glUseProgram( p_glProgram );
 		Vec3f ambientColor = this->_material._ambient;
-		Vec3f diffuseColor = this->_material._diffuse;
-		if (this->_material._hasDiffuseMap) {
-			//diffuseColor = this->_material._diffuseMap;
-		}
+		Vec3f diffuseColor = Vec3f(this->_material._diffuse);
+		/* if ( this->_material._hasDiffuseMap )
+		{
+			diffuseColor = this->_material._diffuse;
+		}*/
 		Vec3f specularColor = this->_material._specular;
+		bool  matHasDiffuseMap = this->_material._hasDiffuseMap;
 		//Uniform values
 		GLfloat aColor = glGetUniformLocation( p_glProgram, "diffuseColor" );
 		GLfloat	  dColor	   = glGetUniformLocation( p_glProgram, "ambientColor" );
 		GLfloat sColor	  = glGetUniformLocation( p_glProgram, "specularColor" );
 		GLfloat	  shininess = glGetUniformLocation( p_glProgram, "shininessVal" );
+		GLint	  mDiffuseMap = glGetUniformLocation( p_glProgram, "uHasDiffuseMap" );
+		//glBindTextureUnit( 0, mDiffuseMap );
 
 		glUniform3f( aColor, diffuseColor.x, diffuseColor.y, diffuseColor.z );
 		glUniform3f( dColor, ambientColor.x, ambientColor.y, ambientColor.z );
