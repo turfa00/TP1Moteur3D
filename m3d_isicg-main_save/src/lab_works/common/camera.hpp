@@ -16,6 +16,7 @@ namespace M3D_ISICG
 		inline const Mat4f & getProjectionMatrix() const { return _projectionMatrix; }
 		
 		Vec3f		getPosition();
+		Vec3f		getLightPosition();
 		void setPosition( const Vec3f & p_position );
 		void setLookAt( const Vec3f & p_lookAt );
 		void setFovy( const float p_fovy );

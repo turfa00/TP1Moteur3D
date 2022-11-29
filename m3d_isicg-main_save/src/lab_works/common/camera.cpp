@@ -97,4 +97,7 @@ namespace M3D_ISICG
 	Vec3f Camera::getPosition() { return _position;
 	}
 
+	Vec3f Camera::getLightPosition() { return _position - _invDirection;
+	}
+
 } // namespace M3D_ISICG

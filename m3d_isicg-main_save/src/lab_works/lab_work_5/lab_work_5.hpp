@@ -1,5 +1,5 @@
-#ifndef __LAB_WORK_4_HPP__
-#define __LAB_WORK_4_HPP__
+#ifndef __LAB_WORK_5_HPP__
+#define __LAB_WORK_5_HPP__
 
 #include "GL/gl3w.h"
 #include "common/base_lab_work.hpp"
@@ -16,11 +16,11 @@
 
 namespace M3D_ISICG
 {
-	class LabWork4 : public BaseLabWork
+	class LabWork5 : public BaseLabWork
 	{
 	  public:
-		LabWork4() : BaseLabWork() {}
-		~LabWork4();
+		LabWork5() : BaseLabWork() {}
+		~LabWork5();
 		GLuint programId;
 		GLint  compiled, linked;
 		GLfloat				 _time = 0.f, luminosite = 1.f, lum = 1.f, fov;
@@ -29,6 +29,7 @@ namespace M3D_ISICG
 		std:: vector<GLuint> vertexindices;	
 		glm::mat4			 uMVPMatrix, viewMatrix, normalMatrix;
 		glm::mat4			 modelMatrix = glm::mat4(1.f);
+		Vec3f				 v;
 
 		Camera				_camera;
 		GLint				uMVP, model, view, normal, light;
@@ -64,4 +65,4 @@ namespace M3D_ISICG
 	};
 } // namespace M3D_ISICG
 
-#endif // __LAB_WORK_4_HPP__
+#endif // __LAB_WORK_5_HPP__

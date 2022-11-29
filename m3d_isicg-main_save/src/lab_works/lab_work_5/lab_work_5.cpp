@@ -1,5 +1,5 @@
 #include "imgui.h"
-#include "lab_work_4.hpp"
+#include "lab_work_5.hpp"
 #include "utils/read_file.hpp"
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
@@ -7,16 +7,16 @@
 
 namespace M3D_ISICG
 {
-	const std::string LabWork4::_shaderFolder = "src/lab_works/lab_work_4/shaders/";
-	LabWork4::~LabWork4()
+	const std::string LabWork5::_shaderFolder = "src/lab_works/lab_work_5/shaders/";
+	LabWork5::~LabWork5()
 	{
 		//triangleMesh.cleanGL();
 		triangleMeshModel.cleanGL();
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	}
-	bool LabWork4::init()
+	bool LabWork5::init()
 	{
-		std::cout << "Initializing lab work 4..." << std::endl;
+		std::cout << "Initializing lab work 5..." << std::endl;
 		
 		glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );
 	
@@ -81,7 +81,7 @@ namespace M3D_ISICG
 		std::cout << "Done!" << std::endl;
 		return true;
 	}
-	void LabWork4::animate( const float p_deltaTime ) 
+	void LabWork5::animate( const float p_deltaTime ) 
 	{ 
 		_updateViewMatrix();
 		_updateProjectionMatrix();
@@ -96,13 +96,13 @@ namespace M3D_ISICG
 		//std::cout << glm::to_string(_camera.getPosition()) << std::endl; 
 	}
 
-	void LabWork4::render()
+	void LabWork5::render()
 	{
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		triangleMeshModel.render(programId);
 	}
 
-	void LabWork4::displayUI()
+	void LabWork5::displayUI()
 	{
 		modif_lum = ImGui::SliderFloat( "Luminosite", &lum, 0.f, 1.0f, "" );
 		modif_col = ImGui::ColorEdit3( "Background", glm::value_ptr(_bgColor) );
@@ -114,7 +114,7 @@ namespace M3D_ISICG
 		ImGui::End();
 	}
 
-	void LabWork4::_updateViewMatrix() { 
+	void LabWork5::_updateViewMatrix() { 
 		uMVP = glGetUniformLocation( programId, "uMVPMatrix" );
 		uMVPMatrix = _camera.getProjectionMatrix() * _camera.getViewMatrix() * triangleMeshModel._transformation;
 		glProgramUniformMatrix4fv(programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix ) );
@@ -124,18 +124,18 @@ namespace M3D_ISICG
 		glProgramUniformMatrix4fv( programId, view, 1, GL_FALSE, glm::value_ptr( viewMatrix ) );
 	}
 
-	void LabWork4::_updateProjectionMatrix() { 
+	void LabWork5::_updateProjectionMatrix() { 
 		uMVP = glGetUniformLocation( programId, "uMVPMatrix" );
 		uMVPMatrix = _camera.getProjectionMatrix() * _camera.getViewMatrix() * triangleMeshModel._transformation;
 		glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix) );
 	}
 	
-	void LabWork4::_initCamera() { 
+	void LabWork5::_initCamera() { 
 		_camera.setPosition( Vec3f(0.f, 0.f, 0.f) );
 		_camera.setScreenSize(_windowWidth, _windowHeight);
 	}
 
-	void LabWork4::handleEvents( const SDL_Event & p_event )
+	void LabWork5::handleEvents( const SDL_Event & p_event )
 	{
 		if ( p_event.type == SDL_KEYDOWN )
 		{
