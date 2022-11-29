@@ -21,10 +21,11 @@ namespace M3D_ISICG
 		glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );
 	
 		//triangleMeshModel.load( "Bunny", "data/models/bunny/bunny.obj" );	
-		triangleMeshModel.load( "Conference", "data/models/conference/conference.obj" );	
-		triangleMeshModel._transformation	= glm::scale( triangleMeshModel._transformation, glm::vec3(0.003f) );
-		const std::string vertexShaderStr	= readFile( _shaderFolder + "mesh.vert" );
-		const std::string fragmentShaderStr = readFile( _shaderFolder + "mesh.frag" );
+		//triangleMeshModel.load( "Conference", "data/models/conference/conference.obj" );	
+		triangleMeshModel.load( "Bad_Bunny", "data/models/bunny_2/bunny_2.obj" );
+		triangleMeshModel._transformation	= glm::scale( triangleMeshModel._transformation, glm::vec3(1.f) );
+		const std::string vertexShaderStr	= readFile( _shaderFolder + "mesh_texture.vert" );
+		const std::string fragmentShaderStr = readFile( _shaderFolder + "mesh_texture.frag" );
 
 		GLuint vertexShader	  = glCreateShader( GL_VERTEX_SHADER );
 		GLuint fragmentShader = glCreateShader( GL_FRAGMENT_SHADER );
@@ -131,7 +132,7 @@ namespace M3D_ISICG
 	}
 	
 	void LabWork5::_initCamera() { 
-		_camera.setPosition( Vec3f(0.f, 0.f, 0.f) );
+		_camera.setPosition( Vec3f(0.f, 0.f, 0.2f) );
 		_camera.setScreenSize(_windowWidth, _windowHeight);
 	}
 

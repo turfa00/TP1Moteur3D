@@ -8,6 +8,9 @@ in vec3 normalInterp, vertexPos;
 uniform float shininessVal;
 uniform vec3 ambientColor, diffuseColor, specularColor, lightPosition;
 
+uniform bool uHasDiffuseMap;
+layout (binding = 1) uniform sampler2D uDiffuseMap;
+
 vec3 changerNormale(vec3 normal, vec3 lightPosition){
 	normal = normalize(normal);
 	lightPosition = normalize(lightPosition);
