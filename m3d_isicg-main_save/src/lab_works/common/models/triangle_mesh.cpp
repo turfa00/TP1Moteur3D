@@ -21,33 +21,37 @@ namespace M3D_ISICG
 
 	void TriangleMesh::render( const GLuint p_glProgram ) const
 	{
+		glBindTextureUnit( 1, this->_material._diffuseMap._id );
 		glUseProgram( p_glProgram );
+
+		//Texture
+		GLuint textureId = this->_material._diffuseMap._id;
+		glBindTextureUnit( 1, textureId );
 		Vec3f ambientColor = this->_material._ambient;
 		Vec3f diffuseColor = Vec3f(this->_material._diffuse);
-		/* if ( this->_material._hasDiffuseMap )
-		{
-			diffuseColor = this->_material._diffuse;
-		}*/
 		Vec3f specularColor = this->_material._specular;
-		bool  matHasDiffuseMap = this->_material._hasDiffuseMap;
+		bool  uHasDiffuseMap = this->_material._hasDiffuseMap;
+		//GLuint diffuseMap		= this->_material._diffuseMap._id;
 		//Uniform values
 		GLfloat aColor = glGetUniformLocation( p_glProgram, "diffuseColor" );
 		GLfloat	  dColor	   = glGetUniformLocation( p_glProgram, "ambientColor" );
 		GLfloat sColor	  = glGetUniformLocation( p_glProgram, "specularColor" );
 		GLfloat	  shininess = glGetUniformLocation( p_glProgram, "shininessVal" );
-		GLint	  mDiffuseMap = glGetUniformLocation( p_glProgram, "uHasDiffuseMap" );
-		//glBindTextureUnit( 0, mDiffuseMap );
+		GLuint	  mDiffuseMap = glGetUniformLocation( p_glProgram, "uHasDiffuseMap" );
+		//GLuint	  diffuseM	   = glGetUniformLocation( p_glProgram, "uDiffuseMap" );
 
 		glUniform3f( aColor, diffuseColor.x, diffuseColor.y, diffuseColor.z );
 		glUniform3f( dColor, ambientColor.x, ambientColor.y, ambientColor.z );
 		glUniform3f( sColor, specularColor.x, specularColor.y, specularColor.z );
 		glUniform1f( shininess, this->_material._shininess );
+		glUniform1f( mDiffuseMap, this->_material._hasDiffuseMap );
+		//glUniform1i( texture, this->_material._diffuseMap._id );
 
 		glBindVertexArray( _vao );
 		glDrawElements( GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0 );
 		glBindVertexArray( 0 );
 		glUseProgram( 0 );
-
+		glBindTextureUnit( 0, this->_material._diffuseMap._id );
 	}
 
 	void TriangleMesh::cleanGL()

@@ -3,13 +3,14 @@
 precision mediump float;
 
 layout( location = 0 ) out vec4 fragColor;
+layout (binding = 1) uniform sampler2D uDiffuseMap;
 in vec3 normalInterp, vertexPos;
+in vec2 diffuseTexCoords;
 
 uniform float shininessVal;
 uniform vec3 ambientColor, diffuseColor, specularColor, lightPosition;
 
 uniform bool uHasDiffuseMap;
-layout (binding = 1) uniform sampler2D uDiffuseMap;
 
 vec3 changerNormale(vec3 normal, vec3 lightPosition){
 	normal = normalize(normal);
@@ -35,11 +36,11 @@ void main()
 		float specAngle = max(dot(Lo, V), 0.0);
 		specular = pow(specAngle, shininessVal);
 	}
-	if(!uHasDiffuseMap){
-		fragColor = vec4(ambientColor + specularColor * specular, 1.0);
+	if(uHasDiffuseMap){
+		vec4 color = texture(uDiffuseMap, diffuseTexCoords);
+		fragColor = color;
 	}	
 	else{
-	//fragColor = vec4(diffuseColor + ambientColor + specularColor, 1.0);
 	fragColor = vec4(ambientColor + diffuseColor * lambertian + specularColor * specular, 1.0);
 	}
 }

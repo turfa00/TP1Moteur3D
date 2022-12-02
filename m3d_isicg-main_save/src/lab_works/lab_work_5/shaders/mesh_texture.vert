@@ -7,6 +7,7 @@ layout( location = 3 ) in vec3 aVertexTangent;
 layout( location = 4 ) in vec3 aVertexBitagent;
 
 out vec3 normalInterp, vertexPos;
+out vec2 diffuseTexCoords;
 
 uniform mat4 NormalMat;
 uniform mat4 modelMatrix, viewMatrix; //Model
@@ -20,5 +21,6 @@ void main()
 	vec4 vertPos4 =  viewMatrix * modelMatrix * vec4( aVertexPosition, 1.f);
 	vertexPos = vec3(vertPos4) / vertPos4.w;
 	normalInterp = vec3(NormalMat * vec4(aVertexNormal,0.f));
+	diffuseTexCoords = vec2(aVertexPosition.x, aVertexPosition.y);
 	gl_Position = uMVPMatrix * vec4( aVertexPosition, 1.f );
 }

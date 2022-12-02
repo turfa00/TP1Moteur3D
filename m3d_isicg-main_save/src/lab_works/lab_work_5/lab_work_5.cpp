@@ -76,7 +76,6 @@ namespace M3D_ISICG
 		glDeleteShader( vertexShader );
 		glDeleteShader( fragmentShader );
 
-		
 		glEnable( GL_DEPTH_TEST );
 
 		std::cout << "Done!" << std::endl;
