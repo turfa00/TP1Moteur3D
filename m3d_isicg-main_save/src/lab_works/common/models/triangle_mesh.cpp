@@ -21,8 +21,8 @@ namespace M3D_ISICG
 
 	void TriangleMesh::render( const GLuint p_glProgram ) const
 	{
-		glBindTextureUnit( 1, this->_material._diffuseMap._id );
 		glUseProgram( p_glProgram );
+		//glBindTextureUnit( 1, this->_material._diffuseMap._id );
 
 		//Texture
 		GLuint textureId = this->_material._diffuseMap._id;
@@ -51,7 +51,7 @@ namespace M3D_ISICG
 		glDrawElements( GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0 );
 		glBindVertexArray( 0 );
 		glUseProgram( 0 );
-		glBindTextureUnit( 0, this->_material._diffuseMap._id );
+		//glBindTextureUnit( 0, this->_material._diffuseMap._id );
 	}
 
 	void TriangleMesh::cleanGL()

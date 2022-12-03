@@ -9,7 +9,6 @@ in vec2 diffuseTexCoords;
 
 uniform float shininessVal;
 uniform vec3 ambientColor, diffuseColor, specularColor, lightPosition;
-
 uniform bool uHasDiffuseMap;
 
 vec3 changerNormale(vec3 normal, vec3 lightPosition){
