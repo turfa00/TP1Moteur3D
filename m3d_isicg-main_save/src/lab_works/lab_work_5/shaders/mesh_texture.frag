@@ -12,13 +12,13 @@ uniform float shininessVal;
 in vec3 normalInterp, vertexPos;
 in vec2 textureCoords;
 
-uniform vec3 ambientColor, diffuseColor, specularColor, lightPosition;
-uniform bool uHasDiffuseMap, uHasAmbientMap,uHasSpecularMap, uHasShininess;
+uniform vec3 ambientColor, diffuseColor, specularColor, lightDirection;
+uniform bool uHasDiffuseMap,uHasSpecularMap, uHasShininessMap;
 
-vec3 changerNormale(vec3 normal, vec3 lightPosition){
+vec3 changerNormale(vec3 normal, vec3 lightDirection){
 	normal = normalize(normal);
-	lightPosition = normalize(lightPosition);
-	if(dot(lightPosition, normal) < 0){
+	lightDirection = normalize(lightDirection);
+	if(dot(lightDirection, normal) < 0){
 		return normal * -1;
 	}
 	return normal;
@@ -26,37 +26,42 @@ vec3 changerNormale(vec3 normal, vec3 lightPosition){
 
 void main()
 {
-	vec3 N = changerNormale(normalInterp, lightPosition);
+	vec3 N = changerNormale(normalInterp, lightDirection);
 	//vec3 N = normalize(normalInterp);
-	vec3 L = normalize(lightPosition - vertexPos);
+	vec3 L = normalize(lightDirection - vertexPos);
 	vec3 Lo = reflect(-L, N);
 	//Lambert Cosine Law
 	float lambertian = max(dot(N, L), 0.0);
-	float specular = 0.0;
+	float specular = 0.0, specular2 = 0.0;
+	float specAngle, shinVal2;
+	//shinVal2 = texture(uShininessMap, textureCoords).x;
 	if(lambertian > 0.0){
 		vec3 V = normalize(-vertexPos);
 		//specular
-		float specAngle = max(dot(Lo, V), 0.0);
+		specAngle = max(dot(Lo, V), 0.0);
 		specular = pow(specAngle, shininessVal);
 	}
-	if(uHasDiffuseMap || uHasAmbientMap || uHasSpecularMap){
-		vec4 color;
+	vec4 color;
+	if(uHasDiffuseMap || uHasSpecularMap || uHasShininessMap){
 		if(uHasDiffuseMap){
 			color += texture(uDiffuseMap, textureCoords);
 		}
-		if(uHasAmbientMap){
-			color += texture(uAmbientMap, textureCoords);
-		}
-		if(uHasSpecularMap){
-			//vec3 specularMap = vec3(uSpecularMap);
-			color += texture(uSpecularMap, textureCoords);
-		}
-		if(uHasShininess){
-			color += texture(uShininessMap, textureCoords);
+		if(uHasSpecularMap || uHasShininessMap){
+			vec3 spec = (texture(uSpecularMap, textureCoords).xxx);
+			float shinVal = texture(uShininessMap, textureCoords).x;
+			/*if(uHasShininessMap){
+				specular = pow(specAngle, shinVal);
+			}
+			else{
+				specular = 1.f;
+			}*/
+			color += vec4(spec * specular, 0.f);
 		}
 		fragColor = color;
+		//fragColor = vec4(vec3(specAngle), 1.0); //FOR DEBUGGING
 	}	
 	else{
-	fragColor = vec4(ambientColor + diffuseColor * lambertian + specularColor * specular, 1.0);
+		color += vec4(ambientColor + diffuseColor * lambertian + specularColor * specular, 1.0);
+		fragColor = color;
 	}
 }

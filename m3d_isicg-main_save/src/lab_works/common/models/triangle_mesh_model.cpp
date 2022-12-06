@@ -293,12 +293,19 @@ namespace M3D_ISICG
 			glTextureStorage2D( texture._id, 1, internalFormat, image._width, image._height );
 			glTextureParameteri( texture._id, GL_TEXTURE_WRAP_S, GL_REPEAT );
 			glTextureParameteri( texture._id, GL_TEXTURE_WRAP_T, GL_REPEAT );
-			glTextureParameteri( texture._id, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-			glTextureParameteri( texture._id, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+
+			GLsizei levels = log2( std::max( image._width, image._height ) );
+			glTextureParameteri( texture._id, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
+			glTextureParameteri( texture._id, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+			
+			glTextureStorage2D( texture._id, levels, internalFormat, image._width, image._height );
 
 			// Fill the texture.
 			glTextureSubImage2D(
 				texture._id, 0, 0, 0, image._width, image._height, format, GL_UNSIGNED_BYTE, image._pixels );
+			//NC
+			
+			glGenerateTextureMipmap( texture._id );
 		}
 
 		// Save loaded texture.

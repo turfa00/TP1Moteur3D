@@ -74,6 +74,7 @@ namespace M3D_ISICG
 		//v = Vec3f( 1.f, 1.f, -1.f );
 		glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix ) );
 		glProgramUniformMatrix4fv( programId, model, 1, GL_FALSE, glm::value_ptr( triangleMeshModel._transformation ) );
+		glProgramUniform3f( programId, light, 0.f, 0.f, 0.f);
 		glDeleteShader( vertexShader );
 		glDeleteShader( fragmentShader );
 
@@ -93,8 +94,7 @@ namespace M3D_ISICG
 		
 		normalMatrix = glm::transpose( glm::inverse( _camera.getViewMatrix() * triangleMeshModel._transformation ) );
 		glProgramUniformMatrix4fv( programId, normal, 1, GL_FALSE, glm::value_ptr( normalMatrix ) );
-		glProgramUniform3f( programId, light, _camera.getLightPosition().x, _camera.getLightPosition().y, _camera.getLightPosition().z );
-		//std::cout << glm::to_string(_camera.getPosition()) << std::endl; 
+		//glProgramUniform3f( programId, light, _camera.getLightDirection().x, _camera.getLightDirection().y, _camera.getLightDirection().z );
 	}
 
 	void LabWork5::render()

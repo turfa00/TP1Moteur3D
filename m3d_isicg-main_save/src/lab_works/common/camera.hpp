@@ -16,7 +16,7 @@ namespace M3D_ISICG
 		inline const Mat4f & getProjectionMatrix() const { return _projectionMatrix; }
 		
 		Vec3f		getPosition();
-		Vec3f		getLightPosition();
+		Vec3f		getLightDirection();
 		void setPosition( const Vec3f & p_position );
 		void setLookAt( const Vec3f & p_lookAt );
 		void setFovy( const float p_fovy );
@@ -50,7 +50,7 @@ namespace M3D_ISICG
 		float _aspectRatio	= float( _screenWidth ) / _screenHeight;
 		float _fovy			= 60.f;
 		float _zNear		= 0.1f;
-		float _zFar			= 1000.f;
+		float _zFar			= 10000.f;
 
 		Mat4f _viewMatrix		= MAT4F_ID;
 		Mat4f _projectionMatrix = MAT4F_ID;

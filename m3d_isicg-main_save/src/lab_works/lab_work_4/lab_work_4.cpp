@@ -92,8 +92,7 @@ namespace M3D_ISICG
 		
 		normalMatrix = glm::transpose( glm::inverse( _camera.getViewMatrix() * triangleMeshModel._transformation ) );
 		glProgramUniformMatrix4fv( programId, normal, 1, GL_FALSE, glm::value_ptr( normalMatrix ) );
-		glProgramUniform3f( programId, light, _camera.getLightPosition().x, _camera.getLightPosition().y, _camera.getLightPosition().z );
-		//std::cout << glm::to_string(_camera.getPosition()) << std::endl; 
+		glProgramUniform3f( programId, light, _camera.getLightDirection().x, _camera.getLightDirection().y, _camera.getLightDirection().z );
 	}
 
 	void LabWork4::render()

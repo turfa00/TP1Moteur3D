@@ -28,11 +28,13 @@ namespace M3D_ISICG
 		bool  uHasDiffuseMap = this->_material._hasDiffuseMap;
 		bool  uHasAmbientMap = this->_material._hasAmbientMap;
 		bool  uHasSpecularMap = this->_material._hasSpecularMap;
+		bool  uHasShininessMap = this->_material._hasShininessMap;
 		//GLuint diffuseMap		= this->_material._diffuseMap._id;
 		if (uHasDiffuseMap || uHasAmbientMap || uHasSpecularMap) {
 			GLuint textureDiffuseId = this->_material._diffuseMap._id;
 			GLuint textureAmbientId = this->_material._ambientMap._id;
 			GLuint textureSpecularId = this->_material._specularMap._id;
+			GLuint textureShininessId = this->_material._shininessMap._id;
 			if (uHasDiffuseMap) {
 				glBindTextureUnit( 1, textureDiffuseId );
 			}
@@ -41,6 +43,9 @@ namespace M3D_ISICG
 			}
 			if (uHasSpecularMap) {
 				glBindTextureUnit( 3, textureSpecularId );
+			}
+			if (uHasShininessMap) {
+				glBindTextureUnit( 4, textureShininessId );
 			}
 		}
 		//this->_material.ma
@@ -52,7 +57,7 @@ namespace M3D_ISICG
 		GLuint	  mDiffuseMap = glGetUniformLocation( p_glProgram, "uHasDiffuseMap" );
 		GLuint	  mAmbientMap  = glGetUniformLocation( p_glProgram, "uHasAmbientMap" );
 		GLuint	  mSpecularMap = glGetUniformLocation( p_glProgram, "uHasSpecularMap" );
-		//GLuint	  diffuseM	   = glGetUniformLocation( p_glProgram, "uDiffuseMap" );
+		GLuint	  mShininessMap = glGetUniformLocation( p_glProgram, "uHasShininessMap" );
 
 		glUniform3f( aColor, diffuseColor.x, diffuseColor.y, diffuseColor.z );
 		glUniform3f( dColor, ambientColor.x, ambientColor.y, ambientColor.z );
@@ -61,6 +66,7 @@ namespace M3D_ISICG
 		glUniform1f( mDiffuseMap, this->_material._hasDiffuseMap );
 		glUniform1f( mAmbientMap, this->_material._hasAmbientMap );
 		glUniform1f( mSpecularMap, this->_material._hasSpecularMap );
+		glUniform1f( mShininessMap, this->_material._hasShininessMap );
 
 		glBindVertexArray( _vao );
 		glDrawElements( GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0 );
@@ -75,6 +81,9 @@ namespace M3D_ISICG
 			}
 			if (uHasSpecularMap) {
 				glBindTextureUnit( 0, this->_material._specularMap._id );
+			}
+			if (uHasShininessMap) {
+				glBindTextureUnit( 0, this->_material._shininessMap._id );
 			}
 		}
 	}

@@ -6,12 +6,12 @@ layout( location = 0 ) out vec4 fragColor;
 in vec3 normalInterp, vertexPos;
 
 uniform float shininessVal;
-uniform vec3 ambientColor, diffuseColor, specularColor, lightPosition;
+uniform vec3 ambientColor, diffuseColor, specularColor, lightDirection;
 
-vec3 changerNormale(vec3 normal, vec3 lightPosition){
+vec3 changerNormale(vec3 normal, vec3 lightDirection){
 	normal = normalize(normal);
-	lightPosition = normalize(lightPosition);
-	if(dot(lightPosition, normal) < 0){
+	lightDirection = normalize(lightDirection);
+	if(dot(lightDirection, normal) < 0){
 		return normal * -1;
 	}
 	return normal;
@@ -19,9 +19,9 @@ vec3 changerNormale(vec3 normal, vec3 lightPosition){
 
 void main()
 {
-	vec3 N = changerNormale(normalInterp, lightPosition);
+	vec3 N = changerNormale(normalInterp, lightDirection);
 	//vec3 N = normalize(normalInterp);
-	vec3 L = normalize(lightPosition - vertexPos);
+	vec3 L = normalize(lightDirection - vertexPos);
 	vec3 Lo = reflect(-L, N);
 	//Lambert Cosine Law
 	float lambertian = max(dot(N, L), 0.0);
