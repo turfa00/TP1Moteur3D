@@ -22,6 +22,7 @@ namespace M3D_ISICG
 	
 		//triangleMeshModel.load( "Bunny", "data/models/bunny/bunny.obj" );	
 		//triangleMeshModel.load( "Conference", "data/models/conference/conference.obj" );	
+		//triangleMeshModel.load( "Bad_Bunny", "data/models/bunny_2/bunny_2.obj" );
 		triangleMeshModel.load( "Bad_Bunny", "data/models/sponza/sponza.obj" );
 		triangleMeshModel._transformation	= glm::scale( triangleMeshModel._transformation, glm::vec3(1.f) );
 		const std::string vertexShaderStr	= readFile( _shaderFolder + "mesh_texture.vert" );
