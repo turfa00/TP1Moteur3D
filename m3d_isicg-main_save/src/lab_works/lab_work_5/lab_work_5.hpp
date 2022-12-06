@@ -33,8 +33,8 @@ namespace M3D_ISICG
 
 		Camera				_camera;
 		GLint				uMVP, model, view, normal, light;
-		float				_cameraSpeed	   = 0.1f;
-		float				_cameraSensitivity = 0.1f;
+		float				_cameraSpeed	   = 1.6f; //Was 0.1f
+		float				_cameraSensitivity = 0.2f; //Was 0.1f
 
 		TriangleMeshModel triangleMeshModel;
 		//TriangleMesh	  triangleMesh;
