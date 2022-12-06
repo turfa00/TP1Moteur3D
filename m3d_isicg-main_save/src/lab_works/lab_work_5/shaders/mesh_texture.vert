@@ -21,6 +21,6 @@ void main()
 	vec4 vertPos4 =  viewMatrix * modelMatrix * vec4( aVertexPosition, 1.f);
 	vertexPos = vec3(vertPos4) / vertPos4.w;
 	normalInterp = vec3(NormalMat * vec4(aVertexNormal,0.f));
-	diffuseTexCoords = vec2(aVertexPosition.x, aVertexPosition.y);
+	diffuseTexCoords = aVertexTexCoords;
 	gl_Position = uMVPMatrix * vec4( aVertexPosition, 1.f );
 }
