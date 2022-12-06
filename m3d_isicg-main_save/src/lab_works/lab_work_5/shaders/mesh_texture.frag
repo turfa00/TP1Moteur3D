@@ -7,13 +7,14 @@ layout (binding = 1) uniform sampler2D uDiffuseMap;
 layout (binding = 2) uniform sampler2D uAmbientMap;
 layout (binding = 3) uniform sampler2D uSpecularMap;
 layout (binding = 4) uniform sampler2D uShininessMap;
+layout(binding = 5) uniform sampler2D uNormalMap;
 uniform float shininessVal;
 
 in vec3 normalInterp, vertexPos;
 in vec2 textureCoords;
 
 uniform vec3 ambientColor, diffuseColor, specularColor, lightDirection;
-uniform bool uHasDiffuseMap,uHasSpecularMap, uHasShininessMap;
+uniform bool uHasDiffuseMap,uHasSpecularMap, uHasShininessMap, uHasNormalMap;
 
 vec3 changerNormale(vec3 normal, vec3 lightDirection){
 	normal = normalize(normal);
@@ -56,6 +57,9 @@ void main()
 				specular = 1.f;
 			}*/
 			color += vec4(spec * specular, 0.f);
+		}
+		if(uHasNormalMap){
+			color = texture(uNormalMap, textureCoords); //TO WORK ON
 		}
 		fragColor = color;
 		//fragColor = vec4(vec3(specAngle), 1.0); //FOR DEBUGGING

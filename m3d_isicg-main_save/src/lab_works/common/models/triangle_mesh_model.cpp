@@ -215,6 +215,16 @@ namespace M3D_ISICG
 		{
 			material._shininess = shininess;
 		}
+		if ( p_mtl->GetTextureCount( aiTextureType_NORMALS ) > 0 ) //NormalMap
+		{
+			p_mtl->GetTexture( aiTextureType_NORMALS, 0, &texturePath );
+			texture = _loadTexture( texturePath, "normalMap" );
+			if (texture._id != GL_INVALID_INDEX) {
+				material._normalMap = texture;
+				material._hasNormalMap = true;
+			}
+		}
+		//else if ( p_mlt->Get( AI_MATKEY_NORMAL ) )
 
 		// =====================================================
 

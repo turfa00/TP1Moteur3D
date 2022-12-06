@@ -29,12 +29,14 @@ namespace M3D_ISICG
 		bool  uHasAmbientMap = this->_material._hasAmbientMap;
 		bool  uHasSpecularMap = this->_material._hasSpecularMap;
 		bool  uHasShininessMap = this->_material._hasShininessMap;
+		bool  uHasNormalMap	   = this->_material._hasNormalMap;
 		//GLuint diffuseMap		= this->_material._diffuseMap._id;
 		if (uHasDiffuseMap || uHasAmbientMap || uHasSpecularMap) {
 			GLuint textureDiffuseId = this->_material._diffuseMap._id;
 			GLuint textureAmbientId = this->_material._ambientMap._id;
 			GLuint textureSpecularId = this->_material._specularMap._id;
 			GLuint textureShininessId = this->_material._shininessMap._id;
+			GLuint textureNormalId	  = this->_material._normalMap._id;
 			if (uHasDiffuseMap) {
 				glBindTextureUnit( 1, textureDiffuseId );
 			}
@@ -47,6 +49,9 @@ namespace M3D_ISICG
 			if (uHasShininessMap) {
 				glBindTextureUnit( 4, textureShininessId );
 			}
+			if (uHasNormalMap) {
+				glBindTextureUnit( 5, textureNormalId );
+			}
 		}
 		//this->_material.ma
 		//Uniform values
@@ -58,6 +63,7 @@ namespace M3D_ISICG
 		GLuint	  mAmbientMap  = glGetUniformLocation( p_glProgram, "uHasAmbientMap" );
 		GLuint	  mSpecularMap = glGetUniformLocation( p_glProgram, "uHasSpecularMap" );
 		GLuint	  mShininessMap = glGetUniformLocation( p_glProgram, "uHasShininessMap" );
+		GLuint	  mNormalMap	= glGetUniformLocation( p_glProgram, "uHasNormalMap" );
 
 		glUniform3f( aColor, diffuseColor.x, diffuseColor.y, diffuseColor.z );
 		glUniform3f( dColor, ambientColor.x, ambientColor.y, ambientColor.z );
@@ -67,6 +73,7 @@ namespace M3D_ISICG
 		glUniform1f( mAmbientMap, this->_material._hasAmbientMap );
 		glUniform1f( mSpecularMap, this->_material._hasSpecularMap );
 		glUniform1f( mShininessMap, this->_material._hasShininessMap );
+		glUniform1f( mNormalMap, this->_material._hasShininessMap );
 
 		glBindVertexArray( _vao );
 		glDrawElements( GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0 );
