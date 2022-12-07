@@ -8,11 +8,12 @@ layout( location = 4 ) in vec3 aVertexBitagent;
 
 out vec3 normalInterp, vertexPos;
 out vec2 textureCoords;
+out vec3 vertexTangentSpace, lightTangentSpace;
 
-uniform mat4 NormalMat;
+uniform mat4 NormalMat; //Change to normalMat
 uniform mat4 modelMatrix, viewMatrix; //Model
 uniform mat4 uMVPMatrix; // Projection * View * Model
-
+uniform vec3 lightPosition;
 vec3 normalVec;
 
 
@@ -22,5 +23,14 @@ void main()
 	vertexPos = vec3(vertPos4) / vertPos4.w;
 	normalInterp = vec3(NormalMat * vec4(aVertexNormal,0.f));
 	textureCoords = aVertexTexCoords;
+	//Normal mapping
+	vec3 T = normalize(vec3(modelMatrix * vec4(aVertexTangent, 0.f)));
+	vec3 B = normalize(vec3(modelMatrix * vec4(aVertexBitagent, 0.f)));
+	vec3 N = normalize(vec3(modelMatrix * vec4(aVertexNormal, 0.f)));
+	mat3 inv_TBN = transpose(mat3(T, B, N));
+	vertexTangentSpace = inv_TBN * vec3(modelMatrix * vec4(aVertexPosition, 0.f));
+	lightTangentSpace = inv_TBN * lightPosition;
+
+
 	gl_Position = uMVPMatrix * vec4( aVertexPosition, 1.f );
 }

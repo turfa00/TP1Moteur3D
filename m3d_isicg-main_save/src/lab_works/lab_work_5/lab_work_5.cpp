@@ -70,7 +70,7 @@ namespace M3D_ISICG
 		model = glGetUniformLocation( programId, "modelMatrix" );
 		view  = glGetUniformLocation( programId, "viewMatrix" );
 		normal = glGetUniformLocation( programId, "NormalMat" );
-		light  = glGetUniformLocation( programId, "lightDirection" );
+		light  = glGetUniformLocation( programId, "lightPosition" );
 		//v = Vec3f( 1.f, 1.f, -1.f );
 		glProgramUniformMatrix4fv( programId, uMVP, 1, GL_FALSE, glm::value_ptr( uMVPMatrix ) );
 		glProgramUniformMatrix4fv( programId, model, 1, GL_FALSE, glm::value_ptr( triangleMeshModel._transformation ) );

@@ -73,7 +73,7 @@ namespace M3D_ISICG
 		glUniform1f( mAmbientMap, this->_material._hasAmbientMap );
 		glUniform1f( mSpecularMap, this->_material._hasSpecularMap );
 		glUniform1f( mShininessMap, this->_material._hasShininessMap );
-		glUniform1f( mNormalMap, this->_material._hasShininessMap );
+		glUniform1f( mNormalMap, this->_material._hasNormalMap );
 
 		glBindVertexArray( _vao );
 		glDrawElements( GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0 );
@@ -91,6 +91,10 @@ namespace M3D_ISICG
 			}
 			if (uHasShininessMap) {
 				glBindTextureUnit( 0, this->_material._shininessMap._id );
+			}
+			if ( uHasNormalMap )
+			{
+				glBindTextureUnit( 0, this->_material._normalMap._id );
 			}
 		}
 	}

@@ -8,18 +8,19 @@ layout (binding = 2) uniform sampler2D uAmbientMap;
 layout (binding = 3) uniform sampler2D uSpecularMap;
 layout (binding = 4) uniform sampler2D uShininessMap;
 layout(binding = 5) uniform sampler2D uNormalMap;
-uniform float shininessVal;
 
 in vec3 normalInterp, vertexPos;
 in vec2 textureCoords;
+in vec3 vertexTangentSpace, lightTangentSpace;
 
-uniform vec3 ambientColor, diffuseColor, specularColor, lightDirection;
+uniform vec3 ambientColor, diffuseColor, specularColor, lightPosition;
 uniform bool uHasDiffuseMap,uHasSpecularMap, uHasShininessMap, uHasNormalMap;
+uniform float shininessVal;
 
-vec3 changerNormale(vec3 normal, vec3 lightDirection){
+vec3 changerNormale(vec3 normal, vec3 lightPosition){
 	normal = normalize(normal);
-	lightDirection = normalize(lightDirection);
-	if(dot(lightDirection, normal) < 0){
+	lightPosition = normalize(lightPosition);
+	if(dot(lightPosition, normal) < 0){
 		return normal * -1;
 	}
 	return normal;
@@ -27,9 +28,9 @@ vec3 changerNormale(vec3 normal, vec3 lightDirection){
 
 void main()
 {
-	vec3 N = changerNormale(normalInterp, lightDirection);
+	vec3 N = changerNormale(normalInterp, lightPosition);
 	//vec3 N = normalize(normalInterp);
-	vec3 L = normalize(lightDirection - vertexPos);
+	vec3 L = normalize(lightPosition - vertexPos);
 	vec3 Lo = reflect(-L, N);
 	//Lambert Cosine Law
 	float lambertian = max(dot(N, L), 0.0);
@@ -43,7 +44,7 @@ void main()
 		specular = pow(specAngle, shininessVal);
 	}
 	vec4 color;
-	if(uHasDiffuseMap || uHasSpecularMap || uHasShininessMap){
+	if(uHasDiffuseMap || uHasSpecularMap || uHasShininessMap || uHasNormalMap){
 		if(uHasDiffuseMap){
 			color += texture(uDiffuseMap, textureCoords);
 		}
@@ -59,7 +60,10 @@ void main()
 			color += vec4(spec * specular, 0.f);
 		}
 		if(uHasNormalMap){
-			color = texture(uNormalMap, textureCoords); //TO WORK ON
+			vec3 normal = normalize(texture(uNormalMap, textureCoords).xyz); //https://geeks3d.developpez.com/normal-mapping-glsl/ reference
+			//color = texture(uNormalMap, textureCoords); //TO WORK ON
+			//vec3 L2 = normalize(lightTangentSpace - vertexTangentSpace);
+			//color += vec4(normal * max(dot(normal, L2), 0.0), 0.f);
 		}
 		fragColor = color;
 		//fragColor = vec4(vec3(specAngle), 1.0); //FOR DEBUGGING
