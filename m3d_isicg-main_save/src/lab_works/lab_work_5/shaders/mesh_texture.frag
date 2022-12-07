@@ -12,6 +12,7 @@ layout(binding = 5) uniform sampler2D uNormalMap;
 in vec3 normalInterp, vertexPos;
 in vec2 textureCoords;
 in vec3 vertexTangentSpace, lightTangentSpace;
+in mat3 inv_TBN;
 
 uniform vec3 ambientColor, diffuseColor, specularColor, lightPosition;
 uniform bool uHasDiffuseMap,uHasSpecularMap, uHasShininessMap, uHasNormalMap;
@@ -28,10 +29,24 @@ vec3 changerNormale(vec3 normal, vec3 lightPosition){
 
 void main()
 {
-	vec3 N = changerNormale(normalInterp, lightPosition);
-	//vec3 N = normalize(normalInterp);
-	vec3 L = normalize(lightPosition - vertexPos);
-	vec3 Lo = reflect(-L, N);
+	vec3 N, L, Lo;
+	if(uHasNormalMap){
+			N = normalize(texture(uNormalMap, textureCoords).xyz); //https://geeks3d.developpez.com/normal-mapping-glsl/ reference
+			L = normalize(lightTangentSpace - vertexTangentSpace);
+			
+			Lo = reflect(-L, N);
+
+			//color = texture(uNormalMap, textureCoords); //TO WORK ON
+			//vec3 L2 = normalize(lightTangentSpace - vertexTangentSpace);
+			//color += vec4(normal * max(dot(normal, L2), 0.0), 0.f);
+	}
+	if(!uHasNormalMap){
+		N = changerNormale(normalInterp, lightPosition);
+		//vec3 N = normalize(normalInterp);
+		L = normalize(lightPosition - vertexPos);
+		Lo = reflect(-L, N);
+	}
+	
 	//Lambert Cosine Law
 	float lambertian = max(dot(N, L), 0.0);
 	float specular = 0.0, specular2 = 0.0;
@@ -58,12 +73,6 @@ void main()
 				specular = 1.f;
 			}*/
 			color += vec4(spec * specular, 0.f);
-		}
-		if(uHasNormalMap){
-			vec3 normal = normalize(texture(uNormalMap, textureCoords).xyz); //https://geeks3d.developpez.com/normal-mapping-glsl/ reference
-			//color = texture(uNormalMap, textureCoords); //TO WORK ON
-			//vec3 L2 = normalize(lightTangentSpace - vertexTangentSpace);
-			//color += vec4(normal * max(dot(normal, L2), 0.0), 0.f);
 		}
 		fragColor = color;
 		//fragColor = vec4(vec3(specAngle), 1.0); //FOR DEBUGGING
