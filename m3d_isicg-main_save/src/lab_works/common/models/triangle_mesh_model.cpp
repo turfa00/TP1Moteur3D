@@ -70,6 +70,9 @@ namespace M3D_ISICG
 		// Load vertex attributes.
 		std::vector<Vertex> vertices;
 		vertices.resize( p_mesh->mNumVertices );
+		std ::partition( _meshes.begin(),
+						 _meshes.end(),
+						 []( const TriangleMesh & p_mesh ) -> bool { return p_mesh._material._isOpaque; } );
 		for ( unsigned int v = 0; v < p_mesh->mNumVertices; ++v )
 		{
 			Vertex & vertex = vertices[ v ];
@@ -225,7 +228,10 @@ namespace M3D_ISICG
 			}
 		}
 		//else if ( p_mlt->Get( AI_MATKEY_NORMAL ) )
-
+		if (p_mtl->GetTextureCount(aiTextureType_OPACITY) > 0) 
+		{
+			material._isOpaque = false;
+		}
 		// =====================================================
 
 		return material;

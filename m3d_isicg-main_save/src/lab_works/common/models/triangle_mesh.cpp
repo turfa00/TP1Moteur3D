@@ -30,7 +30,6 @@ namespace M3D_ISICG
 		bool  uHasSpecularMap = this->_material._hasSpecularMap;
 		bool  uHasShininessMap = this->_material._hasShininessMap;
 		bool  uHasNormalMap	   = this->_material._hasNormalMap;
-		//GLuint diffuseMap		= this->_material._diffuseMap._id;
 		if (uHasDiffuseMap || uHasAmbientMap || uHasSpecularMap) {
 			GLuint textureDiffuseId = this->_material._diffuseMap._id;
 			GLuint textureAmbientId = this->_material._ambientMap._id;
@@ -53,7 +52,6 @@ namespace M3D_ISICG
 				glBindTextureUnit( 5, textureNormalId );
 			}
 		}
-		//this->_material.ma
 		//Uniform values
 		GLfloat aColor = glGetUniformLocation( p_glProgram, "diffuseColor" );
 		GLfloat	  dColor	   = glGetUniformLocation( p_glProgram, "ambientColor" );
