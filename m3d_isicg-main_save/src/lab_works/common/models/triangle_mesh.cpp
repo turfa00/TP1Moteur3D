@@ -141,4 +141,14 @@ namespace M3D_ISICG
 		glNamedBufferData( _ebo, _indices.size() * sizeof( unsigned int ), _indices.data(), GL_STATIC_DRAW );
 		
 	}
+
+	void TriangleMesh::gBuffer() { 
+		GLuint fboId;
+		glCreateFramebuffers( 1, &fboId );
+		for (int i = 0; i < 6; i++) {
+			glBindTextureUnit( 1, i );
+			glNamedFramebufferTexture( fboId, drawBuffers[i], i, 0 );
+		}
+		
+	}
 } // namespace M3D_ISICG

@@ -62,6 +62,8 @@ namespace M3D_ISICG
 
 		void cleanGL();
 
+		void gBuffer();
+
 	  private:
 		void _setupGL();
 
@@ -76,11 +78,21 @@ namespace M3D_ISICG
 
 		// ================ Material data.
 		Material _material;
+		GLuint	 _gBufferTextures[6];
 
 		// ================ GL data.
 		GLuint _vao = GL_INVALID_INDEX; // Vertex Array Object
 		GLuint _vbo = GL_INVALID_INDEX; // Vertex Buffer Object
 		GLuint _ebo = GL_INVALID_INDEX; // Element Buffer Object
+
+		GLenum drawBuffers[6] = {
+			GL_COLOR_ATTACHMENT0,
+			GL_COLOR_ATTACHMENT1,
+			GL_COLOR_ATTACHMENT2,
+			GL_COLOR_ATTACHMENT3,
+			GL_COLOR_ATTACHMENT4,
+			GL_DEPTH_ATTACHMENT
+		};
 	};
 } // namespace M3D_ISICG
 
