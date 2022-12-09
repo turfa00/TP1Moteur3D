@@ -24,8 +24,8 @@ namespace M3D_ISICG
 		//triangleMeshModel.load( "Bad_Bunny", "data/models/bunny_2/bunny_2.obj" );
 		triangleMeshModel.load( "Bad_Bunny", "data/models/sponza/sponza.obj" );
 		triangleMeshModel._transformation	= glm::scale( triangleMeshModel._transformation, glm::vec3(1.f) );
-		const std::string vertexShaderStr	= readFile( _shaderFolder + "mesh_texture.vert" );
-		const std::string fragmentShaderStr = readFile( _shaderFolder + "mesh_texture.frag" );
+		const std::string vertexShaderStr	= readFile( _shaderFolder + "geometry_pass.vert" );
+		const std::string fragmentShaderStr = readFile( _shaderFolder + "geometry_pass.frag" );
 
 		GLuint vertexShader	  = glCreateShader( GL_VERTEX_SHADER );
 		GLuint fragmentShader = glCreateShader( GL_FRAGMENT_SHADER );

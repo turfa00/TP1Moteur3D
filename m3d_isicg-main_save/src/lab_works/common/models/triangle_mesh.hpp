@@ -85,6 +85,8 @@ namespace M3D_ISICG
 		GLuint _vbo = GL_INVALID_INDEX; // Vertex Buffer Object
 		GLuint _ebo = GL_INVALID_INDEX; // Element Buffer Object
 
+		//Deferred shading
+		GLuint fboId;
 		GLenum drawBuffers[6] = {
 			GL_COLOR_ATTACHMENT0,
 			GL_COLOR_ATTACHMENT1,

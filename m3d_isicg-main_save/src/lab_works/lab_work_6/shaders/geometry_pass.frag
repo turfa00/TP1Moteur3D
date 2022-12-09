@@ -2,12 +2,19 @@
 
 precision mediump float;
 
-layout( location = 0 ) out vec4 fragColor;
+layout (location = 0) out vec4 fragColor;
+layout (location = 0) out vec3 fragPosition;
+layout (location = 1) out vec3 fragNormal;
+layout (location = 2) out vec3 fragAmbiante;
+layout (location = 3) out vec3 fragDiffuse;
+layout (location = 4) out vec3 fragSpeculaire;
+layout (location = 5) out vec3 fragDepth;
+
 layout (binding = 1) uniform sampler2D uDiffuseMap;
 layout (binding = 2) uniform sampler2D uAmbientMap;
 layout (binding = 3) uniform sampler2D uSpecularMap;
 layout (binding = 4) uniform sampler2D uShininessMap;
-layout(binding = 5) uniform sampler2D uNormalMap;
+layout (binding = 5) uniform sampler2D uNormalMap;
 
 in vec3 normalInterp, vertexPos;
 in vec2 textureCoords;
@@ -27,7 +34,15 @@ vec3 changerNormale(vec3 normal, vec3 lightPosition){
 	return normal;
 }
 
-void main()
+
+void main(){
+	fragPosition = vertexPos;
+	fragNormal = normalInterp;
+	fragAmbiante = texture(
+
+}
+
+/*void main()
 {
 	vec3 N, L, Lo;
 	vec4 color;
@@ -87,3 +102,4 @@ void main()
 	color += vec4(diffuseColor * lambertian + specularColor * specular, 0.0);
 	fragColor = vec4(color.xyz, 1.0f);
 }
+*/
