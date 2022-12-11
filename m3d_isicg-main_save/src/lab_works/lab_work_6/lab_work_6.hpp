@@ -9,7 +9,7 @@
 #include "../lib/glm/glm/glm.hpp"
 #include "../lib/glm/glm/gtc/matrix_transform.hpp"
 #include "../lib/glm/glm/mat4x4.hpp"
-#include "../common/camera.hpp"7
+#include "../common/camera.hpp"
 #include "../common/models/triangle_mesh_model.hpp"
 #include "../common/models/base_model.hpp"
 #include "../common/models/triangle_mesh.hpp"
@@ -21,7 +21,7 @@ namespace M3D_ISICG
 	  public:
 		LabWork6() : BaseLabWork() {}
 		~LabWork6();
-		GLuint programId;
+		GLuint programId, _geometryPassProgram;
 		GLint  compiled, linked;
 		GLfloat				 _time = 0.f, luminosite = 1.f, lum = 1.f, fov;
 		std::vector<Vec3f>	vertices;
@@ -50,6 +50,10 @@ namespace M3D_ISICG
 		void _updateViewMatrix();
 		void   _updateProjectionMatrix();
 		void _initCamera();
+
+		void _initGeometryPassProgram( GLuint vertexShader, GLuint fragmentShader );
+		void _geometryPass( GLuint program );
+
 
 	  private:
 		// ================ Scene data.

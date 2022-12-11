@@ -221,7 +221,7 @@ namespace M3D_ISICG
 		if ( p_mtl->GetTextureCount( aiTextureType_NORMALS ) > 0 ) //NormalMap
 		{
 			p_mtl->GetTexture( aiTextureType_NORMALS, 0, &texturePath );
-			texture = _loadTexture( texturePath, "normalMap" );
+			texture = _loadTexture( texturePath, "normal" );
 			if (texture._id != GL_INVALID_INDEX) {
 				material._normalMap = texture;
 				material._hasNormalMap = true;

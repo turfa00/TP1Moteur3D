@@ -17,11 +17,13 @@ namespace M3D_ISICG
 		_vertices.shrink_to_fit();
 		_indices.shrink_to_fit();
 		_setupGL();
+		//gBuffer();
 	}
 
 	void TriangleMesh::render( const GLuint p_glProgram ) const
-	{
+	{	
 		glUseProgram( p_glProgram );
+		glBindFramebuffer( GL_FRAMEBUFFER, fboId );
 		Vec3f ambientColor = this->_material._ambient;
 		Vec3f diffuseColor = Vec3f(this->_material._diffuse);
 		Vec3f specularColor = this->_material._specular;
@@ -73,9 +75,6 @@ namespace M3D_ISICG
 		glUniform1f( mShininessMap, this->_material._hasShininessMap );
 		glUniform1f( mNormalMap, this->_material._hasNormalMap );
 
-		//gBuffer
-		glNamedFramebufferReadBuffer( fboId, GL_COLOR_ATTACHMENT0 );
-		//glBlitNamedFramedbuffer(0, 1, )
 		glBindVertexArray( _vao );
 		glDrawElements( GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0 );
 		glBindVertexArray( 0 );
@@ -98,6 +97,7 @@ namespace M3D_ISICG
 				glBindTextureUnit( 0, this->_material._normalMap._id );
 			}
 		}
+		glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
 	}
 
 	void TriangleMesh::cleanGL()
@@ -142,17 +142,23 @@ namespace M3D_ISICG
 
 		glNamedBufferData( _vbo, _vertices.size() * sizeof( Vertex ), _vertices.data(), GL_STATIC_DRAW );
 		glNamedBufferData( _ebo, _indices.size() * sizeof( unsigned int ), _indices.data(), GL_STATIC_DRAW );
+		gBuffer();
 		
 	}
-
-	void TriangleMesh::gBuffer() { 
+	void TriangleMesh::gBuffer()
+	{
 		glCreateFramebuffers( 1, &fboId );
-		glBindFramebuffer( GL_DRAW_FRAMEBUFFER, fboId );
-		for (int i = 0; i < 6; i++) {
+		//glBindFramebuffer( GL_DRAW_FRAMEBUFFER, fboId );
+		//glNamedFramebufferDrawBuffers( fboId, 5, drawBuffers );
+		for ( int i = 0; i < 5; i++ )
+		{
 			glBindTextureUnit( 1, i );
-			glNamedFramebufferTexture( fboId, i, i, 0 );
+			glNamedFramebufferTexture( fboId, GL_COLOR_ATTACHMENT0+i, i, 0 );
 		}
-		glNamedFramebufferDrawBuffers( fboId, 6, drawBuffers );
-		glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
+		glNamedFramebufferDrawBuffers( fboId, 5, drawBuffers );
+		// glNamedFramebufferTexture( fboId, 5, 5, 0 );
+
+		// glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
 	}
+
 } // namespace M3D_ISICG

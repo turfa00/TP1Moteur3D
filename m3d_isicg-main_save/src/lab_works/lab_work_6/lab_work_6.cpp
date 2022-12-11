@@ -51,6 +51,7 @@ namespace M3D_ISICG
 		}
 
 		programId = glCreateProgram();
+		//_initGeometryPassProgram( vertexShader, fragmentShader );
 		glAttachShader( programId, vertexShader );
 		glAttachShader( programId, fragmentShader );
 		glLinkProgram( programId );
@@ -110,7 +111,7 @@ namespace M3D_ISICG
 		fov = _camera.getFovy();
 		modif_fov = ImGui::SliderFloat( "Fov", &fov, 0.f, 180.f, "" );
 		
-		ImGui::Begin( "Settings lab work 4" );
+		ImGui::Begin( "Settings lab work 6" );
 		ImGui::Text( "No setting available!" );
 		ImGui::End();
 	}
@@ -177,6 +178,41 @@ namespace M3D_ISICG
 			_camera.rotate( p_event.motion.xrel * _cameraSensitivity, p_event.motion.yrel * _cameraSensitivity );
 			_updateViewMatrix();
 		}
+	}
+
+	void LabWork6::_initGeometryPassProgram( GLuint vertexShader, GLuint fragmentShader )
+	{
+		_geometryPassProgram = glCreateProgram();
+		glAttachShader( _geometryPassProgram, vertexShader );
+		glAttachShader( _geometryPassProgram, fragmentShader );
+		glLinkProgram( _geometryPassProgram );
+
+		glGetProgramiv( _geometryPassProgram, GL_LINK_STATUS, &linked );
+		if ( !linked )
+		{
+			GLchar log[ 1024 ];
+			glGetProgramInfoLog( _geometryPassProgram, sizeof( log ), NULL, log );
+			std::cerr << "Error linking program" << log << std::endl;
+		}
+	}
+
+	void LabWork6::_geometryPass(GLuint program) {
+		const std::string vertexShaderStr	= readFile( _shaderFolder + "geometry_pass.vert" );
+		const std::string fragmentShaderStr = readFile( _shaderFolder + "geometry_pass.frag" );
+
+		GLuint vertexShader	  = glCreateShader( GL_VERTEX_SHADER );
+		GLuint fragmentShader = glCreateShader( GL_FRAGMENT_SHADER );
+
+		const GLchar * vsrc = vertexShaderStr.c_str();
+		const GLchar * fsrc = fragmentShaderStr.c_str();
+
+		glShaderSource( vertexShader, 1, &vsrc, NULL );
+		glCompileShader( vertexShader );
+
+		glShaderSource( fragmentShader, 1, &fsrc, NULL );
+		glCompileShader( fragmentShader );
+
+		glGetShaderiv( vertexShader, GL_COMPILE_STATUS, &compiled );
 	}
 
 } // namespace M3D_ISICG

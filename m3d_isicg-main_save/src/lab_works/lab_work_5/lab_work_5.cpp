@@ -111,7 +111,7 @@ namespace M3D_ISICG
 		fov = _camera.getFovy();
 		modif_fov = ImGui::SliderFloat( "Fov", &fov, 0.f, 180.f, "" );
 		
-		ImGui::Begin( "Settings lab work 4" );
+		ImGui::Begin( "Settings lab work 5" );
 		ImGui::Text( "No setting available!" );
 		ImGui::End();
 	}
