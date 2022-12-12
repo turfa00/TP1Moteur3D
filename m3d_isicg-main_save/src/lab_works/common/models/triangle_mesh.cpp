@@ -23,7 +23,10 @@ namespace M3D_ISICG
 	void TriangleMesh::render( const GLuint p_glProgram ) const
 	{	
 		glUseProgram( p_glProgram );
-		glBindFramebuffer( GL_FRAMEBUFFER, fboId );
+		//glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
+		glBindFramebuffer( GL_READ_FRAMEBUFFER, fboId );
+		glBlitNamedFramebuffer( fboId, fboId, 0, 0, 100, 100, 0, 0, 100, 100, GL_COLOR_BUFFER_BIT, GL_NEAREST );
+		//glBlitNamedFramebuffer();
 		Vec3f ambientColor = this->_material._ambient;
 		Vec3f diffuseColor = Vec3f(this->_material._diffuse);
 		Vec3f specularColor = this->_material._specular;

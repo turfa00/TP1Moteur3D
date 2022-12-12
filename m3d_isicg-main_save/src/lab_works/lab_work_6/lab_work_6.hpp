@@ -22,7 +22,7 @@ namespace M3D_ISICG
 		LabWork6() : BaseLabWork() {}
 		~LabWork6();
 		GLuint programId, _geometryPassProgram;
-		GLint  compiled, linked;
+		GLint  compiled, linked, linkedGeometryProgram;
 		GLfloat				 _time = 0.f, luminosite = 1.f, lum = 1.f, fov;
 		std::vector<Vec3f>	vertices;
 		std::vector<Vec3f>	couleurs;
@@ -51,8 +51,8 @@ namespace M3D_ISICG
 		void   _updateProjectionMatrix();
 		void _initCamera();
 
-		void _initGeometryPassProgram( GLuint vertexShader, GLuint fragmentShader );
-		void _geometryPass( GLuint program );
+		void _initGeometryPassProgram();
+		bool _geometryPass( GLuint program );
 
 
 	  private:

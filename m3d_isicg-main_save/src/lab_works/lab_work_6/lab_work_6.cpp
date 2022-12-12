@@ -51,10 +51,16 @@ namespace M3D_ISICG
 		}
 
 		programId = glCreateProgram();
-		//_initGeometryPassProgram( vertexShader, fragmentShader );
+		_initGeometryPassProgram();
 		glAttachShader( programId, vertexShader );
 		glAttachShader( programId, fragmentShader );
 		glLinkProgram( programId );
+
+		// geometryPassProgram
+		/*glAttachShader( _geometryPassProgram, vertexShader );
+		glAttachShader( _geometryPassProgram, fragmentShader );
+		glLinkProgram( _geometryPassProgram );
+		glGetProgramiv( _geometryPassProgram, GL_LINK_STATUS, &linkedGeometryProgram );*/ 
 		
 		glGetProgramiv( programId, GL_LINK_STATUS, &linked );
 		if ( !linked )
@@ -64,6 +70,7 @@ namespace M3D_ISICG
 			std::cerr << "Error linking program" << log << std::endl;
 			return false;
 		}
+		_geometryPass( _geometryPassProgram );
 		_initCamera();
 		
 		uMVP = glGetUniformLocation( programId, "uMVPMatrix" );
@@ -180,23 +187,12 @@ namespace M3D_ISICG
 		}
 	}
 
-	void LabWork6::_initGeometryPassProgram( GLuint vertexShader, GLuint fragmentShader )
+	void LabWork6::_initGeometryPassProgram()
 	{
 		_geometryPassProgram = glCreateProgram();
-		glAttachShader( _geometryPassProgram, vertexShader );
-		glAttachShader( _geometryPassProgram, fragmentShader );
-		glLinkProgram( _geometryPassProgram );
-
-		glGetProgramiv( _geometryPassProgram, GL_LINK_STATUS, &linked );
-		if ( !linked )
-		{
-			GLchar log[ 1024 ];
-			glGetProgramInfoLog( _geometryPassProgram, sizeof( log ), NULL, log );
-			std::cerr << "Error linking program" << log << std::endl;
-		}
 	}
 
-	void LabWork6::_geometryPass(GLuint program) {
+	bool LabWork6::_geometryPass(GLuint program) {
 		const std::string vertexShaderStr	= readFile( _shaderFolder + "geometry_pass.vert" );
 		const std::string fragmentShaderStr = readFile( _shaderFolder + "geometry_pass.frag" );
 
@@ -213,6 +209,19 @@ namespace M3D_ISICG
 		glCompileShader( fragmentShader );
 
 		glGetShaderiv( vertexShader, GL_COMPILE_STATUS, &compiled );
+
+		glAttachShader( program, vertexShader );
+		glAttachShader( program, fragmentShader );
+		glLinkProgram( program );
+		glGetProgramiv( program, GL_LINK_STATUS, &linkedGeometryProgram );
+		if ( !linkedGeometryProgram )
+		{
+			GLchar log[ 1024 ];
+			glGetProgramInfoLog( _geometryPassProgram, sizeof( log ), NULL, log );
+			std::cerr << "Error linking program" << log << std::endl;
+			return false;
+		}
+		return true;
 	}
 
 } // namespace M3D_ISICG
