@@ -24,9 +24,9 @@ void main()
 	normalInterp = vec3(NormalMat * vec4(aVertexNormal,0.f));
 	textureCoords = aVertexTexCoords;
 	//Normal mapping
-	vec3 T = normalize(vec3(modelMatrix * vec4(aVertexTangent, 0.f)));
-	vec3 B = normalize(vec3(modelMatrix * vec4(aVertexBitagent, 0.f)));
-	vec3 N = normalize(vec3(modelMatrix * vec4(aVertexNormal, 0.f)));
+	vec3 T = normalize(vec3(viewMatrix * modelMatrix  * vec4(aVertexTangent, 0.f)));
+	vec3 B = normalize(vec3(viewMatrix * modelMatrix * vec4(aVertexBitagent, 0.f)));
+	vec3 N = normalize(vec3(viewMatrix * modelMatrix * vec4(aVertexNormal, 0.f)));
 	inv_TBN = transpose(mat3(T, B, N));
 	vertexTangentSpace = inv_TBN * vec3(modelMatrix * vec4(aVertexPosition, 1.f));
 	//vertexTangentSpace = inv_TBN * normalize(lightPosition - vertexPos);

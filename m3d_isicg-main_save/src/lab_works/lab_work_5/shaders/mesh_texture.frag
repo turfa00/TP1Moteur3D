@@ -33,6 +33,8 @@ void main()
 	vec4 color;
 	if(uHasNormalMap){
 			N = (texture(uNormalMap, textureCoords).xyz); //https://geeks3d.developpez.com/normal-mapping-glsl/ reference
+			//N = normalize(inv_TBN * N);
+			N = N * 2.f - 1.0f;
 			N = normalize(inv_TBN * N);
 			L = normalize(lightTangentSpace - vertexTangentSpace);
 			
