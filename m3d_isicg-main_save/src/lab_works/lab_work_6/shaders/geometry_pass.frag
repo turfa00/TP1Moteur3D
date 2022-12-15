@@ -2,7 +2,7 @@
 
 precision mediump float;
 
-layout (location = 0) out vec4 fragColor;
+//layout (location = 0) out vec4 fragColor;
 layout (location = 0) out vec3 fragPosition;
 layout (location = 1) out vec3 fragNormal;
 layout (location = 2) out vec3 fragAmbiante;

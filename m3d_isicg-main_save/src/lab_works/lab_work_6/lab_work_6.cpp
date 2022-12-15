@@ -24,8 +24,8 @@ namespace M3D_ISICG
 		//triangleMeshModel.load( "Bad_Bunny", "data/models/bunny_2/bunny_2.obj" );
 		triangleMeshModel.load( "Bad_Bunny", "data/models/sponza/sponza.obj" );
 		triangleMeshModel._transformation	= glm::scale( triangleMeshModel._transformation, glm::vec3(1.f) );
-		const std::string vertexShaderStr	= readFile( _shaderFolder + "geometry_pass.vert" );
-		const std::string fragmentShaderStr = readFile( _shaderFolder + "geometry_pass.frag" );
+		const std::string vertexShaderStr	= readFile( _shaderFolder + "mesh_texture.vert" );
+		const std::string fragmentShaderStr = readFile( _shaderFolder + "mesh_texture.frag" );
 
 		GLuint vertexShader	  = glCreateShader( GL_VERTEX_SHADER );
 		GLuint fragmentShader = glCreateShader( GL_FRAGMENT_SHADER );
@@ -51,7 +51,6 @@ namespace M3D_ISICG
 		}
 
 		programId = glCreateProgram();
-		_initGeometryPassProgram();
 		glAttachShader( programId, vertexShader );
 		glAttachShader( programId, fragmentShader );
 		glLinkProgram( programId );
@@ -70,6 +69,7 @@ namespace M3D_ISICG
 			std::cerr << "Error linking program" << log << std::endl;
 			return false;
 		}
+		_initGeometryPassProgram();
 		_geometryPass( _geometryPassProgram );
 		_initCamera();
 		
@@ -190,9 +190,6 @@ namespace M3D_ISICG
 	void LabWork6::_initGeometryPassProgram()
 	{
 		_geometryPassProgram = glCreateProgram();
-	}
-
-	bool LabWork6::_geometryPass(GLuint program) {
 		const std::string vertexShaderStr	= readFile( _shaderFolder + "geometry_pass.vert" );
 		const std::string fragmentShaderStr = readFile( _shaderFolder + "geometry_pass.frag" );
 
@@ -208,20 +205,29 @@ namespace M3D_ISICG
 		glShaderSource( fragmentShader, 1, &fsrc, NULL );
 		glCompileShader( fragmentShader );
 
-		glGetShaderiv( vertexShader, GL_COMPILE_STATUS, &compiled );
-
-		glAttachShader( program, vertexShader );
-		glAttachShader( program, fragmentShader );
-		glLinkProgram( program );
-		glGetProgramiv( program, GL_LINK_STATUS, &linkedGeometryProgram );
+		glGetShaderiv( fragmentShader, GL_COMPILE_STATUS, &compiledGeometryProgram );
+		if ( !compiledGeometryProgram )
+		{
+			GLchar log[ 1024 ];
+			glGetShaderInfoLog( vertexShader, sizeof( log ), NULL, log );
+			glDeleteShader( vertexShader );
+			glDeleteShader( fragmentShader );
+			std::cerr << "Error compiling vertex shader:" << log << std::endl;
+		}
+		glAttachShader( _geometryPassProgram, vertexShader );
+		glAttachShader( _geometryPassProgram, fragmentShader );
+		glLinkProgram( _geometryPassProgram );
+		glGetProgramiv( _geometryPassProgram, GL_LINK_STATUS, &linkedGeometryProgram );
 		if ( !linkedGeometryProgram )
 		{
 			GLchar log[ 1024 ];
 			glGetProgramInfoLog( _geometryPassProgram, sizeof( log ), NULL, log );
 			std::cerr << "Error linking program" << log << std::endl;
-			return false;
 		}
-		return true;
+	}
+
+	void LabWork6::_geometryPass( GLuint program )
+	{ //glGetShaderiv()
 	}
 
 } // namespace M3D_ISICG
