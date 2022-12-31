@@ -32,12 +32,14 @@ void main()
 	vec3 N, L, Lo;
 	vec4 color;
 	if(uHasNormalMap){
-			N = (texture(uNormalMap, textureCoords).xyz); //https://geeks3d.developpez.com/normal-mapping-glsl/ reference
+			N = texture(uNormalMap, textureCoords).xyz; //https://geeks3d.developpez.com/normal-mapping-glsl/ reference
 			//N = normalize(inv_TBN * N);
 			N = N * 2.f - 1.0f;
 			N = normalize(inv_TBN * N);
-			L = normalize(lightTangentSpace - vertexTangentSpace);
+			//L = normalize(lightTangentSpace - vertexTangentSpace);
 			
+			//Lo = reflect(-L, N);
+			L = normalize( - vertexPos - lightPosition);
 			Lo = reflect(-L, N);
 
 			//color = texture(uNormalMap, textureCoords); //TO WORK ON
@@ -57,6 +59,9 @@ void main()
 	float specular = 0.0, specular2 = 0.0;
 	float specAngle, shinVal2;
 	//shinVal2 = texture(uShininessMap, textureCoords).x;
+	if(lambertian < 0.0){
+		lambertian = - lambertian;
+	}
 	if(lambertian > 0.0){
 		vec3 V = normalize(-vertexPos);
 		//specular

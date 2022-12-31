@@ -9,7 +9,7 @@
 #include "../lib/glm/glm/glm.hpp"
 #include "../lib/glm/glm/gtc/matrix_transform.hpp"
 #include "../lib/glm/glm/mat4x4.hpp"
-#include "../common/camera.hpp"7
+#include "../common/camera.hpp"
 #include "../common/models/triangle_mesh_model.hpp"
 #include "../common/models/base_model.hpp"
 #include "../common/models/triangle_mesh.hpp"
