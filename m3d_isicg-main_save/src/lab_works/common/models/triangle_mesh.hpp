@@ -87,7 +87,7 @@ namespace M3D_ISICG
 
 		//Deferred shading
 		GLuint fboId;
-		GLenum drawBuffers[6] = {
+		GLenum drawBuffers[5] = {
 			GL_COLOR_ATTACHMENT0,
 			GL_COLOR_ATTACHMENT1,
 			GL_COLOR_ATTACHMENT2,

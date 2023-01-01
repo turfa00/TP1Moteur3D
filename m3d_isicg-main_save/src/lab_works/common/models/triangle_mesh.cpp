@@ -102,7 +102,7 @@ namespace M3D_ISICG
 				glBindTextureUnit( 0, this->_material._normalMap._id );
 			}
 		}
-		glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
+		//glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
 	}
 
 	void TriangleMesh::cleanGL()
@@ -147,7 +147,7 @@ namespace M3D_ISICG
 
 		glNamedBufferData( _vbo, _vertices.size() * sizeof( Vertex ), _vertices.data(), GL_STATIC_DRAW );
 		glNamedBufferData( _ebo, _indices.size() * sizeof( unsigned int ), _indices.data(), GL_STATIC_DRAW );
-		gBuffer();
+		//gBuffer();
 		
 	}
 	void TriangleMesh::gBuffer()
@@ -161,6 +161,7 @@ namespace M3D_ISICG
 			glNamedFramebufferTexture( fboId, GL_COLOR_ATTACHMENT0+i, i, 0 );
 		}
 		glNamedFramebufferDrawBuffers( fboId, 5, drawBuffers );
+		glCheckNamedFramebufferStatus( GL_DRAW_FRAMEBUFFER, fboId );
 		// glNamedFramebufferTexture( fboId, 5, 5, 0 );
 
 		// glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );

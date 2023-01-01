@@ -1,5 +1,5 @@
-#ifndef __LAB_WORK_6_HPP__
-#define __LAB_WORK_6_HPP__
+#ifndef __LAB_WORK_7_HPP__
+#define __LAB_WORK_7_HPP__
 
 #include "GL/gl3w.h"
 #include "common/base_lab_work.hpp"
@@ -16,14 +16,13 @@
 
 namespace M3D_ISICG
 {
-	class LabWork6 : public BaseLabWork
+	class LabWork7 : public BaseLabWork
 	{
 	  public:
-		LabWork6() : BaseLabWork() {}
-		~LabWork6();
-		GLuint programId, _geometryPassProgram, _shadingPassProgram;
-		GLint  compiled, linked, compiledGeometryProgram, linkedGeometryProgram;
-		GLint				 compiled2, linked2;
+		LabWork7() : BaseLabWork() {}
+		~LabWork7();
+		GLuint programId;
+		GLint  compiled, linked;
 		GLfloat				 _time = 0.f, luminosite = 1.f, lum = 1.f, fov;
 		std::vector<Vec3f>	vertices;
 		std::vector<Vec3f>	couleurs;
@@ -38,19 +37,10 @@ namespace M3D_ISICG
 		float				_cameraSensitivity = 0.2f; //Was 0.1f
 
 		TriangleMeshModel triangleMeshModel;
-
-		// Deferred shading
-		GLuint fboId;
-		GLenum drawBuffers[ 6 ] = { GL_COLOR_ATTACHMENT0,
-									GL_COLOR_ATTACHMENT1,
-									GL_COLOR_ATTACHMENT2,
-									GL_COLOR_ATTACHMENT3,
-									GL_COLOR_ATTACHMENT4 
-		};
-		int attachmentChoice = 1;
+		//TriangleMesh	  triangleMesh;
 
 		
-		bool init() override, modif_lum, modif_col, modif_fov, modif_attachment;
+		bool init() override, modif_lum, modif_col, modif_fov;
 		void animate( const float p_deltaTime ) override;
 		void render() override;
 		void _init_buffers();
@@ -60,12 +50,6 @@ namespace M3D_ISICG
 		void _updateViewMatrix();
 		void   _updateProjectionMatrix();
 		void _initCamera();
-
-		bool _initGeometryPassProgram();
-		bool _geometryPass( GLuint program );
-
-		void gBuffer();
-
 
 	  private:
 		// ================ Scene data.
@@ -81,4 +65,4 @@ namespace M3D_ISICG
 	};
 } // namespace M3D_ISICG
 
-#endif // __LAB_WORK_6_HPP__
+#endif // __LAB_WORK_7_HPP__

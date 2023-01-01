@@ -2,7 +2,13 @@
 
 precision mediump float;
 
-layout( location = 0 ) out vec4 fragColor;
+//layout (location = 0) out vec4 fragColor;
+layout (location = 0) out vec3 fragPosition;
+layout (location = 1) out vec3 fragNormal;
+layout (location = 2) out vec3 fragAmbiante;
+layout (location = 3) out vec3 fragDiffuse;
+layout (location = 4) out vec4 fragSpeculaire;
+layout (location = 5) out vec3 fragDepth;
 layout (binding = 1) uniform sampler2D uDiffuseMap;
 layout (binding = 2) uniform sampler2D uAmbientMap;
 layout (binding = 3) uniform sampler2D uSpecularMap;
@@ -15,7 +21,7 @@ in vec3 vertexTangentSpace, lightTangentSpace;
 in mat3 inv_TBN;
 
 uniform vec3 ambientColor, diffuseColor, specularColor, lightPosition;
-uniform bool uHasDiffuseMap,uHasSpecularMap, uHasShininessMap, uHasNormalMap;
+uniform bool uHasAmbientMap, uHasDiffuseMap,uHasSpecularMap, uHasShininessMap, uHasNormalMap;
 uniform float shininessVal;
 
 vec3 changerNormale(vec3 normal, vec3 lightPosition){
@@ -32,58 +38,70 @@ void main()
 	vec3 N, L, Lo;
 	vec4 color;
 	if(uHasNormalMap){
-			N = (texture(uNormalMap, textureCoords).xyz); //https://geeks3d.developpez.com/normal-mapping-glsl/ reference
+			N = texture(uNormalMap, textureCoords).xyz; //https://geeks3d.developpez.com/normal-mapping-glsl/ reference
+			N = N * 2.f - 1.0f;
 			N = normalize(inv_TBN * N);
 			L = normalize(lightTangentSpace - vertexTangentSpace);
 			
+			//L = normalize(lightPosition - vertexPos );
 			Lo = reflect(-L, N);
-
-			//color = texture(uNormalMap, textureCoords); //TO WORK ON
-			//vec3 L2 = normalize(lightTangentSpace - vertexTangentSpace);
-			//color += vec4(normal * max(dot(normal, L2), 0.0), 0.f);
 	}
 	if(!uHasNormalMap){
-		N = changerNormale(normalInterp, lightPosition);
-		//N = normalize(texture(uNormalMap, textureCoords).xyz);
-		//vec3 N = normalize(normalInterp);
+		//N = changerNormale(normalInterp, lightPosition);
+		N = changerNormale(normalInterp, lightTangentSpace);
 		L = normalize(lightPosition - vertexPos);
 		Lo = reflect(-L, N);
 	}
 	
 	//Lambert Cosine Law
 	float lambertian = max(dot(N, L), 0.0);
-	float specular = 0.0, specular2 = 0.0;
-	float specAngle, shinVal2;
-	//shinVal2 = texture(uShininessMap, textureCoords).x;
+	float specular = 0.0;
+	float specAngle;
+	vec3 diffuseC, specularC, ambientC;
+	float shininess;
+	if(lambertian < 0.0){
+		lambertian = - lambertian;
+	}
 	if(lambertian > 0.0){
 		vec3 V = normalize(-vertexPos);
 		//specular
-		specAngle = max(dot(Lo, V), 0.0);
-		specular = pow(specAngle, shininessVal);
+		specAngle = dot(N, V);
+		if(uHasShininessMap){
+			shininess = texture(uShininessMap, textureCoords).x;	
+		}
+		else{
+			shininess = shininessVal;
+		}
+		specular = pow(specAngle, shininess);
 	}
-	if(uHasDiffuseMap || uHasSpecularMap || uHasShininessMap || uHasNormalMap){
-		if(uHasDiffuseMap){
-			vec4 diffuseTex = texture(uDiffuseMap, textureCoords);
-			if(diffuseTex.a < 0.5){
-				discard;
-			}
-			color += diffuseTex;
+	
+	if(uHasDiffuseMap){
+		diffuseC = texture(uDiffuseMap, textureCoords).xyz;
+		if(texture(uDiffuseMap, textureCoords).a < 0.5){
+			discard;
 		}
-		if(uHasSpecularMap || uHasShininessMap){
-			vec3 spec = (texture(uSpecularMap, textureCoords).xxx);
-			float shinVal = texture(uShininessMap, textureCoords).x;
-			color += vec4(spec * specular, 0.f);
-		}
-		if(uHasNormalMap){
-			//color += texture(uDiffuseMap, textureCoords) * lambertian;
-		}
-		fragColor = color;
-		//fragColor = vec4(vec3(specAngle), 1.0); //FOR DEBUGGING
-	}	
+	}
 	else{
-		//color += vec4(ambientColor + diffuseColor * lambertian + specularColor * specular, 1.0);
-		//fragColor = color;
+		diffuseC = vec3(diffuseColor.xyz);
 	}
-	color += vec4(diffuseColor * lambertian + specularColor * specular, 0.0);
-	fragColor = vec4(color.xyz, 1.0f);
+	if(uHasAmbientMap){
+		ambientC = vec3(texture(uAmbientMap, textureCoords).xyz);
+	}
+	else{
+		ambientC = vec3(ambientColor.xyz);
+	}
+	if(uHasSpecularMap){
+		specularC = (texture(uSpecularMap, textureCoords).xxx);
+	}
+	else{
+		specularC = vec3(specularColor.xyz);
+	}
+	color = vec4(ambientC + (diffuseC * lambertian) + (specularC * specular), 0.0);
+	//fragColor = vec4(color.xyz, 1.0f);
+
+	fragPosition = vertexPos;
+	fragNormal = N;
+	fragAmbiante = ambientC;
+	fragDiffuse = diffuseC * lambertian;
+	fragSpeculaire = vec4(specularC * specular, 0.0);
 }
