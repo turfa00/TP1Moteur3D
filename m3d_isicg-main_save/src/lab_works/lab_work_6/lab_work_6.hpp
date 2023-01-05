@@ -22,15 +22,20 @@ namespace M3D_ISICG
 		LabWork6() : BaseLabWork() {}
 		~LabWork6();
 		GLuint programId, _geometryPassProgram, _shadingPassProgram;
+		GLuint				 quadVAO;
 		GLint  compiled, linked, compiledGeometryProgram, linkedGeometryProgram;
 		GLint				 compiled2, linked2;
 		GLfloat				 _time = 0.f, luminosite = 1.f, lum = 1.f, fov;
-		std::vector<Vec3f>	vertices;
-		std::vector<Vec3f>	couleurs;
-		std:: vector<GLuint> vertexindices;	
 		glm::mat4			 uMVPMatrix, viewMatrix, normalMatrix;
 		glm::mat4			 modelMatrix = glm::mat4(1.f);
 		Vec3f				 v;
+
+		//Quad
+		std::vector<Vec3f>	vertices;
+		std::vector<Vec3f>	couleurs;
+		std::vector<GLuint> vertexindices;
+
+		GLuint vbo, vboc, vao, ebo;
 
 		Camera				_camera;
 		GLint				uMVP, model, view, normal, light;
@@ -65,7 +70,7 @@ namespace M3D_ISICG
 		bool _geometryPass( GLuint program );
 
 		void gBuffer();
-
+		void renderQuad();
 
 	  private:
 		// ================ Scene data.

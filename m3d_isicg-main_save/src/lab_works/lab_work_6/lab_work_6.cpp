@@ -23,15 +23,15 @@ namespace M3D_ISICG
 		triangleMeshModel._transformation	= glm::scale( triangleMeshModel._transformation, glm::vec3(1.f) );
 		const std::string vertexShaderStr	 = readFile( _shaderFolder + "geometry_pass.vert" );
 		const std::string fragmentShaderStr = readFile( _shaderFolder + "geometry_pass.frag" );
-		//const std::string fragmentShaderPassStr= readFile( _shaderFolder + "shading_pass.frag" );
+		const std::string fragmentShaderPassStr= readFile( _shaderFolder + "shading_pass.frag" );
 
 		GLuint vertexShader	  = glCreateShader( GL_VERTEX_SHADER );
 		GLuint fragmentShader = glCreateShader( GL_FRAGMENT_SHADER );
-		//GLuint shadingPass = glCreateShader( GL_FRAGMENT_SHADER );
+		GLuint shadingPass = glCreateShader( GL_FRAGMENT_SHADER );
 		
 		const GLchar * vsrc = vertexShaderStr.c_str();
 		const GLchar * fsrc = fragmentShaderStr.c_str();
-		//const GLchar * shsrc = fragmentShaderPassStr.c_str();
+		const GLchar * shsrc = fragmentShaderPassStr.c_str();
 
 		glShaderSource( vertexShader, 1, &vsrc, NULL );
 		glCompileShader( vertexShader );
@@ -39,8 +39,8 @@ namespace M3D_ISICG
 		glShaderSource( fragmentShader, 1, &fsrc, NULL );
 		glCompileShader( fragmentShader );
 
-		//glShaderSource( shadingPass, 1, &shsrc, NULL );
-		//glCompileShader( shadingPass );
+		glShaderSource( shadingPass, 1, &shsrc, NULL );
+		glCompileShader( shadingPass );
 		
 		glGetShaderiv( vertexShader, GL_COMPILE_STATUS, &compiled );
 		if ( !compiled )
@@ -58,9 +58,9 @@ namespace M3D_ISICG
 		glAttachShader( _geometryPassProgram, fragmentShader );
 		glLinkProgram( _geometryPassProgram );
 		
-		//_shadingPassProgram = glCreateProgram();
-		//glAttachShader( _shadingPassProgram, shadingPass );
-		//glLinkProgram( _shadingPassProgram );
+		_shadingPassProgram = glCreateProgram();
+		glAttachShader( _shadingPassProgram, shadingPass );
+		glLinkProgram( _shadingPassProgram );
 
 
 		glGetProgramiv( _geometryPassProgram, GL_LINK_STATUS, &linked );
@@ -72,14 +72,14 @@ namespace M3D_ISICG
 			return false;
 		}
 		
-		/* glGetProgramiv( _shadingPassProgram, GL_LINK_STATUS, &linked );
+		glGetProgramiv( _shadingPassProgram, GL_LINK_STATUS, &linked );
 		if ( !linked )
 		{
 			GLchar log[ 1024 ];
 			glGetProgramInfoLog( _shadingPassProgram, sizeof( log ), NULL, log );
 			std::cerr << "Error linking Shading program" << log << std::endl;
 			return false;
-		}*/
+		}
 
 		// Geometry Program
 		//_initGeometryPassProgram();
@@ -96,12 +96,14 @@ namespace M3D_ISICG
 		glProgramUniformMatrix4fv(
 			_geometryPassProgram, model, 1, GL_FALSE, glm::value_ptr( triangleMeshModel._transformation ) );
 		glProgramUniform3f( _geometryPassProgram, light, 0.f, 0.f, 0.f );
-		//glDeleteShader( vertexShader );
-		//glDeleteShader( fragmentShader );
+		glDeleteShader( vertexShader );
+		glDeleteShader( fragmentShader );
+		glDeleteShader( shadingPass);
 
 		glEnable( GL_DEPTH_TEST );
 
 		std::cout << "Done!" << std::endl;
+		renderQuad();
 		return true;
 	}
 	void LabWork6::animate( const float p_deltaTime ) 
@@ -120,13 +122,16 @@ namespace M3D_ISICG
 
 	void LabWork6::render()
 	{
-		glUseProgram( _geometryPassProgram );
-		//glUseProgram( _shadingPassProgram );
+		//glUseProgram( _geometryPassProgram );
+		glUseProgram( _shadingPassProgram );
 		
 		glBindFramebuffer( GL_FRAMEBUFFER, fboId );
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-		
-		triangleMeshModel.render( _geometryPassProgram );
+		//Quad
+		glBindVertexArray( vao );
+		glDrawElements( GL_TRIANGLES, vertexindices.size(), GL_UNSIGNED_INT, 0 );
+
+		triangleMeshModel.render( _shadingPassProgram );
 		glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
 		glNamedFramebufferReadBuffer( fboId, drawBuffers[attachmentChoice] );
 		glBlitFramebuffer( fboId,
@@ -145,7 +150,7 @@ namespace M3D_ISICG
 	void LabWork6::displayUI()
 	{
 		modif_col = ImGui::ColorEdit3( "Background", glm::value_ptr(_bgColor) );
-		modif_attachment = ImGui::SliderInt("Attachment", &attachmentChoice, 0, 5, "" );
+		modif_attachment = ImGui::SliderInt("Change attachment", &attachmentChoice, 0, 5, "" );
 		fov = _camera.getFovy();
 		modif_fov = ImGui::SliderFloat( "Fov", &fov, 0.f, 180.f, "" );
 		
@@ -218,6 +223,55 @@ namespace M3D_ISICG
 		}
 	}
 
+	void LabWork6::renderQuad() { 
+		// Vector de vecteurs
+		vertices.push_back( Vec3f( -0.5, 0.5, 0.0 ) );
+		vertices.push_back( Vec3f( 0.5, 0.5, 0.0 ) );
+		vertices.push_back( Vec3f( 0.5, -0.5, 0.0 ) );
+		vertices.push_back( Vec3f( -0.5, -0.5, 0.0 ) );
+		// Ebo
+		vertexindices.push_back( 0 );
+		vertexindices.push_back( 1 );
+		vertexindices.push_back( 2 );
+		vertexindices.push_back( 2 );
+		vertexindices.push_back( 3 );
+		vertexindices.push_back( 0 );
+		// Couleurs
+		couleurs.push_back( Vec3f( 1, 0, 0 ) );
+		couleurs.push_back( Vec3f( 0, 1, 0 ) );
+		couleurs.push_back( Vec3f( 0, 0, 1 ) );
+		couleurs.push_back( Vec3f( 1, 1, 0 ) );
+
+		glCreateBuffers( 1, &ebo );
+
+		glCreateBuffers( 1, &vbo );
+		glCreateBuffers( 1, &vboc );
+
+		// glCreateVertexArrays(number of vertex arrays objects to create, array)
+		// std::cerr << "here" << std::endl;
+		glCreateVertexArrays( 1, &vao );
+
+		glVertexArrayElementBuffer( vao, ebo );
+		// glEnableVertexArrayAttrib(vao object, index)
+		glEnableVertexArrayAttrib( vao, 0 );
+		glEnableVertexArrayAttrib( vao, 1 );
+		// glVertexArrayAttribFormat(vao object, GLattribindex, size, type, normalised, offset)
+		glVertexArrayAttribFormat( vao, 0, 2, GL_FLOAT, GL_FALSE, 0 );
+		glVertexArrayAttribFormat( vao, 1, 3, GL_FLOAT, GL_FALSE, 0 );
+
+		// Lier VBO et VAO
+		// glVertexArrayVertexBuffer(vao object, binding index, buffer, offset, distance between elements)
+		glVertexArrayVertexBuffer( vao, 0, vbo, 0, sizeof( Vec2f ) );
+		glVertexArrayVertexBuffer( vao, 1, vboc, 0, sizeof( Vec3f ) );
+		// glVertexArrayAttribBinding(attribindex, bindingindex)
+		glVertexArrayAttribBinding( vao, 0, 0 );
+		glVertexArrayAttribBinding( vao, 1, 1 );
+
+		glNamedBufferData( vbo, vertices.size() * sizeof( Vec2f ), vertices.data(), GL_STATIC_DRAW );
+		glNamedBufferData( vboc, vertices.size() * sizeof( Vec3f ), couleurs.data(), GL_STATIC_DRAW );
+		glNamedBufferData( ebo, vertexindices.size() * sizeof( GLuint ), vertexindices.data(), GL_STATIC_DRAW );
+		//glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, indices );
+	}
 	bool LabWork6::_initGeometryPassProgram()
 	{
 		_geometryPassProgram = glCreateProgram();
