@@ -62,7 +62,16 @@ namespace M3D_ISICG
 		glAttachShader( _shadingPassProgram, shadingPass );
 		glLinkProgram( _shadingPassProgram );
 
-
+		//Geometry Pass
+		glGetShaderiv( shadingPass, GL_COMPILE_STATUS, &compiled );
+		if ( !compiled )
+		{
+			GLchar log[ 1024 ];
+			glGetShaderInfoLog( shadingPass, sizeof( log ), NULL, log );
+			glDeleteShader( shadingPass );
+			std::cerr << "Error compiling vertex shader:" << log << std::endl;
+			return false;
+		}
 		glGetProgramiv( _geometryPassProgram, GL_LINK_STATUS, &linked );
 		if ( !linked )
 		{
@@ -72,6 +81,7 @@ namespace M3D_ISICG
 			return false;
 		}
 		
+		//Shading Pass
 		glGetProgramiv( _shadingPassProgram, GL_LINK_STATUS, &linked );
 		if ( !linked )
 		{
@@ -100,8 +110,8 @@ namespace M3D_ISICG
 		glDeleteShader( fragmentShader );
 		glDeleteShader( shadingPass);
 
-		glEnable( GL_DEPTH_TEST );
-
+		//glEnable( GL_DEPTH_TEST );
+		glDisable( GL_DEPTH_TEST );
 		std::cout << "Done!" << std::endl;
 		renderQuad();
 		return true;
@@ -122,17 +132,22 @@ namespace M3D_ISICG
 
 	void LabWork6::render()
 	{
-		//glUseProgram( _geometryPassProgram );
 		glUseProgram( _shadingPassProgram );
-		
-		glBindFramebuffer( GL_FRAMEBUFFER, fboId );
-		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-		//Quad
+		glEnable( GL_DEPTH_TEST );
+		glUseProgram( _geometryPassProgram );
+		//GLuint shader = glGetShaderiv( vertexShader, GL_FRAGMENT_SHADER, &compiled );
+		// Quad
 		glBindVertexArray( vao );
+		//glBindTexture( GL_TEXTURE_2D, textureColorbuffer );	
 		glDrawElements( GL_TRIANGLES, vertexindices.size(), GL_UNSIGNED_INT, 0 );
+		glBindFramebuffer( GL_FRAMEBUFFER, fboId );
+		//glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
+		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+		
 
-		triangleMeshModel.render( _shadingPassProgram );
+		triangleMeshModel.render( _geometryPassProgram );
 		glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
+		//glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 		glNamedFramebufferReadBuffer( fboId, drawBuffers[attachmentChoice] );
 		glBlitFramebuffer( fboId,
 						   0,
@@ -225,27 +240,37 @@ namespace M3D_ISICG
 
 	void LabWork6::renderQuad() { 
 		// Vector de vecteurs
+		/* vertices.push_back( Vec3f( -0.5, 0.5, 0.0 ) );
+		vertices.push_back( Vec3f( 0.5, 0.5, 0.0 ) );
+		vertices.push_back( Vec3f( 0.5, -0.5, 0.0 ) );
+		vertices.push_back( Vec3f( -0.5, -0.5, 0.0 ) );*/
+		vertices.push_back( Vec3f( -0.5, -0.5, 0.0 ) );
 		vertices.push_back( Vec3f( -0.5, 0.5, 0.0 ) );
 		vertices.push_back( Vec3f( 0.5, 0.5, 0.0 ) );
 		vertices.push_back( Vec3f( 0.5, -0.5, 0.0 ) );
-		vertices.push_back( Vec3f( -0.5, -0.5, 0.0 ) );
 		// Ebo
-		vertexindices.push_back( 0 );
+		/*vertexindices.push_back( 0 );
 		vertexindices.push_back( 1 );
 		vertexindices.push_back( 2 );
 		vertexindices.push_back( 2 );
 		vertexindices.push_back( 3 );
+		vertexindices.push_back( 0 );*/
 		vertexindices.push_back( 0 );
+		vertexindices.push_back( 1 );
+		vertexindices.push_back( 2 );
+		vertexindices.push_back( 0 );
+		vertexindices.push_back( 2 );
+		vertexindices.push_back( 3 );
 		// Couleurs
-		couleurs.push_back( Vec3f( 1, 0, 0 ) );
+		/* couleurs.push_back( Vec3f( 1, 0, 0 ) );
 		couleurs.push_back( Vec3f( 0, 1, 0 ) );
 		couleurs.push_back( Vec3f( 0, 0, 1 ) );
-		couleurs.push_back( Vec3f( 1, 1, 0 ) );
+		couleurs.push_back( Vec3f( 1, 1, 0 ) );*/
 
 		glCreateBuffers( 1, &ebo );
 
 		glCreateBuffers( 1, &vbo );
-		glCreateBuffers( 1, &vboc );
+		//glCreateBuffers( 1, &vboc );
 
 		// glCreateVertexArrays(number of vertex arrays objects to create, array)
 		// std::cerr << "here" << std::endl;
@@ -262,13 +287,13 @@ namespace M3D_ISICG
 		// Lier VBO et VAO
 		// glVertexArrayVertexBuffer(vao object, binding index, buffer, offset, distance between elements)
 		glVertexArrayVertexBuffer( vao, 0, vbo, 0, sizeof( Vec2f ) );
-		glVertexArrayVertexBuffer( vao, 1, vboc, 0, sizeof( Vec3f ) );
+		//glVertexArrayVertexBuffer( vao, 1, vboc, 0, sizeof( Vec3f ) );
 		// glVertexArrayAttribBinding(attribindex, bindingindex)
 		glVertexArrayAttribBinding( vao, 0, 0 );
 		glVertexArrayAttribBinding( vao, 1, 1 );
 
 		glNamedBufferData( vbo, vertices.size() * sizeof( Vec2f ), vertices.data(), GL_STATIC_DRAW );
-		glNamedBufferData( vboc, vertices.size() * sizeof( Vec3f ), couleurs.data(), GL_STATIC_DRAW );
+		//glNamedBufferData( vboc, vertices.size() * sizeof( Vec3f ), couleurs.data(), GL_STATIC_DRAW );
 		glNamedBufferData( ebo, vertexindices.size() * sizeof( GLuint ), vertexindices.data(), GL_STATIC_DRAW );
 		//glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, indices );
 	}
@@ -327,7 +352,6 @@ namespace M3D_ISICG
 		//Créer le gBuffer
 		glCreateFramebuffers( 1, &fboId );
 		glBindFramebuffer( GL_DRAW_FRAMEBUFFER, fboId );
-		GLuint gPosition, gNormal, gAmbient, gDiffuse, gSpecular, gDepth;
 		//Position
 		glGenTextures( 1, &gPosition );
 		glBindTexture( GL_TEXTURE_2D, gPosition );
@@ -395,7 +419,7 @@ namespace M3D_ISICG
 			std::cout << "gBuffer complete" << std::endl;
 		}
 		
-		glNamedFramebufferReadBuffer(fboId, GL_COLOR_ATTACHMENT2);
+		/* glNamedFramebufferReadBuffer( fboId, GL_COLOR_ATTACHMENT2 );
 		glBlitFramebuffer( fboId, 0, _windowWidth, _windowHeight, 0, 0, _windowWidth, _windowHeight,
 						   GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT, GL_NEAREST );
 
@@ -409,9 +433,10 @@ namespace M3D_ISICG
 						   _windowWidth,
 						   _windowHeight,
 						   GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT,
-						   GL_NEAREST );
+						   GL_NEAREST );*/
 
 		glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
+		//glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 	}
 
 } // namespace M3D_ISICG

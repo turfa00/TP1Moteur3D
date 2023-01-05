@@ -2,12 +2,14 @@
 
 precision mediump float;
 
-layout (binding = 0) uniform sampler2D gPosition;
+/*layout (binding = 0) uniform sampler2D gPosition;
 layout (binding = 1) uniform sampler2D gNormal;
 layout (binding = 2) uniform sampler2D gAmbiant;
 layout (binding = 3) uniform sampler2D gDiffuse;
 layout (binding = 4) uniform sampler2D gSpecular;
-layout (binding = 5) uniform sampler2D gDepth;
+layout (binding = 5) uniform sampler2D gDepth;*/
+
+uniform sampler2D screenTexture;
 /*layout (binding = 1) uniform sampler2D uDiffuseMap;
 layout (binding = 2) uniform sampler2D uAmbientMap;
 layout (binding = 3) uniform sampler2D uSpecularMap;
@@ -43,21 +45,22 @@ void main()
 	vec4 color;
 
 	//Pixel Courant
-	ivec2 coord = ivec2(gl_FragCoord.xy);
+	ivec2 texCoord = ivec2(gl_FragCoord.xy);
 	//Textures
 	//vec4 data = texelFetch(gTexture, coord);
-	vec3 fragPos = texture(gPosition, coord).xyz;
-	vec3 normal = texture(gNormal, coord).xyz;
-	vec3 ambient = texture(gAmbiant, coord).xyz;
-	vec3 diffuse = texture(gDiffuse, coord).xyz;
-	float specular = texture(gSpecular, coord).x;
-	vec3 depth = texture(gDepth, coord).xyz;
+	/*vec3 fragPos = texture(gPosition, texCoord).xyz;
+	vec3 normal = texture(gNormal, texCoord).xyz;
+	vec3 ambient = texture(gAmbiant, texCoord).xyz;
+	vec3 diffuse = texture(gDiffuse, texCoord).xyz;
+	float specular = texture(gSpecular, texCoord).x;
+	vec3 depth = texture(gDepth, texCoord).xyz;
 
 	vec3 lighting = ambient + diffuse + specular * 0.1;
-	vec3 viewDir = normalize(/*lightPosition*/ - fragPos);
+	vec3 viewDir = normalize(/*lightPosition*//* - fragPos);
 	
-	vec3 lightDir = normalize(-fragPos);
+	vec3 lightDir = normalize(-fragPos);*/
 	
-	FragColor = vec4(lighting, 1.0);
-	//FragColor = vec4(255,0,0,1.0);
+	//FragColor = vec4(lighting, 1.0);
+	//FragColor = texture(screenTexture, texCoord);
+	FragColor = vec4(0,0,255,1.0);
 }

@@ -43,6 +43,8 @@ namespace M3D_ISICG
 		float				_cameraSensitivity = 0.2f; //Was 0.1f
 
 		TriangleMeshModel triangleMeshModel;
+		//gBuffer
+		GLuint gPosition, gNormal, gAmbient, gDiffuse, gSpecular, gDepth;
 
 		// Deferred shading
 		GLuint fboId;
