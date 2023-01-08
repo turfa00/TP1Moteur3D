@@ -31,7 +31,7 @@ namespace M3D_ISICG
 		Vec3f				 v;
 
 		//Quad
-		std::vector<Vec3f>	vertices;
+		std::vector<Vec2f>	vertices;
 		std::vector<Vec3f>	couleurs;
 		std::vector<GLuint> vertexindices;
 

@@ -115,9 +115,6 @@
     <ClCompile Include="src\lab_works\lab_work_6\lab_work_6.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\lab_works\lab_work_7\lab_work_7.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\application.hpp">
@@ -186,7 +183,6 @@
     <ClInclude Include="src\lab_works\lab_work_5\lab_work_5.hpp" />
     <ClInclude Include="src\lab_works\common\models\skybox.hpp" />
     <ClInclude Include="src\lab_works\lab_work_6\lab_work_6.hpp" />
-    <ClInclude Include="src\lab_works\lab_work_7\lab_work_7.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\lab_works\lab_work_1\shaders\lw1.frag">

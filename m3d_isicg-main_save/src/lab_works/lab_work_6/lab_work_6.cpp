@@ -19,7 +19,7 @@ namespace M3D_ISICG
 		
 		glClearColor( _bgColor.x, _bgColor.y, _bgColor.z, _bgColor.w );
 		gBuffer();
-		triangleMeshModel.load( "Bad_Bunny", "data/models/sponza/sponza.obj" );
+		triangleMeshModel.load( "Sponza", "data/models/sponza/sponza.obj" );
 		triangleMeshModel._transformation	= glm::scale( triangleMeshModel._transformation, glm::vec3(1.f) );
 		const std::string vertexShaderStr	 = readFile( _shaderFolder + "geometry_pass.vert" );
 		const std::string fragmentShaderStr = readFile( _shaderFolder + "geometry_pass.frag" );
@@ -91,9 +91,6 @@ namespace M3D_ISICG
 			return false;
 		}
 
-		// Geometry Program
-		//_initGeometryPassProgram();
-		//_geometryPass( _geometryPassProgram );
 		_initCamera();
 		
 		uMVP   = glGetUniformLocation( _geometryPassProgram, "uMVPMatrix" );
@@ -110,8 +107,8 @@ namespace M3D_ISICG
 		glDeleteShader( fragmentShader );
 		glDeleteShader( shadingPass);
 
-		//glEnable( GL_DEPTH_TEST );
-		glDisable( GL_DEPTH_TEST );
+		glEnable( GL_DEPTH_TEST );
+		//glDisable( GL_DEPTH_TEST );
 		std::cout << "Done!" << std::endl;
 		renderQuad();
 		return true;
@@ -132,20 +129,17 @@ namespace M3D_ISICG
 
 	void LabWork6::render()
 	{
-		glUseProgram( _shadingPassProgram );
+		glUseProgram( 0 );
+		
 		glEnable( GL_DEPTH_TEST );
 		glUseProgram( _geometryPassProgram );
-		//GLuint shader = glGetShaderiv( vertexShader, GL_FRAGMENT_SHADER, &compiled );
-		// Quad
-		glBindVertexArray( vao );
-		//glBindTexture( GL_TEXTURE_2D, textureColorbuffer );	
-		glDrawElements( GL_TRIANGLES, vertexindices.size(), GL_UNSIGNED_INT, 0 );
 		glBindFramebuffer( GL_FRAMEBUFFER, fboId );
-		//glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
+		
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		
 
 		triangleMeshModel.render( _geometryPassProgram );
+
 		glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
 		//glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 		glNamedFramebufferReadBuffer( fboId, drawBuffers[attachmentChoice] );
@@ -159,6 +153,28 @@ namespace M3D_ISICG
 						   _windowHeight,
 						   GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT,
 						   GL_NEAREST );
+
+		glUseProgram( _shadingPassProgram );
+		glDisable( GL_DEPTH_TEST );
+		glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
+		glClear( GL_COLOR_BUFFER_BIT );
+		glBindVertexArray( vao );
+		
+
+		glBindTextureUnit( 0, gPosition );
+		glBindTextureUnit( 1, gNormal );
+		glBindTextureUnit( 2, gAmbient );
+		glBindTextureUnit( 3, gDiffuse );
+		glBindTextureUnit( 4, gSpecular );
+
+		glDrawElements( GL_TRIANGLES, vertexindices.size(), GL_UNSIGNED_INT, 0 );
+
+		glBindTextureUnit( 0, 0 );
+		glBindTextureUnit( 1, 0 );
+		glBindTextureUnit( 2, 0 );
+		glBindTextureUnit( 3, 0 );
+		glBindTextureUnit( 4, 0 );
+		glBindVertexArray( 0 );
 
 	}
 
@@ -240,62 +256,38 @@ namespace M3D_ISICG
 
 	void LabWork6::renderQuad() { 
 		// Vector de vecteurs
-		/* vertices.push_back( Vec3f( -0.5, 0.5, 0.0 ) );
-		vertices.push_back( Vec3f( 0.5, 0.5, 0.0 ) );
-		vertices.push_back( Vec3f( 0.5, -0.5, 0.0 ) );
-		vertices.push_back( Vec3f( -0.5, -0.5, 0.0 ) );*/
-		vertices.push_back( Vec3f( -0.5, -0.5, 0.0 ) );
-		vertices.push_back( Vec3f( -0.5, 0.5, 0.0 ) );
-		vertices.push_back( Vec3f( 0.5, 0.5, 0.0 ) );
-		vertices.push_back( Vec3f( 0.5, -0.5, 0.0 ) );
+		vertices.push_back( Vec2f( -1, -1 ) );
+		vertices.push_back( Vec2f( -1, 1 ) );
+		vertices.push_back( Vec2f( 1, 1 ) );
+		vertices.push_back( Vec2f( 1, -1 ) );
 		// Ebo
-		/*vertexindices.push_back( 0 );
-		vertexindices.push_back( 1 );
-		vertexindices.push_back( 2 );
-		vertexindices.push_back( 2 );
-		vertexindices.push_back( 3 );
-		vertexindices.push_back( 0 );*/
 		vertexindices.push_back( 0 );
 		vertexindices.push_back( 1 );
 		vertexindices.push_back( 2 );
 		vertexindices.push_back( 0 );
 		vertexindices.push_back( 2 );
 		vertexindices.push_back( 3 );
-		// Couleurs
-		/* couleurs.push_back( Vec3f( 1, 0, 0 ) );
-		couleurs.push_back( Vec3f( 0, 1, 0 ) );
-		couleurs.push_back( Vec3f( 0, 0, 1 ) );
-		couleurs.push_back( Vec3f( 1, 1, 0 ) );*/
 
 		glCreateBuffers( 1, &ebo );
 
 		glCreateBuffers( 1, &vbo );
-		//glCreateBuffers( 1, &vboc );
 
-		// glCreateVertexArrays(number of vertex arrays objects to create, array)
-		// std::cerr << "here" << std::endl;
 		glCreateVertexArrays( 1, &vao );
 
 		glVertexArrayElementBuffer( vao, ebo );
-		// glEnableVertexArrayAttrib(vao object, index)
+		
 		glEnableVertexArrayAttrib( vao, 0 );
 		glEnableVertexArrayAttrib( vao, 1 );
-		// glVertexArrayAttribFormat(vao object, GLattribindex, size, type, normalised, offset)
+
 		glVertexArrayAttribFormat( vao, 0, 2, GL_FLOAT, GL_FALSE, 0 );
 		glVertexArrayAttribFormat( vao, 1, 3, GL_FLOAT, GL_FALSE, 0 );
 
-		// Lier VBO et VAO
-		// glVertexArrayVertexBuffer(vao object, binding index, buffer, offset, distance between elements)
 		glVertexArrayVertexBuffer( vao, 0, vbo, 0, sizeof( Vec2f ) );
-		//glVertexArrayVertexBuffer( vao, 1, vboc, 0, sizeof( Vec3f ) );
-		// glVertexArrayAttribBinding(attribindex, bindingindex)
 		glVertexArrayAttribBinding( vao, 0, 0 );
 		glVertexArrayAttribBinding( vao, 1, 1 );
 
 		glNamedBufferData( vbo, vertices.size() * sizeof( Vec2f ), vertices.data(), GL_STATIC_DRAW );
-		//glNamedBufferData( vboc, vertices.size() * sizeof( Vec3f ), couleurs.data(), GL_STATIC_DRAW );
 		glNamedBufferData( ebo, vertexindices.size() * sizeof( GLuint ), vertexindices.data(), GL_STATIC_DRAW );
-		//glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, indices );
 	}
 	bool LabWork6::_initGeometryPassProgram()
 	{

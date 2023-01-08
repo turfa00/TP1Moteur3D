@@ -104,6 +104,8 @@ void main()
 	gPosition = vertexTangentSpace;
 	gNormal = N;
 	gAmbiant = ambientC;
-	gDiffuse = diffuseC * lambertian;
-	gSpecular = vec4(specularC * specular, 0.0);
+	//gDiffuse = diffuseC * lambertian;
+	gDiffuse = diffuseC;
+	//gSpecular = vec4(specularC * specular, 0.0);
+	gSpecular = vec4(specularC, shininess);
 }
